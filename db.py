@@ -3,7 +3,7 @@ import geopy.distance
 import mysql.connector
 from dotenv import load_dotenv
 
-load_dotenv('config.env')
+load_dotenv()
 
 db_variables = {
     'host': os.getenv('HOST'),
@@ -11,6 +11,8 @@ db_variables = {
     'password': os.getenv('PASSWORD'),
     'database': os.getenv('DATABASE')
 }
+print(db_variables)
+
 db = mysql.connector.connect(**db_variables)
 cursor = db.cursor()
 
