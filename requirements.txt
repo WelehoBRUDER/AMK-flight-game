@@ -1,4 +1,0 @@
-geopy
-mysql-connector-python
-python-dotenv
-colorama
