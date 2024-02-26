@@ -8,6 +8,6 @@ Open terminal and install requirements:
 > pip install -r requirements
 ```
 
-Go to .env.template and remove the .template extension.  
+Create new .env file based on the .env.template file.
 Fill out the empty fields with the correct parameters.
 ## 
