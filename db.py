@@ -27,6 +27,12 @@ def connect_to_db():
     db["cursor"] = db["database"].cursor()
 
 
+def get_some_airports():
+    db["cursor"].execute(
+        f"SELECT * FROM airport ORDER BY RAND() LIMIT 16")
+    return db["cursor"].fetchall()
+
+
 def distance_between_airports(port_1, port_2):
     db["cursor"].execute(
         f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident = '{port_1}' OR ident = '{port_2}'")
@@ -37,3 +43,4 @@ def distance_between_airports(port_1, port_2):
 
 connect_to_db()
 print(distance_between_airports("EFHK", "EFIV"))
+print(get_some_airports())
