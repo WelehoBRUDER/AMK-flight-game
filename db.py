@@ -3,16 +3,22 @@ import geopy.distance
 import mysql.connector
 from dotenv import load_dotenv
 
+# Loads .env to current os.environ
 load_dotenv()
 
+# Load database credentials from .env
+# This is to prevent having to commit sensitive information
+# like password and username
 db_variables = {
     'host': os.getenv('HOST'),
     'user': os.getenv('USER'),
     'password': os.getenv('PASSWORD'),
     'database': os.getenv('DATABASE')
 }
+# Debug to see if .env is working
 print(db_variables)
 
+# Connect to SQL-database using the .env variables
 db = mysql.connector.connect(**db_variables)
 cursor = db.cursor()
 
