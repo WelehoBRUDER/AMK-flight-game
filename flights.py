@@ -22,8 +22,7 @@ print(f"{Fore.YELLOW}DEPARTURES")
 print(f"Options     Time     Destination         Cost       Direction       Range")
 
 flight_times = times_of_the_flights()
+# Etsii listalta lähtevien lentojen tietoja ja tulostaa ne allekkain.
 for i, (hours, minutes) in enumerate(flight_times, start=1):
-    # Etsii listalta lähtevien lentojen tietoja ja tulostaa ne allekkain.
-
     print(f"{i:02d}         {hours:02d}:{minutes:02d}     Destination{i:02d}       Cost{i:02d}     "
           f"Direction{i:02d}     Range{i:02d}")
