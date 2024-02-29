@@ -18,11 +18,14 @@ def times_of_the_flights():  # Arpoo satunnaisia aikoja lennoille ja lisää ne 
     return flight_times
 
 
-print(f"{Fore.YELLOW}DEPARTURES")
-print(f"Options     Time     Destination         Cost       Direction       Range")
+def flight_table():
+    print(f"{Fore.YELLOW}DEPARTURES")
+    print(f"Options     Time     Destination         Cost       Direction       Range")
+    flight_times = times_of_the_flights()
+    # Etsii listalta lähtevien lentojen tietoja ja tulostaa ne allekkain.
+    for i, (hours, minutes) in enumerate(flight_times, start=1):
+        print(f"{i:02d}         {hours:02d}:{minutes:02d}     Destination{i:02d}       Cost{i:02d}     "
+              f"Direction{i:02d}     Range{i:02d}")
 
-flight_times = times_of_the_flights()
-# Etsii listalta lähtevien lentojen tietoja ja tulostaa ne allekkain.
-for i, (hours, minutes) in enumerate(flight_times, start=1):
-    print(f"{i:02d}         {hours:02d}:{minutes:02d}     Destination{i:02d}       Cost{i:02d}     "
-          f"Direction{i:02d}     Range{i:02d}")
+
+flight_table()
