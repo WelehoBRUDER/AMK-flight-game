@@ -23,7 +23,7 @@ def connect_to_db():
 
     # Connect to SQL-database using the .env variables
     db["database"] = mysql.connector.connect(**db_variables)
-    db["cursor"] = db["database"].cursor()
+    db["cursor"] = db["database"].cursor(dictionary=True)
 
 
 def get_some_airports():
@@ -33,21 +33,31 @@ def get_some_airports():
 
 
 # This function returns 16 random airports, 2 in each direction
-def draw_airports_from_origin(origin):
+# The origin point is the latitude and longitude of the current airport
+def draw_airports_from_origin(lat, lon):
+    # North, North-East, East, South-East, South, South-West, West, North-West
     flight_bearings = (0, 45, 90, 135, 180, 225, 270, 315)
+    flight_points = []
     ports = []
-    # origin_coords = {'lat': origin["latitude_deg"], 'lon': origin["longitude_deg"]}
-    dist = (600, 1000)
+    # Minimum and maximum distance from current airport in miles
+    min_dist = 250
+    max_dist = 850
     for bearing in flight_bearings:
-        distance = random.randint(dist[0], dist[1])
-        destination = geopy.distance.distance(miles=distance).destination((34, 148), bearing=bearing)
-        ports.append(destination)
-    print(ports)
-    for port in ports:
+        distance = random.randint(min_dist, max_dist)
+        # Get latitude and longitude of randomly selected place using the origin point
+        destination = geopy.distance.distance(miles=distance).destination((lat, lon), bearing=bearing)
+        flight_points.append(destination)
+    # Find two airports per flight point
+    for point in flight_points:
+        lat, lon = point[0], point[1]
         db["cursor"].execute(
-            f"SELECT TOP 2 * FROM airport WHERE latitude_deg = {port[0]} AND longitude_deg = {port[1]} ORDER BY ABS({port[0]} - latitude_deg)")
+            f"SELECT * FROM airport ORDER BY ABS({lat} - latitude_deg) + ABS({lon} - longitude_deg) LIMIT 2;")
         airport_data = db["cursor"].fetchmany(2)
-        print(airport_data)
+        if airport_data:
+            for airport in airport_data:
+                ports.append(airport)
+
+    return ports
 
 
 def distance_between_airports(port_1, port_2):
@@ -61,4 +71,4 @@ def distance_between_airports(port_1, port_2):
 connect_to_db()
 # print(distance_between_airports("EFHK", "EFIV"))
 # print(get_some_airports())
-# draw_airports_from_origin({})
+# print(draw_airports_from_origin(34, 130))
