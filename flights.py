@@ -35,14 +35,16 @@ def flight_timetable():  # Prints a flight table with options for the player.
     print(f"{Fore.YELLOW}DEPARTURES")
     print(f"Options     Time     Destination                Cost       Direction       Range")
 
+    # Creates a separate counter for Options.
     options = 1
 
     # Generates a list with information from above functions
     flight_times = times_of_the_flights()
     destination_names = airport_names()
     # Searches information about the flights from lists compiled in above functions and prints them like a timetable.
-    for i, hours, minutes in flight_times:
-        a, municipality = destination_names[i - 1]
+    for flight_info, destination_info in zip(flight_times, destination_names):
+        i, hours, minutes = flight_info
+        _, municipality = destination_info
 
         print(f"{options:02d}         {hours:02d}:{minutes:02d}     {municipality:<20s}       Cost{i:02d}     "
               f"Direction{i:02d}     Range{i:02d}")
