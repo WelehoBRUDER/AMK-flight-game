@@ -31,7 +31,7 @@ def airport_names():  # Collects the possible flights from database and lists th
     return destination_names
 
 
-def flight_table():  # Prints a flight table with options for the player.
+def flight_timetable():  # Prints a flight table with options for the player.
     print(f"{Fore.YELLOW}DEPARTURES")
     print(f"Options     Time     Destination                Cost       Direction       Range")
 
@@ -40,7 +40,7 @@ def flight_table():  # Prints a flight table with options for the player.
     # Generates a list with information from above functions
     flight_times = times_of_the_flights()
     destination_names = airport_names()
-    # Searches information about the flights from lists compiled in above functions.
+    # Searches information about the flights from lists compiled in above functions and prints them like a timetable.
     for i, hours, minutes in flight_times:
         a, municipality = destination_names[i - 1]
 
@@ -50,7 +50,7 @@ def flight_table():  # Prints a flight table with options for the player.
         options += 1
 
 
-flight_table()
+flight_timetable()
 # airport_names()
 # print(get_some_airports())
 # airport = get_some_airports()
