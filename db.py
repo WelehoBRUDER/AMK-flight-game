@@ -1,5 +1,5 @@
 import os
-import geopy.distance as geopy
+import geopy.distance as distance
 import mysql.connector
 import random
 from dotenv import load_dotenv
@@ -44,24 +44,24 @@ def draw_airports_from_origin(lat, lon):
     flight_points = []
     flights = []
     # Minimum and maximum distance from current airport in miles
-    min_dist = 300
-    max_dist = 950
+    min_dist = 250
+    max_dist = 850
     for i in range(len(flight_bearings)):
         bearing = flight_bearings[i]
         # Randomly pick distance to travel to
-        distance = random.randint(min_dist, max_dist)
+        flight_distance = random.randint(min_dist, max_dist)
         # Get latitude and longitude of randomly selected place using the origin point
-        destination = geopy.distance(miles=distance).destination((lat, lon), bearing=bearing)
+        destination = distance.distance(miles=flight_distance).destination((lat, lon), bearing=bearing)
         # Add flight point and the point's direction
         flight_points.append({"dest": destination, "dir": bearings_text[i]})
     # Find two airports per flight point
     for point in flight_points:
         # Gets the latitude and longitude of the desired point
-        lat, lon = point["dest"][0], point["dest"][1]
+        point_lat, point_lon = point["dest"][0], point["dest"][1]
         # Request two airports that are as close as possible to the point
         # This is done by adding the latitude and longitude together and sorting the absolute value
         db["cursor"].execute(
-            f"SELECT * FROM airport ORDER BY ABS({lat} - latitude_deg) + ABS({lon} - longitude_deg) LIMIT 2;")
+            f"SELECT * FROM airport ORDER BY ABS({point_lat} - latitude_deg) + ABS({point_lon} - longitude_deg) ASC LIMIT 2;")
         # This could also be fetchall() since the query is limited to 2
         # But things might break if somehow more were to slip past
         airport_data = db["cursor"].fetchmany(2)
@@ -76,12 +76,42 @@ def draw_airports_from_origin(lat, lon):
     return flights
 
 
+# This function calculates the distance between two geographical points
+# It takes the latitude and longitude of both places as tuples or lists
+# Example: distance_between_two_points((25, 67), (34, 100))
 def distance_between_two_points(point_a, point_b):
-    distance = geopy.distance(point_a, point_b).km
-    return distance
+    flight_distance = distance.distance(point_a, point_b).km
+    return flight_distance
+
+
+def get_airport(code):
+    if code:
+        db["cursor"].execute(f"SELECT * FROM airport WHERE ident = '{code}';")
+        airport = db["cursor"].fetchone()
+        if airport:
+            return airport
+        return print(f"Airport {code} doesn't exist.")
+    return print("Airport code can't be empty!")
+
+
+# This function returns data about the requested country from the db
+# It requires the country's ISO-code as a parameter
+# Example: get_country("FI")
+def get_country(iso_country):
+    if iso_country:
+        db["cursor"].execute(f"SELECT * FROM country WHERE iso_country = '{iso_country}';")
+        country = db["cursor"].fetchone()
+        if country:
+            return country
+        return print(f"ISO-code {iso_country} doesn't exist.")
+    return print("No ISO-code in parameters!")
 
 
 connect_to_db()
 # print(distance_between_airports("EFHK", "EFIV"))
 # print(get_some_airports())
-print(draw_airports_from_origin(34, 130))
+# port = get_airport(code="EFHK")
+# _flights = draw_airports_from_origin(port["latitude_deg"], port["longitude_deg"])
+# for flight in _flights:
+#     print(flight["distance"], flight["airport"]["iso_country"])
+# print(get_country("FI"))
