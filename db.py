@@ -1,5 +1,5 @@
 import os
-import geopy.distance
+import geopy.distance as geopy
 import mysql.connector
 import random
 from dotenv import load_dotenv
@@ -34,8 +34,9 @@ def get_some_airports():
 
 # This function returns 16 random airports, 2 in each direction
 # The origin point is the latitude and longitude of the current airport
-# The return value is a list of dictionaries with the keys "flight_direction" and "airport"
-# [{"flight_direction: "North-West", "airport": {...}}, ...]
+# The return value is a list of dictionaries with the keys "flight_direction", "distance" and "airport"
+# Distance is returned in kilometers.
+# [{"flight_direction: "North-West", "distance": 129, "airport": {...}}, ...]
 def draw_airports_from_origin(lat, lon):
     # North, North-East, East, South-East, South, South-West, West, North-West
     flight_bearings = (0, 45, 90, 135, 180, 225, 270, 315)
@@ -43,14 +44,14 @@ def draw_airports_from_origin(lat, lon):
     flight_points = []
     flights = []
     # Minimum and maximum distance from current airport in miles
-    min_dist = 250
-    max_dist = 850
+    min_dist = 300
+    max_dist = 950
     for i in range(len(flight_bearings)):
         bearing = flight_bearings[i]
         # Randomly pick distance to travel to
         distance = random.randint(min_dist, max_dist)
         # Get latitude and longitude of randomly selected place using the origin point
-        destination = geopy.distance.distance(miles=distance).destination((lat, lon), bearing=bearing)
+        destination = geopy.distance(miles=distance).destination((lat, lon), bearing=bearing)
         # Add flight point and the point's direction
         flight_points.append({"dest": destination, "dir": bearings_text[i]})
     # Find two airports per flight point
@@ -67,16 +68,16 @@ def draw_airports_from_origin(lat, lon):
         # If airports were found, add them to the list that will be returned
         if airport_data:
             for airport in airport_data:
-                flights.append({"flight_direction": point["dir"], "airport": airport})
+                # Calculate the distance between origin and flight point
+                point_a, point_b = [lat, lon], [airport["latitude_deg"], airport["longitude_deg"]]
+                dist_to_port = int(distance_between_two_points(point_a, point_b))
+                flights.append({"flight_direction": point["dir"], "distance": dist_to_port, "airport": airport})
 
     return flights
 
 
-def distance_between_airports(port_1, port_2):
-    db["cursor"].execute(
-        f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident = '{port_1}' OR ident = '{port_2}'")
-    airport_data = db["cursor"].fetchmany(2)
-    distance = geopy.distance.distance(airport_data[0], airport_data[1])
+def distance_between_two_points(point_a, point_b):
+    distance = geopy.distance(point_a, point_b).km
     return distance
 
 
