@@ -84,6 +84,9 @@ def distance_between_two_points(point_a, point_b):
     return flight_distance
 
 
+# This function returns data about the requested airport from the db
+# It requires the airports ident code as a parameter
+# Example: get_airport("EFHK")
 def get_airport(code):
     if code:
         db["cursor"].execute(f"SELECT * FROM airport WHERE ident = '{code}';")
