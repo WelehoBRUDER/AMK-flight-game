@@ -5,6 +5,8 @@ import random
 from dotenv import load_dotenv
 
 db = {}
+# If enabled, prints debug lines when database is altered.
+debug_mode = True
 
 
 def connect_to_db():
@@ -101,16 +103,36 @@ def get_country(iso_country):
     return print("No ISO-code in parameters!")
 
 
+# This function removes all airports that are not small, medium or large.
+# Ideally this should run only once, though subsequent queries don't affect anything.
 def delete_unnecessary_airports():
     db["cursor"].execute("""
     DELETE FROM airport
     WHERE NOT type = "small_airport" AND NOT type = "medium_airport" AND NOT type = "large_airport";
+    ;""")
     db["database"].commit()
+    if debug_mode:
+        print("Deleted unnecessary airports (heli, balloon, closed and seaplane).")
 
 
+# This function adds column "money" to the game table.
+# Ideally this should run only once.
 def modify_game_table():
     db["cursor"].execute("ALTER TABLE game ADD money INT;")
     db["database"].commit()
+    if debug_mode:
+        print("Added column 'money' to game table.")
+
+
+# This function adds a new player to the database.
+def add_player_to_db(player):
+    db["cursor"].execute(f"""
+    INSERT INTO game (id, screen_name, co2_consumed, location, money)
+    VALUES (player["id"], player["screen_name"], player[co2_consumed], player["location"], player["money"])
+    """)
+    db["database"].commit()
+    if debug_mode:
+        print(f"Added {player["screen_name"]} to game table.")
 
 
 connect_to_db()
