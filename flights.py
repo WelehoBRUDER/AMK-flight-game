@@ -3,6 +3,12 @@ import random
 from colorama import Fore
 
 
+# Returns a list of dictionaries with information about the random flights.
+# The parameter "flights" contains direction, distance and airport.
+# This function adds the field "time" to "flights".
+# The return value is something like [{'flight_direction': 'North',
+# 'distance': 521, 'airport': {...}, 'time': (21, 35)}, ...]
+# Time is a tuple with ints: (hours, minutes)
 def times_of_the_flights(flights):  # Draws random times for flights and adds them to the list.
     # Assigns an index to randomly generated times. Index starts from 1 instead of 0.
     for i, time in enumerate(range(1, 17), start=1):
@@ -42,9 +48,11 @@ def flight_timetable():  # Prints a flight timetable with options for the player
     # Creates a separate counter for Player Options.
     options = 1
 
+    # Randomly picks 16 flights from given coordinates (latitude and longitude)
     random_flights = draw_airports_from_origin(34, 130)
 
     # Generates a list with information from above functions
+    # times_of_the_flights function uses the random flights to generate timetables for the flights.
     timed_flights = times_of_the_flights(random_flights)
     # Searches information about the flights from lists compiled in above functions and prints them like a timetable
     for i in range(0, len(timed_flights)):
