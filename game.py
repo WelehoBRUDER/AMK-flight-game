@@ -7,6 +7,7 @@ class Game:
         self.turn = 0
         self.flights = []
 
+    # Creates player using Player class and adds to the list
     def add_player(self, i, diff):
         player_name = input(f"Player {i} name: ")
         player_location = "EFHK"
@@ -16,6 +17,9 @@ class Game:
     def get_player(self, index):
         return self.players[index]
 
+    # This function gets all flights available to the requested player.
+    # The flights are based on the airport,
+    # if two players are in the same place, they get the same flights.
     def get_flights(self, player_id):
         port = self.players[player_id].get_location()
         for flight in self.flights:
@@ -24,14 +28,20 @@ class Game:
 
     # This function creates 16 flights for each player.
     def generate_flights(self):
+        # Gets all airports based on where the players are currently.
+        # If all are at the same port, this list will have a length of 1.
         airport_codes = [player.location for player in self.players]
+        # Gets airport data using the codes defined above
         airports = get_multiple_airports(airport_codes)
         for airport in airports:
             lat, lon = airport["latitude_deg"], airport["longitude_deg"]
+            # Draw flights based on the current location
             flights_from_airport = draw_airports_from_origin(lat, lon)
+            # Adds the flights and the origin.
             self.flights.append({"flights": flights_from_airport, "from": airport})
 
     def test_data(self):
+        # Creates test data that has 4 empty players for debugging.
         for i in range(4):
             self.players.append(Player(i, f"player{i}", 0, "EFHK", i))
 
