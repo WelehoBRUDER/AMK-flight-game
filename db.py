@@ -121,9 +121,22 @@ def get_country(iso_country):
 # This function removes all airports that are not small, medium or large.
 # Ideally this should run only once, though subsequent queries don't affect anything.
 def delete_unnecessary_airports():
+    # First trim to the airport types we like
     db["cursor"].execute("""
     DELETE FROM airport
     WHERE NOT type = "small_airport" AND NOT type = "medium_airport" AND NOT type = "large_airport";
+    ;""")
+    db["database"].commit()
+    # Then remove ports without a municipality
+    db["cursor"].execute("""
+    DELETE FROM airport
+    WHERE municipality = "";
+    ;""")
+    db["database"].commit()
+    # Finally remove ports that don't have service
+    db["cursor"].execute("""
+    DELETE FROM airport
+    WHERE scheduled_service = "no"
     ;""")
     db["database"].commit()
     if debug_mode:
