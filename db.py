@@ -41,7 +41,6 @@ def draw_airports_from_origin(lat, lon):
     # North, North-East, East, South-East, South, South-West, West, North-West
     flight_bearings = (0, 45, 90, 135, 180, 225, 270, 315)
     bearings_text = ("North", "North-East", "East", "South-East", "South", "South-West", "West", "North-West")
-    flight_points = []
     flights = []
     # Minimum and maximum distance from current airport in miles
     min_dist = 250
@@ -52,12 +51,8 @@ def draw_airports_from_origin(lat, lon):
         flight_distance = random.randint(min_dist, max_dist)
         # Get latitude and longitude of randomly selected place using the origin point
         destination = distance.distance(miles=flight_distance).destination((lat, lon), bearing=bearing)
-        # Add flight point and the point's direction
-        flight_points.append({"dest": destination, "dir": bearings_text[i]})
-    # Find two airports per flight point
-    for point in flight_points:
         # Gets the latitude and longitude of the desired point
-        point_lat, point_lon = point["dest"][0], point["dest"][1]
+        point_lat, point_lon = destination.latitude, destination.longitude
         # Request two airports that are as close as possible to the point
         # This is done by adding the latitude and longitude together and sorting the absolute value
         db["cursor"].execute(
@@ -71,7 +66,7 @@ def draw_airports_from_origin(lat, lon):
                 # Calculate the distance between origin and flight point
                 point_a, point_b = [lat, lon], [airport["latitude_deg"], airport["longitude_deg"]]
                 dist_to_port = int(distance_between_two_points(point_a, point_b))
-                flights.append({"flight_direction": point["dir"], "distance": dist_to_port, "airport": airport})
+                flights.append({"flight_direction": bearings_text[i], "distance": dist_to_port, "airport": airport})
 
     return flights
 
