@@ -1,11 +1,16 @@
 import time
+import db
+from colorama import Fore
+from player import *
+
+
 class Colors:
     MAGENTA = '\033[95m'
     CYAN = '\033[96m'
     RESET = '\033[0m'
 
-def Intro():
 
+def Intro():
     print(Colors.MAGENTA + "Ronald hasn't seen his grandfather in 20 years and was pretty anxious about the visit.")
     time.sleep(3)
     print("He remembers his grandfather as a sweet guy, always ready to share")
@@ -59,27 +64,27 @@ def Intro():
     print("                   █ █ █ █    █   █   █  █    █       █  █                    ")
     print("                    █   █      ███    █   █   █████   ███      \n" + Colors.RESET)
 
-Intro()
 
-players = []
+# Intro()
 
-while True:
-    player_name = input("Enter player name (or 'exit' to stop): ")
 
-    if player_name.lower() == 'exit':
-        break
-
-    players.append(player_name)
-
-print("Player names:", players)
-
-import db
-from colorama import Fore
+# while True:
+#     player_name = input("Enter player name (or 'exit' to stop): ")
+#
+#     if player_name.lower() == 'exit':
+#         break
+#
+#     players.append(player_name)
+#
+# print("Player names:", players)
 
 
 def main():
     # Just something to use colorama with as a test
-    print(Fore.RED + "Ready to fly?")
+    print(Fore.RED + "Ready to fly?" + Colors.RESET)
+
+    init_game()
 
 
-main()
+if __name__ == "__main__":
+    main()
