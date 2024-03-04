@@ -79,4 +79,5 @@ while True:
     if command_input == "exit":
         break
     else:
-        print(command(command_input))
+        command(command_input)()
+        # print(command(command_input))
