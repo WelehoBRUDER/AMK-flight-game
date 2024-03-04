@@ -22,11 +22,13 @@ def command(text):
 
 
 # Prints everything in the command_list dictionary
-def command_help():
-    text = ""
+def print_helplist():
     for line in help_list.values():
-        text += "\n" + line
-    return text
+        print(line)
+
+
+def print_status():
+    print(status)
 
 
 # Testing a function that handles changing the players' location
@@ -35,9 +37,9 @@ def location_change():
     new_location = int(input("Select the flight you want to take (1-16): "))
     if new_location in airport_dict.keys():
         status[2] = f"Airport {new_location}"
-        return f"Location changed to {new_location}"
+        print(f"Location changed to {new_location}")
     else:
-        return "Flight not found!"
+        print("Flight not found!")
 
 
 # A dictionary of all commands and a short explanation for each one
@@ -48,18 +50,20 @@ help_list = {"help": f"{Fore.GREEN}Help{Style.RESET_ALL} - Shows this list. Typi
              "fly": f"{Fore.GREEN}FLy{Style.RESET_ALL} - Fly to specified airport",
              "exit": f"{Fore.GREEN}Exit{Style.RESET_ALL} - Quits the game"}
 
-# Contains all the commands that use functions
-command_functions = {1: command_help, 2: location_change}
-# Refers to the functions in 'command_functions'
-help_command = command_functions[1]()
-fly_command = command_functions[2]
 # Player stats: 1 = Player name, 2 = Location, 3 = Money, 4 = CO2, 5 = Day, 6 = Hours, 7 = Minutes
 # The hours and minutes can probably be done a lot better
 status = {1: "Player", 2: "Location", 3: 0,
           4: 0, 5: 0, 6: 0, 7: 0}
+
+# Contains all the commands that use functions
+command_functions = {1: print_helplist, 2: print_status, 3: location_change}
+# Refers to the functions in 'command_functions'
+help_command = command_functions[1]
+status_command = command_functions[2]
+fly_command = command_functions[3]
 # Contains all the commands and defines what each one does
 # Calling the functions directly here doesn't work, that's why it refers to the variables instead as a workaround
-commands = {"help": help_command, "status": status, "fly": fly_command}
+commands = {"help": help_command, "status": status_command, "fly": fly_command}
 
 # Function imported from db.py. Returns 16 airports from selected latitude and longitude
 list_of_airports = draw_airports_from_origin(34, 130)
@@ -80,4 +84,3 @@ while True:
         break
     else:
         command(command_input)()
-        # print(command(command_input))
