@@ -90,6 +90,21 @@ def get_airport(code):
     return print("Airport code can't be empty!")
 
 
+# This function returns data about all requested airports at once
+# Example: get_multiple_airports(["EFHK", "EFET"])
+def get_multiple_airports(codes):
+    query = ""
+    for i in range(len(codes)):
+        code = codes[i]
+        query += f"ident = '{code}'{' OR ' if i < len(codes) - 1 else ''}"
+    db["cursor"].execute(f"""
+    SELECT * FROM AIRPORT
+    WHERE {query};
+    """)
+    airports = db["cursor"].fetchall()
+    return airports
+
+
 # This function returns data about the requested country from the db
 # It requires the country's ISO-code as a parameter
 # Example: get_country("FI")

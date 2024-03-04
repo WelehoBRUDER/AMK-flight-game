@@ -1,7 +1,7 @@
 import time
 import db
 from colorama import Fore
-from player import *
+from game import *
 
 
 class Colors:
