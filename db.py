@@ -6,8 +6,6 @@ from dotenv import load_dotenv
 
 db = {}
 
-exclude_types = "airport.type = 'small_airport' OR airport.type = 'medium_airport' OR airport.type = 'large_airport'"
-
 
 def connect_to_db():
     # Loads .env to current os.environ
@@ -26,12 +24,6 @@ def connect_to_db():
     # Connect to SQL-database using the .env variables
     db["database"] = mysql.connector.connect(**db_variables)
     db["cursor"] = db["database"].cursor(dictionary=True)
-
-
-def get_some_airports():
-    db["cursor"].execute(
-        f"SELECT * FROM airport ORDER BY RAND() LIMIT 16")
-    return db["cursor"].fetchall()
 
 
 # This function returns 16 random airports, 2 in each direction
@@ -59,7 +51,6 @@ def draw_airports_from_origin(lat, lon):
         # This is done by adding the latitude and longitude together and sorting the absolute value
         db["cursor"].execute(
             f"""SELECT * FROM airport
-            WHERE {exclude_types}
              ORDER BY ABS({point_lat} - latitude_deg) + ABS({point_lon} - longitude_deg) ASC
               LIMIT 2;""")
         # This could also be fetchall() since the query is limited to 2
@@ -110,6 +101,18 @@ def get_country(iso_country):
     return print("No ISO-code in parameters!")
 
 
+def delete_unnecessary_airports():
+    db["cursor"].execute("""
+    DELETE FROM airport
+    WHERE NOT type = "small_airport" AND NOT type = "medium_airport" AND NOT type = "large_airport";
+    db["database"].commit()
+
+
+def modify_game_table():
+    db["cursor"].execute("ALTER TABLE game ADD money INT;")
+    db["database"].commit()
+
+
 connect_to_db()
 # print(distance_between_airports("EFHK", "EFIV"))
 # print(get_some_airports())
@@ -118,3 +121,7 @@ connect_to_db()
 # for flight in _flights:
 #     print(flight["distance"], flight["airport"]["iso_country"], flight["airport"]["type"])
 # print(get_country("FI"))
+
+# modify_game_table()
+
+# delete_unnecessary_airports()
