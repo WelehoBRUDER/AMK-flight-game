@@ -174,4 +174,4 @@ connect_to_db()
 
 # modify_game_table()
 
-# delete_unnecessary_airports()
+#delete_unnecessary_airports()

@@ -1,4 +1,5 @@
 from db import get_multiple_airports, draw_airports_from_origin
+import random
 
 
 class Game:
@@ -37,6 +38,8 @@ class Game:
             lat, lon = airport["latitude_deg"], airport["longitude_deg"]
             # Draw flights based on the current location
             flights_from_airport = draw_airports_from_origin(lat, lon)
+            for flight in flights_from_airport:
+                flight["cost"] = calc_cost(flight["distance"])
             # Adds the flights and the origin.
             self.flights.append({"flights": flights_from_airport, "from": airport})
 
@@ -87,6 +90,15 @@ def init_game():
         game_controller.add_player(i, difficulty)
 
         print(f"Player {i} is now known as {game_controller.players[i]}")
+
+
+def calc_cost(distance_amount):
+    total_cost = 0
+    cost_per_km = random.uniform(0.15, 0.20)
+    flight_cost = cost_per_km * distance_amount
+    total_cost += flight_cost
+    print(total_cost)
+    return total_cost
 
 
 game_controller.test_data()

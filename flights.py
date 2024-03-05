@@ -1,6 +1,7 @@
 from db import draw_airports_from_origin, get_airport
 import random
 from colorama import Fore
+from game import game_controller
 
 
 # Returns a list of dictionaries with information about the random flights.
@@ -46,10 +47,19 @@ def flight_distance(flight_distances):
         distance_amount.append((r, destination_distance))
     return distance_amount
 
+def calc_cost(distance_amount):
+    total_cost = 0
+    for p, distance in distance_amount:
+        cost_per_km = random.uniform(0.15, 0.20)
+        flight_cost = cost_per_km * distance
+        total_cost += flight_cost
+        print(total_cost)
+    return total_cost
+
 
 def flight_timetable():  # Prints a flight timetable with options for the player.
     print(f"{Fore.YELLOW}DEPARTURES")
-    print(f"Options    Time      Destination                Direction           Distance        Cost")
+    print(f"Options    Time      Destination                Direction           Distance         Cost")
 
     # Creates a separate counter for Player Options.
     options = 1
@@ -57,7 +67,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
     # Randomly picks 16 flights from given coordinates (latitude and longitude)
     port = get_airport("EFHK")
     lat, lon = port["latitude_deg"], port["longitude_deg"]
-    random_flights = draw_airports_from_origin(lat, lon)
+    random_flights = game_controller.get_flights(0)
 
     # times_of_the_flights function uses the random flights to generate timetables for the flights.
     timed_flights = times_of_the_flights(random_flights)
@@ -67,9 +77,10 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         municipality = timed_flights[i]["airport"]["municipality"]
         direction = timed_flights[i]["flight_direction"]
         distance = timed_flights[i]["distance"]
+        cost = timed_flights[i]["cost"]
 
         print(f"{options:02d}         {hours:02d}:{minutes:02d}     {municipality:<20s}       {direction:<15s}"
-              f"     {distance}km           Cost{i + 1:02d}")
+              f"     {distance:04d}km           {cost:.02f}€")
 
         options += 1
 
