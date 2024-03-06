@@ -1,4 +1,5 @@
-from db import get_multiple_airports, draw_airports_from_origin, get_all_players_from_db, update_player_in_db
+from db import get_multiple_airports, draw_airports_from_origin, get_all_players_from_db, update_player_in_db, \
+    track_progress, get_airport
 import random
 
 
@@ -50,7 +51,7 @@ class Game:
     def test_data(self):
         # Creates test data that has 4 empty players for debugging.
         for i in range(4):
-            self.players.append(Player(i, f"player{i}", 0, "EFHK", i, 60 * 60 + 13))
+            self.players.append(Player(i, f"player{i}", 0, "CYYQ", i, 60 * 60 + 13, 60.3172, 24.963301))
 
 
 game_controller = Game()
@@ -63,17 +64,26 @@ game_controller = Game()
         location: location of the player (airport)
         money: how broke the player is
         time: how much time the player has used
+        origin_latitude: latitude where the player started
+        origin_longitude: longitude where the player started
+        halfway_latitude: latitude where the player traveled halfway around the world
+        halfway_longitude: longitude where the player traveled halfway around the world
 """
 
 
 class Player:
-    def __init__(self, id, screen_name, co2_consumed, location, money, time):
+    def __init__(self, id, screen_name, co2_consumed, location, money, time, origin_latitude, origin_longitude,
+                 halfway_latitude=None, halfway_longitude=None):
         self.id = id
         self.screen_name = screen_name
         self.co2_consumed = int(co2_consumed)
         self.location = location
         self.money = money
         self.time = time
+        self.origin_latitude = origin_latitude
+        self.origin_longitude = origin_longitude
+        self.halfway_latitude = halfway_latitude,
+        self.halfway_longitude = halfway_longitude
 
     # This function returns the player's stats as a dictionary.
     # Useful when more than one stat is needed at the same time.
@@ -84,7 +94,11 @@ class Player:
             "co2_consumed": self.co2_consumed,
             "location": self.location,
             "money": self.money,
-            "time": self.time
+            "time": self.time,
+            "origin_latitude": self.origin_latitude,
+            "origin_longitude": self.origin_longitude,
+            "halfway_latitude": self.halfway_latitude,
+            "halfway_longitude": self.halfway_longitude,
         }
 
     def get_name(self):
@@ -92,6 +106,9 @@ class Player:
 
     def get_location(self):
         return self.location
+
+    def get_origin(self):
+        return [self.origin_latitude, self.origin_longitude]
 
     # This function returns either the raw time (minutes) or a time string.
     # Supported clock styles are 24-hour and 12-hour.
@@ -143,4 +160,7 @@ game_controller.test_data()
 game_controller.generate_flights()
 test_player = game_controller.get_player(0)
 print(test_player.get_time(False, "12"))
+test_port = get_airport(test_player.get_location())
+answer = track_progress(**test_player.get_player())
+print(answer)
 # print(game_controller.get_flights(0))

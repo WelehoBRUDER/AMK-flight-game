@@ -3,6 +3,7 @@ import geopy.distance as distance
 import mysql.connector
 import random
 from dotenv import load_dotenv
+from geographiclib.geodesic import Geodesic
 
 db = {}
 # If enabled, prints debug lines when database is altered.
@@ -75,6 +76,16 @@ def draw_airports_from_origin(lat, lon, port_type):
 def distance_between_two_points(point_a, point_b):
     flight_distance = distance.distance(point_a, point_b).km
     return flight_distance
+
+
+# Returns azimuth2 bearing between two geographical points.
+# It takes the latitude and longitude of both places as tuples or lists
+# Example: bearing_between_two_points((25, 67), (34, 100))
+def bearing_between_two_points(point_a, point_b):
+    lat1, lon1 = point_a
+    lat2, lon2 = point_b
+    bearing = Geodesic.WGS84.Inverse(lat1, lon1, lat2, lon2)
+    return bearing["azi2"]
 
 
 # This function returns data about the requested airport from the db
@@ -206,6 +217,41 @@ def modify_game_table():
 def init_tables():
     delete_unnecessary_airports()
     modify_game_table()
+
+
+# TODO: This function is extremely unfinished!
+""" 
+    It currently only calculates the player's travel as an absolute.
+    If you overshoot the halfway point, this function will fail to recognize the player passing it.
+    It needs to go through the distance step by step using the bearing calculated between the points.
+    I'm currently not completely sure how azimuth is converted to bearing.
+    TLDR: Doesn't work, pls fix
+"""
+
+
+def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_longitude, location, **kwargs):
+    earth_circumference = 40075
+    # This isn't exactly half because we want to give some leeway
+    halfway_distance = earth_circumference / 2.05
+    current_location = get_airport(location)
+    current_lat, current_lon = current_location["latitude_deg"], current_location["longitude_deg"]
+    angle = bearing_between_two_points((origin_latitude, origin_longitude), (current_lat, current_lon))
+    print("Bearing", angle)
+    if not halfway_latitude or not halfway_longitude:
+
+        distance_between = distance_between_two_points((origin_latitude, origin_longitude), (current_lat, current_lon))
+        print(distance_between)
+        if distance_between >= halfway_distance:
+            return "Halfway"
+        return "None"
+    else:
+
+        distance_between = distance_between_two_points((halfway_latitude, halfway_longitude),
+                                                       (current_lat, current_lon))
+        print(distance_between)
+        if distance_between >= halfway_distance:
+            return "Finished"
+        return "None"
 
 
 connect_to_db()
