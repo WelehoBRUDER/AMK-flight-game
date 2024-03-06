@@ -143,13 +143,17 @@ def delete_unnecessary_airports():
         print("Deleted unnecessary airports (heli, balloon, closed and seaplane).")
 
 
-# This function adds column "money" to the game table.
+# This function adds columns "money" and "time" to the game table.
 # Ideally this should run only once.
 def modify_game_table():
     db["cursor"].execute("ALTER TABLE game ADD money INT;")
     db["database"].commit()
     if debug_mode:
         print("Added column 'money' to game table.")
+    db["cursor"].execute("ALTER TABLE game ADD time INT;")
+    db["database"].commit()
+    if debug_mode:
+        print("Added column 'time' to game table.")
 
 
 # This function adds a new player to the database.
@@ -163,6 +167,13 @@ def add_player_to_db(player):
         print(f"Added {player["screen_name"]} to game table.")
 
 
+# This function runs all other functions that change contents / columns of the database.
+# It needs to be run once before playing the game.
+def init_tables():
+    delete_unnecessary_airports()
+    modify_game_table()
+
+
 connect_to_db()
 # print(distance_between_airports("EFHK", "EFIV"))
 # print(get_some_airports())
@@ -172,6 +183,4 @@ connect_to_db()
 #     print(flight["distance"], flight["airport"]["iso_country"], flight["airport"]["type"])
 # print(get_country("FI"))
 
-# modify_game_table()
-
-#delete_unnecessary_airports()
+# init_tables()

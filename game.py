@@ -13,7 +13,7 @@ class Game:
         player_name = input(f"Player {i} name: ")
         player_location = "EFHK"
         player_money = diff["money"]
-        self.players.append(Player(i, player_name, 0, player_location, player_money))
+        self.players.append(Player(i, player_name, 0, player_location, player_money, 0))
 
     def get_player(self, index):
         return self.players[index]
@@ -46,7 +46,7 @@ class Game:
     def test_data(self):
         # Creates test data that has 4 empty players for debugging.
         for i in range(4):
-            self.players.append(Player(i, f"player{i}", 0, "EFHK", i))
+            self.players.append(Player(i, f"player{i}", 0, "EFHK", i, 60 * 60 + 13))
 
 
 game_controller = Game()
@@ -58,22 +58,41 @@ game_controller = Game()
         co2_consumed: how much co2 the player has produced
         location: location of the player (airport)
         money: how broke the player is
+        time: how much time the player has used
 """
 
 
 class Player:
-    def __init__(self, id, screen_name, co2_consumed, location, money):
+    def __init__(self, id, screen_name, co2_consumed, location, money, time):
         self.id = id
         self.screen_name = screen_name
         self.co2_consumed = int(co2_consumed)
         self.location = location
         self.money = money
+        self.time = time
 
     def get_name(self):
         return self.screen_name
 
     def get_location(self):
         return self.location
+
+    # This function returns either the raw time (minutes) or a time string.
+    # Supported clock styles are 24-hour and 12-hour.
+    def get_time(self, raw=False, style="24"):
+        if raw:
+            return self.time
+
+        print(self.time)
+        days = int(self.time / (60 * 24))
+        hours = int((self.time - days * 24 * 60) / 60)
+        minutes = self.time - days * 24 * 60 - hours * 60
+
+        print(days, hours, minutes)
+        if style == "24":
+            return f"day {days}, {hours}.{minutes}"
+        elif style == "12":
+            return f"day {days}, {hours - 11 if hours > 11 else hours}:{minutes} {"PM" if hours > 11 else "AM"}"
 
 
 def init_game():
@@ -97,10 +116,11 @@ def calc_cost(distance_amount):
     cost_per_km = random.uniform(0.15, 0.20)
     flight_cost = cost_per_km * distance_amount
     total_cost += flight_cost
-    print(total_cost)
     return total_cost
 
 
 game_controller.test_data()
 game_controller.generate_flights()
+test_player = game_controller.get_player(0)
+print(test_player.get_time(False, "12"))
 # print(game_controller.get_flights(0))
