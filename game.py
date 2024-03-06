@@ -1,4 +1,4 @@
-from db import get_multiple_airports, draw_airports_from_origin
+from db import get_multiple_airports, draw_airports_from_origin, get_all_players_from_db, update_player_in_db
 import random
 
 
@@ -43,6 +43,10 @@ class Game:
             # Adds the flights and the origin.
             self.flights.append({"flights": flights_from_airport, "from": airport})
 
+    def update_all_players(self):
+        for player in self.players:
+            player.update()
+
     def test_data(self):
         # Creates test data that has 4 empty players for debugging.
         for i in range(4):
@@ -71,6 +75,18 @@ class Player:
         self.money = money
         self.time = time
 
+    # This function returns the player's stats as a dictionary.
+    # Useful when more than one stat is needed at the same time.
+    def get_player(self):
+        return {
+            "id": self.id,
+            "screen_name": self.screen_name,
+            "co2_consumed": self.co2_consumed,
+            "location": self.location,
+            "money": self.money,
+            "time": self.time
+        }
+
     def get_name(self):
         return self.screen_name
 
@@ -93,6 +109,10 @@ class Player:
             return f"day {days}, {hours}.{minutes}"
         elif style == "12":
             return f"day {days}, {hours - 11 if hours > 11 else hours}:{minutes} {"PM" if hours > 11 else "AM"}"
+
+    # Updates the player inside the db.
+    def update(self):
+        update_player_in_db(self.get_player())
 
 
 def init_game():
