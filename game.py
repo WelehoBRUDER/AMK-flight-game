@@ -35,9 +35,9 @@ class Game:
         # Gets airport data using the codes defined above
         airports = get_multiple_airports(airport_codes)
         for airport in airports:
-            lat, lon = airport["latitude_deg"], airport["longitude_deg"]
+            lat, lon, port_type = airport["latitude_deg"], airport["longitude_deg"], airport["type"]
             # Draw flights based on the current location
-            flights_from_airport = draw_airports_from_origin(lat, lon)
+            flights_from_airport = draw_airports_from_origin(lat, lon, port_type)
             for flight in flights_from_airport:
                 flight["cost"] = calc_cost(flight["distance"])
             # Adds the flights and the origin.

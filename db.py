@@ -33,14 +33,14 @@ def connect_to_db():
 # The return value is a list of dictionaries with the keys "flight_direction", "distance" and "airport"
 # Distance is returned in kilometers.
 # [{"flight_direction: "North-West", "distance": 129, "airport": {...}}, ...]
-def draw_airports_from_origin(lat, lon):
+def draw_airports_from_origin(lat, lon, port_type):
     # North, North-East, East, South-East, South, South-West, West, North-West
     flight_bearings = (0, 45, 90, 135, 180, 225, 270, 315)
     bearings_text = ("North", "North-East", "East", "South-East", "South", "South-West", "West", "North-West")
     flights = []
     # Minimum and maximum distance from current airport in miles
-    min_dist = 250
-    max_dist = 850
+    min_max_dists = {"small_airport": (200, 500), "medium_airport": (300, 800), "large_airport": (400, 1000)}
+    min_dist, max_dist = min_max_dists[port_type]
     for i in range(len(flight_bearings)):
         bearing = flight_bearings[i]
         # Randomly pick distance to travel to
