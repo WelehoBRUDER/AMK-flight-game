@@ -12,7 +12,7 @@ from game import game_controller
 # Time is a tuple with ints: (hours, minutes)
 def times_of_the_flights(flights):  # Draws random times for flights and adds them to the list.
     # Assigns an index to randomly generated times. Index starts from 1 instead of 0.
-    for i, time in enumerate(range(1, 17), start=1):
+    for i, time in enumerate(range(16)):
         random_hours = random.randint(00, 23)
         random_minutes = random.randint(00, 59)
         flights[i - 1]["time"] = [random_hours, random_minutes]
