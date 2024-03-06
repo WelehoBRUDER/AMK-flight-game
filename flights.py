@@ -15,7 +15,7 @@ def times_of_the_flights(flights):  # Draws random times for flights and adds th
     for i, time in enumerate(range(16)):
         random_hours = random.randint(00, 23)
         random_minutes = random.randint(00, 59)
-        flights[i - 1]["time"] = [random_hours, random_minutes]
+        flights[i]["time"] = [random_hours, random_minutes]
 
     # Sorts the list by hours and minutes instead of their index.
     flights.sort(key=lambda flight: (flight["time"][0], flight["time"][1]))
