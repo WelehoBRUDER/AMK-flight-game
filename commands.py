@@ -5,10 +5,18 @@ from db import draw_airports_from_origin
 # Function that checks whether the given command is found in the list of commands, and then returns the
 # corresponding text or function
 def command(text):
-    if text in command_functions:
+    textsplit = text.split()
+    if len(textsplit) == 1 and text in command_functions:
         return command_functions[text]
+    elif len(textsplit) == 2 and textsplit[0] == "help":
+        return helphelp(textsplit[1])
     else:
         return invalid_command
+
+
+def helphelp(h):
+    if h in help_list:
+        print(help_list[h])
 
 
 # Prints the description for every command
@@ -24,9 +32,10 @@ def print_status():
 
 # Testing a function that handles changing the players' location
 # The updated location should show up when using the "status" command
+# Doesn't work right now
 def fly():
     # Function imported from db.py. Returns 16 airports from selected latitude and longitude
-    list_of_airports = draw_airports_from_origin(34, 130)
+    list_of_airports = draw_airports_from_origin(34, 130, "")
     airport_num = 1
     airport_dict = {}
     # Lists every airport available, and assigns a number to each one
@@ -66,7 +75,12 @@ command_functions = {"help": print_helplist, "status": print_status, "fly": fly}
 # This is here for testing purposes, it'll be removed once this file gets imported to main.py
 while True:
     command_input = input("\nEnter a command: ").lower()
-    if command_input == "exit":
+    inputsplit = command_input.split()
+    if len(inputsplit) == 1:
+        command(command_input)()
+    elif len(inputsplit) == 2:
+        command(command_input)
+    elif command_input == "exit":
         break
     else:
-        command(command_input)()
+        invalid_command()
