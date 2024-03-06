@@ -22,44 +22,26 @@ def times_of_the_flights(flights):  # Draws random times for flights and adds th
     return flights
 
 
-def airport_names(destinations):  # Collects the possible flights from database and lists them.
-    destination_names = []
-    # Assigns an index to destinations collected from database. Index starts from 1 instead of 0.
-    for a, destination in enumerate(destinations, start=1):
-        airport = destination["airport"]
-        municipalities = airport["municipality"]
-        destination_names.append((a, municipalities))
-    return destination_names
+def airport_type(airport_types):
+    port_names = []
 
-
-def flight_direction(flight_directions):
-    direction_names = []
-    for di, direction in enumerate(flight_directions, start=1):
-        destination_direction = direction["flight_direction"]
-        direction_names.append((di, destination_direction))
-    return direction_names
-
-
-def flight_distance(flight_distances):
-    distance_amount = []
-    for r, distance in enumerate(flight_distances, start=1):
-        destination_distance = distance["distance"]
-        distance_amount.append((r, destination_distance))
-    return distance_amount
-
-def calc_cost(distance_amount):
-    total_cost = 0
-    for p, distance in distance_amount:
-        cost_per_km = random.uniform(0.15, 0.20)
-        flight_cost = cost_per_km * distance
-        total_cost += flight_cost
-        print(total_cost)
-    return total_cost
+    for airport in airport_types:  # Simplifies the names for airport types
+        a_port_type = airport["type"]
+        if a_port_type == "small_airport":
+            port_names.append("Small")
+        elif a_port_type == "medium_airport":
+            port_names.append("Medium")
+        elif a_port_type == "large_airport":
+            port_names.append("Large")
+        else:
+            port_names.append("Unknown")
+    return port_names
 
 
 def flight_timetable():  # Prints a flight timetable with options for the player.
     print(f"{Fore.YELLOW}DEPARTURES")
-    print(f"Options    Time      Destination                Direction           Distance         Cost")
+    print(f"Options    Time      Destination              Airport(type)    "
+          f"Direction           Distance         Cost")
 
     # Creates a separate counter for Player Options.
     options = 1
@@ -78,9 +60,12 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         direction = timed_flights[i]["flight_direction"]
         distance = timed_flights[i]["distance"]
         cost = timed_flights[i]["cost"]
+        simplified = airport_type([timed_flights[i]["airport"]])
+        simplified_names = simplified[0]
 
-        print(f"{options:02d}         {hours:02d}:{minutes:02d}     {municipality:<20s}       {direction:<15s}"
-              f"     {distance:04d}km           {cost:.02f}€")
+        print(
+            f"{options:02d}         {hours:02d}:{minutes:02d}     {municipality:<20s}     {simplified_names:<17s}"
+            f"{direction:<15s}     {distance:04d}km           {cost:.02f}€")
 
         options += 1
 
