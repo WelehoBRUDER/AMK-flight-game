@@ -60,6 +60,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
     random_flights = game_controller.get_flights(0)
 
     # times_of_the_flights function uses the random flights to generate timetables for the flights.
+    global timed_flights
     timed_flights = times_of_the_flights(random_flights)
     # print(type(timed_flights))
     # Searches information about the flights from lists compiled in above functions and prints them like a timetable
@@ -78,4 +79,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
             f"{direction:<15s}     {distance:04d}km           {cost:.02f}€")
 
 
-flight_timetable()
+timed_flights = ()
+
+if __name__ == "__main__":
+    flight_timetable()
