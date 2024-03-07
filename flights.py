@@ -70,5 +70,5 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         options += 1
 
 
-flight_timetable()
+# flight_timetable()
 # airport_names()
