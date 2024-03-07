@@ -4,25 +4,32 @@ from colorama import Fore
 from game import game_controller
 
 
+def sort_by_time(flight):  # Sort function for flight times
+    return flight["time"]
+
+
 # Returns a list of dictionaries with information about the random flights.
 # The parameter "flights" contains direction, distance and airport.
 # This function adds the field "time" to "flights".
 # The return value is something like [{'flight_direction': 'North',
 # 'distance': 521, 'airport': {...}, 'time': (21, 35)}, ...]
 # Time is a tuple with ints: (hours, minutes)
-def sort_by_time(flight):  # Sort function for flight times
-    return flight['time']
-
-
-def times_of_the_flights(flights):  # Draws random times for flights and adds them to the list.
-    # Assigns an index to randomly generated times. Index starts from 1 instead of 0.
+def times_of_the_flights(flights):
     for i in range(16):
         random_hours = random.randint(00, 23)
         random_minutes = random.randint(00, 59)
-        flights[i]["time"] = [random_hours, random_minutes]
+        flight_options = {"options": i + 1}  # Generates player options starting from 1
+        flight_options.update(flights[i])
+        flight_options["time"] = [random_hours, random_minutes]
+        flights[i] = flight_options
 
-    # Sorts the list by hours and minutes instead of their index.
+    # Sorts the list by hours and minutes in descending order.
     flights.sort(key=sort_by_time)
+
+    # Updates "options" based on the sorted times
+    for i in range(len(flights)):
+        flights[i]["options"] = i + 1
+
     return flights
 
 
@@ -47,9 +54,6 @@ def flight_timetable():  # Prints a flight timetable with options for the player
     print(f"Options    Time      Destination              Airport(type)    "
           f"Direction           Distance         Cost")
 
-    # Creates a separate counter for flight options.
-    options = 1
-
     # Randomly picks 16 flights from given coordinates (latitude and longitude)
     port = get_airport("EFHK")
     lat, lon = port["latitude_deg"], port["longitude_deg"]
@@ -57,9 +61,10 @@ def flight_timetable():  # Prints a flight timetable with options for the player
 
     # times_of_the_flights function uses the random flights to generate timetables for the flights.
     timed_flights = times_of_the_flights(random_flights)
-    # print(timed_flights)
+    # print(type(timed_flights))
     # Searches information about the flights from lists compiled in above functions and prints them like a timetable
     for i in range(0, len(timed_flights)):
+        options = timed_flights[i]["options"]
         hours, minutes = timed_flights[i]["time"]
         municipality = timed_flights[i]["airport"]["municipality"]
         direction = timed_flights[i]["flight_direction"]
@@ -71,8 +76,6 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         print(
             f"{options:02d}         {hours:02d}:{minutes:02d}     {municipality:<20s}     {types:<17s}"
             f"{direction:<15s}     {distance:04d}km           {cost:.02f}€")
-
-        options += 1
 
 
 flight_timetable()
