@@ -10,6 +10,9 @@ from game import game_controller
 # The return value is something like [{'flight_direction': 'North',
 # 'distance': 521, 'airport': {...}, 'time': (21, 35)}, ...]
 # Time is a tuple with ints: (hours, minutes)
+def sort_by_time(flight):   # Sort function for flight times
+    return flight['time']
+
 def times_of_the_flights(flights):  # Draws random times for flights and adds them to the list.
     # Assigns an index to randomly generated times. Index starts from 1 instead of 0.
     for i, time in enumerate(range(16)):
@@ -18,7 +21,7 @@ def times_of_the_flights(flights):  # Draws random times for flights and adds th
         flights[i]["time"] = [random_hours, random_minutes]
 
     # Sorts the list by hours and minutes instead of their index.
-    flights.sort(key=lambda flight: (flight["time"][0], flight["time"][1]))
+    flights.sort(key=sort_by_time)
     return flights
 
 
@@ -71,4 +74,3 @@ def flight_timetable():  # Prints a flight timetable with options for the player
 
 
 flight_timetable()
-# airport_names()
