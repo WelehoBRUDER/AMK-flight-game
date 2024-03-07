@@ -1,8 +1,8 @@
-from colorama import Fore, Style
+from colorama import Fore
 import time
 
 
-def intro():
+def game_story():
     story = ["Ronald hasn't seen his grandfather in 20 years and was pretty anxious about the visit.",
              "He remembers his grandfather as a sweet guy, always ready to share",
              "with him life advice and wisdom, that he learned the hard way in life.\n",
@@ -25,17 +25,37 @@ def intro():
              "Grandfather grins: Brave lad! here's the 20000 euros in cash and good luck!\n"]
     for line in story:
         print(Fore.MAGENTA + line)
-        time.sleep(3)
-    print(Fore.CYAN + "       █     ████     ███    █   █   █   █   ███        █████   █   █   █████ \n"
-                      "      █ █    █   █   █   █   █   █   ██  █   █  █         █     █   █   █     \n"
-                      "     █████   █████   █   █   █   █   █ █ █   █   █        █     █████   █████ \n"
-                      "     █   █   █  █    █   █   █   █   █  ██   █  █         █     █   █   █     \n"
-                      "     █   █   █   █    ███     ███    █   █   ███          █     █   █   █████ \n\n"
-                      "                  █   █   █    ███    ████    █       ███                     \n"
-                      "                  █   █   █   █   █   █   █   █       █  █                    \n"
-                      "                   █ █ █ █    █   █   █████   █       █   █                   \n"
-                      "                   █ █ █ █    █   █   █  █    █       █  █                    \n"
-                      "                    █   █      ███    █   █   █████   ███      \n" + Fore.RESET)
+        time.sleep(2.5)
+    game_title()
 
 
-intro()
+def game_title():
+    ascii_art = ["       █     ████     ███    █   █   █   █   ███        █████   █   █   █████ ",
+                 "      █ █    █   █   █   █   █   █   ██  █   █  █         █     █   █   █     ",
+                 "     █████   █████   █   █   █   █   █ █ █   █   █        █     █████   █████ ",
+                 "     █   █   █  █    █   █   █   █   █  ██   █  █         █     █   █   █     ",
+                 "     █   █   █   █    ███     ███    █   █   ███          █     █   █   █████ \n",
+                 "                  █   █   █    ███    ████    █       ███                     ",
+                 "                  █   █   █   █   █   █   █   █       █  █                    ",
+                 "                   █ █ █ █    █   █   █████   █       █   █                   ",
+                 "                   █ █ █ █    █   █   █  █    █       █  █                    ",
+                 "                    █   █      ███    █   █   █████   ███      "]
+    for line in ascii_art:
+        print(Fore.CYAN + line)
+        time.sleep(0.1)
+
+
+def game_intro():
+    while True:
+        skip_story = input("\nDo you want to read the story? (yes/no): ").lower()
+        if skip_story == "yes":
+            game_story()
+            break
+        elif skip_story == "no":
+            game_title()
+            break
+        else:
+            print("Please choose 'yes' or 'no'")
+
+
+game_intro()
