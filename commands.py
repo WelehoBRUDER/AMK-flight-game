@@ -1,5 +1,4 @@
 from colorama import Fore
-# from flights import flight_timetable
 import flights
 
 
@@ -32,12 +31,17 @@ def print_status():
 
 
 # Uses function imported from flights.py that prints the flights' timetable
-# TO DO: Using this command lets the player select a flight, changing the current location to a new one
+# Lets the player choose a flight (WIP: and change their current location to a new one)
 def fly():
     flights.flight_timetable()
-    print(Fore.RESET)
-    selection = int(input("\nSelect airport: "))
-    print(flights.timed_flights[selection])
+    try:
+        selection = int(input(Fore.RESET + "\nSelect where you want to fly (1-16): "))
+        if 0 < selection < 17:
+            print(flights.timed_flights[selection-1])
+        else:
+            print("Invalid selection!")
+    except ValueError:
+        print("Selection must be a number!")
 
 
 def invalid_command():
@@ -45,6 +49,7 @@ def invalid_command():
 
 
 # Keeps asking the player for a command until they exit
+# Calls the 'command_description' function if the input has 2 words (for command-specific 'help' descriptions)
 def run_commands():
     while True:
         command_input = input("\nEnter a command: ").lower()
