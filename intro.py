@@ -77,6 +77,9 @@ def player_amount():
             print("Amount must be a number!")
 
 
+# Asks the player(s) their name(s), repeating the input until every player has a name
+# If the player name already exists, it will keep asking for a name until a new one is inputted
+# TO DO: Also check if the player name already exists in the database
 def player_names(number_of_players):
     player_number = 1
     while True:
@@ -109,7 +112,9 @@ def difficulty_select():
             print("Invalid selection!")
 
 
+# Runs the intro and prints out the player names and chosen difficulty
 def game_intro():
+    commands.print_instructions()
     story_skip()
     player_amount()
     difficulty_select()
