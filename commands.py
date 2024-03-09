@@ -5,16 +5,25 @@ import flights
 # Function that checks whether the given command is found in the list of commands, and then returns the
 # corresponding function
 def command(text):
+    exit_check(text)
     if text in command_functions:
         return command_functions[text]
     else:
         return invalid_command
 
 
-# Prints the description for specified command
-def command_description(help_command):
-    if help_command in help_list:
-        print(help_list[help_command])
+# Checks if the player has typed "exit" and if so, exits the program
+def exit_check(text):
+    if text.lower() == "exit":
+        print(f"\n{Fore.RED}Quitting the game...")
+        exit()
+
+
+# Checks if the first word is "help" and if the second word is in the list of commands, and prints out the
+# description for that specific command
+def command_description(text):
+    if text[0] == "help" and text[1] in help_list:
+        print(help_list[text[1]])
     else:
         return invalid_command()
 
@@ -35,7 +44,9 @@ def print_status():
 def fly():
     flights.flight_timetable()
     try:
-        selection = int(input(Fore.RESET + "\nSelect where you want to fly (1-16): "))
+        selection = input(Fore.RESET + "\nSelect where you want to fly (1-16): ")
+        exit_check(selection)
+        selection = int(selection)
         if 0 < selection < 17:
             print(flights.timed_flights[selection-1])
         else:
@@ -54,10 +65,8 @@ def run_commands():
     while True:
         command_input = input("\nEnter a command: ").lower()
         inputsplit = command_input.split()
-        if command_input == "exit":
-            break
-        elif len(inputsplit) == 2:
-            command_description(inputsplit[1])
+        if len(inputsplit) == 2:
+            command_description(inputsplit)
         else:
             command(command_input)()
 
@@ -67,7 +76,7 @@ help_list = {"help": f"{Fore.GREEN}Help{Fore.RESET} - Shows this list. Typing a 
                      f"'help' will give you the description for that specific command.",
              "status": f"{Fore.GREEN}Status{Fore.RESET} - "
                        f"Shows your name, location, money, consumed CO2, days and time",
-             "fly": f"{Fore.GREEN}FLy{Fore.RESET} - Fly to specified airport",
+             "fly": f"{Fore.GREEN}Fly{Fore.RESET} - Fly to specified airport",
              "exit": f"{Fore.GREEN}Exit{Fore.RESET} - Quits the game"}
 
 # Player stats placeholder: 1 = Player name, 2 = Location, 3 = Money, 4 = CO2, 5 = Day, 6 = Hours, 7 = Minutes
