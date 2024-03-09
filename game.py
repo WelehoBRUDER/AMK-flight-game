@@ -135,6 +135,13 @@ class Player:
     def update(self):
         update_player_in_db(self.get_player())
 
+    def check_flight_progress(self):
+        answer = track_progress(**self.get_player())
+        print(answer)
+        if answer["halfway"]:
+            self.halfway_latitude = answer["point"][0]
+            self.halfway_longitude = answer["point"][1]
+
 
 def init_game():
     global game_controller
@@ -165,6 +172,5 @@ game_controller.generate_flights()
 test_player = game_controller.get_player(0)
 print(test_player.get_time(False, "12"))
 test_port = get_airport(test_player.get_location())
-answer = track_progress(**test_player.get_player())
-print(answer)
+test_player.check_flight_progress()
 # print(game_controller.get_flights(0))

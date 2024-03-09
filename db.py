@@ -227,50 +227,79 @@ def init_tables():
 
 def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_longitude, location, last_location,
                    **kwargs):
+    # This local function is used when the player overshoots their flight.
+    # If the player for example flies >500km over the check point, then this would happen:
+    # The flight between the player's last airport and current point is broken into ten steps.
+    # Each step is 10% of the distance and will be checked in order.
+    # Once the step that crosses the distance is found, it is set as the player's halfway point.
+    # From then on, the halfway point will be treated as the origin.
     def check_steps(start_lat, start_lon, finish=False):
+        # Break the flight up to ten steps.
         for i in range(1, 11):
+            # Gets the current step's point in the flight path.
+            # (i / 10) will yield a multiplier that starts at 0.1 (10%) and increments by 10% each step.
+            # 1.609344 = 1 mile to km.
+            # This part essentially goes through the current flight at 10% intervals.
             point_in_flight = distance.distance(
-                miles=(cur_last_dist / (10 - i)) / 1.609344).destination(
+                miles=(cur_last_dist * (i / 10)) / 1.609344).destination(
                 (last_lat, last_lon), bearing=angle)
             point_lat, point_lon = point_in_flight.latitude, point_in_flight.longitude
+            # Check the distance between current flight point and the origin / halfway point.
+            # If not, then continue the loop until we reach 100%
             if distance_between_two_points((start_lat, start_lon),
                                            (point_lat, point_lon)) >= halfway_distance:
+                # If the player hasn't yet reached the halfway point, then it will be set.
                 if not finish:
                     return {"halfway": True, "point": (point_lat, point_lon)}
+                # If the player has reached the halfway point before, they win!
                 else:
                     return {"finished": True, "point": (point_lat, point_lon)}
-            return {"halfway": False, "finished": False}
+
+        return {"halfway": False, "finished": False}
 
     earth_circumference = 40075
     # This isn't exactly half because we want to give some leeway
     halfway_distance = earth_circumference / 2.05
+    # Get current and last airport
     current_location = get_airport(location)
     last_location = get_airport(last_location)
+    # Get coordinates of current and last airport
     current_lat, current_lon = current_location["latitude_deg"], current_location["longitude_deg"]
     last_lat, last_lon = last_location["latitude_deg"], last_location["longitude_deg"]
+    # Get distance between current and last airport.
     cur_last_dist = distance_between_two_points((last_lat, last_lon), (current_lat, current_lon))
+    # Calculate the flight angle between current and last airport.
     angle = bearing_between_two_points((last_lat, last_lon), (current_lat, current_lon))
+
+    # If the player hasn't yet reached the halfway point, then use origin.
     if not halfway_latitude or not halfway_longitude:
 
+        # Calculate distance between origin and player's location
         distance_between = distance_between_two_points((origin_latitude, origin_longitude), (current_lat, current_lon))
 
+        # If the player has passed the halfway point, inform them
         if distance_between >= halfway_distance:
             return {"halfway": True, "point": (current_lat, current_lon)}
+        # If the player overshot, then find the passing point with a more thorough check.
         if distance_between + cur_last_dist >= halfway_distance:
             check_steps(origin_latitude, origin_longitude)
+        # You didn't get far enough yet!
         else:
             return {"halfway": False}
 
+    # Otherwise, use the halfway point as origin.
     else:
 
+        # Calculate distance between halfway and player's location
         distance_between = distance_between_two_points((halfway_latitude, halfway_longitude),
                                                        (current_lat, current_lon))
-
-        print(distance_between)
+        # If the player has returned to their origin, they win!
         if distance_between >= halfway_distance:
             return "Finished"
+        # If the player overshot their origin, check more thoroughly.
         if distance_between + cur_last_dist >= halfway_distance:
             check_steps(halfway_latitude, halfway_longitude)
+        # You didn't get far enough yet (twice)!
         else:
             return {"finished": False}
 
