@@ -5,7 +5,7 @@ from game import game_controller
 
 
 def sort_by_time(flight):  # Sort function for flight times
-    return flight["time"]
+    return flight["time"]["hours"], flight["time"]["minutes"]
 
 
 # Returns a list of dictionaries with information about the random flights.
@@ -13,17 +13,17 @@ def sort_by_time(flight):  # Sort function for flight times
 # This function adds the field "time" to "flights".
 # The return value is something like [{'flight_direction': 'North',
 # 'distance': 521, 'airport': {...}, 'time': (21, 35)}, ...]
-# Time is a tuple with ints: (hours, minutes)
+# Time is a dict with ints: (hours, minutes)
 def times_of_the_flights(flights):
     for i in range(16):
         random_hours = random.randint(00, 23)
         random_minutes = random.randint(00, 59)
         flight_options = {"options": i + 1}  # Generates player options starting from 1
         flight_options.update(flights[i])
-        flight_options["time"] = [random_hours, random_minutes]
+        flight_options["time"] = {"hours": random_hours, "minutes": random_minutes}
         flights[i] = flight_options
 
-    # Sorts the list by hours and minutes in descending order.
+    # Sorts the list by hours and minutes in ascending order
     flights.sort(key=sort_by_time)
 
     # Updates "options" based on the sorted times
@@ -59,14 +59,15 @@ def flight_timetable():  # Prints a flight timetable with options for the player
     lat, lon = port["latitude_deg"], port["longitude_deg"]
     random_flights = game_controller.get_flights(0)
 
-    # times_of_the_flights function uses the random flights to generate timetables for the flights.
     global timed_flights
+    # times_of_the_flights function uses the random flights to generate timetables for the flights.
     timed_flights = times_of_the_flights(random_flights)
     # print(type(timed_flights))
-    # Searches information about the flights from lists compiled in above functions and prints them like a timetable
+    # Loop searches information about the 16 random flights from a list of dictionaries compiled in above functions
+    # It then prints the selected flight information like a timetable
     for i in range(0, len(timed_flights)):
         options = timed_flights[i]["options"]
-        hours, minutes = timed_flights[i]["time"]
+        hours, minutes = timed_flights[i]["time"]["hours"], timed_flights[i]["time"]["minutes"]
         municipality = timed_flights[i]["airport"]["municipality"]
         direction = timed_flights[i]["flight_direction"]
         distance = timed_flights[i]["distance"]
