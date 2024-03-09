@@ -34,6 +34,20 @@ def print_helplist():
         print(line)
 
 
+# Prints the instructions for the game
+def print_instructions():
+    instructions = [f"{Fore.CYAN}Around The World{Fore.RESET} is a text-based game where you have to fly "
+                    f"around the world in 20 days (or 10, depending on the chosen difficulty),",
+                    f"while trying to keep your expenses and CO2 emissions as low as possible.",
+                    "You will start on a random airport, and you will have to catch flights around the world until "
+                    "you have circled around the globe.",
+                    "Typing 'help' (without apostrophes) will display a list of available commands "
+                    "and a short description for each one.", "Typing 'exit' at any point will quit the game.",
+                    "Good luck!"]
+    for line in instructions:
+        print(line)
+
+
 # Prints the players' status
 def print_status():
     print(status)
@@ -74,17 +88,18 @@ def run_commands():
 # A dictionary of all commands and a short explanation for each one
 help_list = {"help": f"{Fore.GREEN}Help{Fore.RESET} - Shows this list. Typing a command after "
                      f"'help' will give you the description for that specific command.",
+             "instructions": f"{Fore.GREEN}Instructions{Fore.RESET} - Shows the instructions for playing the game",
              "status": f"{Fore.GREEN}Status{Fore.RESET} - "
-                       f"Shows your name, location, money, consumed CO2, days and time",
-             "fly": f"{Fore.GREEN}Fly{Fore.RESET} - Fly to specified airport",
-             "exit": f"{Fore.GREEN}Exit{Fore.RESET} - Quits the game"}
+                       f"Shows your name, location, money, consumed CO2, days and time.",
+             "fly": f"{Fore.GREEN}Fly{Fore.RESET} - Fly to specified airport.",
+             "exit": f"{Fore.GREEN}Exit{Fore.RESET} - Quits the game."}
 
 # Player stats placeholder: 1 = Player name, 2 = Location, 3 = Money, 4 = CO2, 5 = Day, 6 = Hours, 7 = Minutes
 status = {1: "Player", 2: "Location", 3: 0,
           4: 0, 5: 0, 6: 0, 7: 0}
 
 # Contains all the commands that use functions
-command_functions = {"help": print_helplist, "status": print_status, "fly": fly}
+command_functions = {"help": print_helplist, "instructions": print_instructions, "status": print_status, "fly": fly}
 
 if __name__ == "__main__":
     run_commands()
