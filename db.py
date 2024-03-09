@@ -85,7 +85,7 @@ def bearing_between_two_points(point_a, point_b):
     lat1, lon1 = point_a
     lat2, lon2 = point_b
     bearing = Geodesic.WGS84.Inverse(lat1, lon1, lat2, lon2)
-    return bearing["azi2"]
+    return bearing["azi1"]
 
 
 # This function returns data about the requested airport from the db
@@ -219,39 +219,60 @@ def init_tables():
     modify_game_table()
 
 
-# TODO: This function is extremely unfinished!
-""" 
-    It currently only calculates the player's travel as an absolute.
-    If you overshoot the halfway point, this function will fail to recognize the player passing it.
-    It needs to go through the distance step by step using the bearing calculated between the points.
-    I'm currently not completely sure how azimuth is converted to bearing.
-    TLDR: Doesn't work, pls fix
+"""
+    This function checks if the player has traveled around the entire world.
+    It will check when the player flies over the halfway point, and when they finish their journey.
 """
 
 
-def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_longitude, location, **kwargs):
+def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_longitude, location, last_location,
+                   **kwargs):
+    def check_steps(start_lat, start_lon, finish=False):
+        for i in range(1, 11):
+            point_in_flight = distance.distance(
+                miles=(cur_last_dist / (10 - i)) / 1.609344).destination(
+                (last_lat, last_lon), bearing=angle)
+            point_lat, point_lon = point_in_flight.latitude, point_in_flight.longitude
+            if distance_between_two_points((start_lat, start_lon),
+                                           (point_lat, point_lon)) >= halfway_distance:
+                if not finish:
+                    return {"halfway": True, "point": (point_lat, point_lon)}
+                else:
+                    return {"finished": True, "point": (point_lat, point_lon)}
+            return {"halfway": False, "finished": False}
+
     earth_circumference = 40075
     # This isn't exactly half because we want to give some leeway
     halfway_distance = earth_circumference / 2.05
     current_location = get_airport(location)
+    last_location = get_airport(last_location)
     current_lat, current_lon = current_location["latitude_deg"], current_location["longitude_deg"]
-    angle = bearing_between_two_points((origin_latitude, origin_longitude), (current_lat, current_lon))
-    print("Bearing", angle)
+    last_lat, last_lon = last_location["latitude_deg"], last_location["longitude_deg"]
+    cur_last_dist = distance_between_two_points((last_lat, last_lon), (current_lat, current_lon))
+    angle = bearing_between_two_points((last_lat, last_lon), (current_lat, current_lon))
     if not halfway_latitude or not halfway_longitude:
 
         distance_between = distance_between_two_points((origin_latitude, origin_longitude), (current_lat, current_lon))
-        print(distance_between)
+
         if distance_between >= halfway_distance:
-            return "Halfway"
-        return "None"
+            return {"halfway": True, "point": (current_lat, current_lon)}
+        if distance_between + cur_last_dist >= halfway_distance:
+            check_steps(origin_latitude, origin_longitude)
+        else:
+            return {"halfway": False}
+
     else:
 
         distance_between = distance_between_two_points((halfway_latitude, halfway_longitude),
                                                        (current_lat, current_lon))
+
         print(distance_between)
         if distance_between >= halfway_distance:
             return "Finished"
-        return "None"
+        if distance_between + cur_last_dist >= halfway_distance:
+            check_steps(halfway_latitude, halfway_longitude)
+        else:
+            return {"finished": False}
 
 
 connect_to_db()

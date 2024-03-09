@@ -64,6 +64,7 @@ game_controller = Game()
         location: location of the player (airport)
         money: how broke the player is
         time: how much time the player has used
+        last_location: last airport the player was in
         origin_latitude: latitude where the player started
         origin_longitude: longitude where the player started
         halfway_latitude: latitude where the player traveled halfway around the world
@@ -73,13 +74,14 @@ game_controller = Game()
 
 class Player:
     def __init__(self, id, screen_name, co2_consumed, location, money, time, origin_latitude, origin_longitude,
-                 halfway_latitude=None, halfway_longitude=None):
+                 halfway_latitude=None, halfway_longitude=None, last_location=None):
         self.id = id
         self.screen_name = screen_name
         self.co2_consumed = int(co2_consumed)
         self.location = location
         self.money = money
         self.time = time
+        self.last_location = location if last_location is None else last_location
         self.origin_latitude = origin_latitude
         self.origin_longitude = origin_longitude
         self.halfway_latitude = halfway_latitude,
@@ -95,6 +97,7 @@ class Player:
             "location": self.location,
             "money": self.money,
             "time": self.time,
+            "last_location": self.last_location,
             "origin_latitude": self.origin_latitude,
             "origin_longitude": self.origin_longitude,
             "halfway_latitude": self.halfway_latitude,
@@ -107,6 +110,9 @@ class Player:
     def get_location(self):
         return self.location
 
+    def get_last_location(self):
+        return self.last_location
+
     def get_origin(self):
         return [self.origin_latitude, self.origin_longitude]
 
@@ -116,12 +122,10 @@ class Player:
         if raw:
             return self.time
 
-        print(self.time)
         days = int(self.time / (60 * 24))
         hours = int((self.time - days * 24 * 60) / 60)
         minutes = self.time - days * 24 * 60 - hours * 60
 
-        print(days, hours, minutes)
         if style == "24":
             return f"day {days}, {hours}.{minutes}"
         elif style == "12":
