@@ -34,6 +34,7 @@ def menu_choice():
 
             else:
                 print("Option doesn't exist")
+                print()
     else:
         print("Empty input is not a valid option, please try!")
     return menu_options
@@ -53,5 +54,4 @@ while True:
     elif options == 4:
         print("See you next time!")
         break
-    else:
-        print("Invalid option, please try again")
+
