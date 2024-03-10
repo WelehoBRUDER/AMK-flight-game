@@ -1,5 +1,6 @@
-geopy
-mysql-connector-python
-python-dotenv
-colorama
-geographiclib
+geopy~=2.4.1
+mysql-connector-python~=8.3.0
+python-dotenv~=1.0.1
+colorama~=0.4.6
+geographiclib~=2.0
+prettytable~=3.10.0
