@@ -1,6 +1,8 @@
 import prettytable
 import commands
 from colorama import Fore
+import game
+import intro
 
 
 def leaderboard_table(table_headers):
@@ -14,7 +16,7 @@ def display_menu():
 
     print(f"1. Start your trip!")
     print(f"2. Leaderboards")
-    print(f"{Fore.GREEN}3. Tutorial{Fore.RESET}")
+    print(f"{Fore.GREEN}3. Instructions / Help{Fore.RESET}")
     print(f"{Fore.RED}4. Exit{Fore.RESET}")
 
 
@@ -41,19 +43,24 @@ def menu_choice():
     return menu_options
 
 
-while True:
+game_over = False
+
+while not game_over:
     display_menu()
     options = menu_choice()
 
     if options == 1:
+        intro = intro.game_intro()
         fly = commands.fly()
+
     elif options == 2:
         show_leaderboards = leaderboard_table(["Player", "Time", "Score"])
         print(show_leaderboards)
         next_screen = str(input(f"\nInput anything to continue: "))
-    elif options == 3:
-        """tutorial = commands.run_tutorial()"""
-    elif options == 4:
-        print("See you next time!")
-        break
 
+    elif options == 3:
+        menu_help = commands.run_commands()
+
+    elif options == 4:
+        print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
+        game_over = True
