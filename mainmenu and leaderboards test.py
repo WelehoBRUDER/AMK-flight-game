@@ -11,8 +11,7 @@ def leaderboard_table(table_headers):
 
 
 def display_menu():
-    print(f"{Fore.CYAN}Welcome to your trip AROUND THE WORLD!{Fore.RESET}")
-    print()
+    print(f"\n{Fore.CYAN}Welcome to your trip AROUND THE WORLD!{Fore.RESET}\n")
 
     print(f"1. Start your trip!")
     print(f"2. Leaderboards")
@@ -56,7 +55,7 @@ while not game_over:
     elif options == 2:
         show_leaderboards = leaderboard_table(["Player", "Time", "Score"])
         print(show_leaderboards)
-        next_screen = str(input(f"\nInput anything to continue: "))
+        next_screen = str(input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}"))
 
     elif options == 3:
         menu_help = commands.run_commands()
