@@ -1,5 +1,6 @@
 import prettytable
 import commands
+from colorama import Fore
 
 
 def leaderboard_table(table_headers):
@@ -8,13 +9,13 @@ def leaderboard_table(table_headers):
 
 
 def display_menu():
-    print("Welcome to your trip AROUND THE WORLD!")
+    print(f"{Fore.CYAN}Welcome to your trip AROUND THE WORLD!{Fore.RESET}")
     print()
 
-    print("1. Start your trip!")
-    print("2. Leaderboards")
-    print("3. Tutorial")
-    print("4. Exit")
+    print(f"1. Start your trip!")
+    print(f"2. Leaderboards")
+    print(f"{Fore.GREEN}3. Tutorial{Fore.RESET}")
+    print(f"{Fore.RED}4. Exit{Fore.RESET}")
 
 
 def menu_choice():
@@ -49,6 +50,7 @@ while True:
     elif options == 2:
         show_leaderboards = leaderboard_table(["Player", "Time", "Score"])
         print(show_leaderboards)
+        next_screen = str(input(f"\nInput anything to continue: "))
     elif options == 3:
         """tutorial = commands.run_tutorial()"""
     elif options == 4:
