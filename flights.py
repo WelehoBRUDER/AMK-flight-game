@@ -16,7 +16,7 @@ def sort_by_time(flight):  # Sort function for flight times
 # The return value is something like [{'flight_direction': 'North',
 # 'distance': 521, 'airport': {...}, 'time': (21, 35)}, ...]
 # Time is a dict with ints: (hours, minutes)
-def times_of_the_flights(flights):
+def added_flight_info(flights):
     for i in range(16):
         random_hours = random.randint(00, 23)
         random_minutes = random.randint(00, 59)
@@ -66,9 +66,10 @@ def airport_type(airport_types):
 
 
 def flight_timetable():  # Prints a flight timetable with options for the player.
-    print(f"{Fore.YELLOW}DEPARTURES")
+    print(f"{Fore.YELLOW}DEPARTURES\n{Fore.RESET}")
+    # Makes a table with the correct columns for the flight data, using Rich Library.
     console = Console()
-    table = Table(show_header=True, header_style="yellow")
+    table = Table(show_header=True, header_style="yellow", show_lines=False)
     table.add_column("Options", style="yellow")
     table.add_column("Time", style="yellow")
     table.add_column("Destination", width=30, style="yellow")
@@ -83,7 +84,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
     random_flights = game_controller.get_flights(0)
     global timed_flights
     # times_of_the_flights function uses the random flights to generate timetables for the flights.
-    timed_flights = times_of_the_flights(random_flights)
+    timed_flights = added_flight_info(random_flights)
     # print(type(timed_flights))
     # Loop searches information about the 16 random flights from a list of dictionaries compiled in above functions
     # It then prints the selected flight information like a timetable
@@ -98,9 +99,10 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         simplified_types = airport_type([timed_flights[i]["airport"]])
         types = simplified_types[0]
 
+        # Adds flight data from the list of dictionaries to the earlier generated Rich Library table.
         table.add_row(f"{options:02d}", f"{hours:02d}:{minutes:02d}", f"{municipality}, {country}"
                       , f"{types}", f"{direction}", f"{distance:04d}km", f"{cost:.02f}€")
-
+    # Prints the timetable for flights
     console.print(table)
 
 
