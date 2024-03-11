@@ -62,7 +62,11 @@ def fly():
         exit_check(selection)
         selection = int(selection)
         if 0 < selection < 17:
-            print(flights.timed_flights[selection-1])
+            chosen_flight = (flights.timed_flights[selection - 1])
+            port = chosen_flight["airport"]
+            print(port["name"])
+            print(port["latitude_deg"], port["longitude_deg"])
+            status[2] = port["name"]
         else:
             print("Invalid selection!")
     except ValueError:
@@ -94,11 +98,11 @@ help_list = {"help": f"{Fore.GREEN}Help{Fore.RESET} - Shows this list. Typing a 
              "fly": f"{Fore.GREEN}Fly{Fore.RESET} - Fly to specified airport.",
              "exit": f"{Fore.GREEN}Exit{Fore.RESET} - Quits the game."}
 
-# Player stats placeholder: 1 = Player name, 2 = Location, 3 = Money, 4 = CO2, 5 = Day, 6 = Hours, 7 = Minutes
+# Player stats placeholder
 status = {1: "Player", 2: "Location", 3: 0,
           4: 0, 5: 0, 6: 0, 7: 0}
 
-# Contains all the commands that use functions
+# Contains all the commands that use functions (except "exit")
 command_functions = {"help": print_helplist, "instructions": print_instructions, "status": print_status, "fly": fly}
 
 if __name__ == "__main__":
