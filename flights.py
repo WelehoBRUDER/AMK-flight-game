@@ -91,7 +91,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         types = simplified_types[0]
 
         print(
-            f"{options:02d}         {hours:02d}:{minutes:02d}     {municipality:<20s}, {country:}     {types:<17s}"
+            f"{options:02d}         {hours:02d}:{minutes:02d}     {municipality:<20s}, {country:<1s}     {types:<17s}"
             f"{direction:<15s}     {distance:04d}km           {cost:.02f}€")
 
 
