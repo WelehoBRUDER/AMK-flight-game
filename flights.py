@@ -2,6 +2,8 @@ from db import get_country, get_airport
 import random
 from colorama import Fore
 from game import game_controller
+from rich.console import Console
+from rich.table import Table
 
 
 def sort_by_time(flight):  # Sort function for flight times
@@ -65,14 +67,20 @@ def airport_type(airport_types):
 
 def flight_timetable():  # Prints a flight timetable with options for the player.
     print(f"{Fore.YELLOW}DEPARTURES")
-    print(f"Options    Time      Destination              Airport(type)    "
-          f"Direction           Distance         Cost")
+    console = Console()
+    table = Table(show_header=True, header_style="yellow")
+    table.add_column("Options", style="yellow")
+    table.add_column("Time", style="yellow")
+    table.add_column("Destination", width=30, style="yellow")
+    table.add_column("Airport(type)", style="yellow")
+    table.add_column("Direction", style="yellow")
+    table.add_column("Distance", style="yellow")
+    table.add_column("Cost", style="yellow")
 
     # Randomly picks 16 flights from given coordinates (latitude and longitude)
     port = get_airport("EFHK")
     lat, lon = port["latitude_deg"], port["longitude_deg"]
     random_flights = game_controller.get_flights(0)
-
     global timed_flights
     # times_of_the_flights function uses the random flights to generate timetables for the flights.
     timed_flights = times_of_the_flights(random_flights)
@@ -90,12 +98,12 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         simplified_types = airport_type([timed_flights[i]["airport"]])
         types = simplified_types[0]
 
-        print(
-            f"{options:02d}         {hours:02d}:{minutes:02d}     {municipality:<20s}, {country:<1s}     {types:<17s}"
-            f"{direction:<15s}     {distance:04d}km           {cost:.02f}€")
+        table.add_row(f"{options:02d}", f"{hours:02d}:{minutes:02d}", f"{municipality}, {country}"
+                      , f"{types}", f"{direction}", f"{distance:04d}km", f"{cost:.02f}€")
+
+    console.print(table)
 
 
 timed_flights = ()
-
 if __name__ == "__main__":
     flight_timetable()
