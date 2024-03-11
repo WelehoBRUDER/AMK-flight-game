@@ -11,9 +11,9 @@ def leaderboard_table(table_headers):
 
 
 def display_menu():
-    print(f"\n{Fore.CYAN}Welcome to your trip AROUND THE WORLD!{Fore.RESET}\n")
+    print(f"\n{Fore.CYAN}Welcome to your journey AROUND THE WORLD!{Fore.RESET}\n")
 
-    print(f"1. Start your trip!")
+    print(f"1. Start your journey!")
     print(f"2. Leaderboards")
     print(f"{Fore.GREEN}3. Instructions / Help{Fore.RESET}")
     print(f"{Fore.RED}4. Exit{Fore.RESET}")
@@ -38,8 +38,11 @@ def menu_choice():
                 print("Option doesn't exist")
                 print()
     else:
-        print("Empty input is not a valid option, please try!")
+        print("Empty input is not a valid option, please try again!")
     return menu_options
+
+
+# def display_end_screen():
 
 
 game_over = False
@@ -62,4 +65,6 @@ while not game_over:
 
     elif options == 4:
         print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
-        game_over = True
+        break
+
+    # while game_over:
