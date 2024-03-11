@@ -210,7 +210,14 @@ def modify_game_table():
     db["database"].commit()
     if debug_mode:
         print("Added column 'time' to game table.")
-
+    db["cursor"].execute("ALTER TABLE game DROP COLUMN co2_left;")
+    db["database"].commit()
+    if debug_mode:
+        print("Deleted column 'co2_left' from game table")
+    db["cursor"].execute("ALTER TABLE game DROP COLUMN co2_budget;")
+    db["database"].commit()
+    if debug_mode:
+        print("Deleted column 'co2_budget' from game table")
 
 # This function runs all other functions that change contents / columns of the database.
 # It needs to be run once before playing the game.
