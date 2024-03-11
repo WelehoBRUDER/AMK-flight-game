@@ -81,16 +81,20 @@ while not game_over:
         if game_over:
             #display_win_screen()
             display_loss_screen()
+
             while True:
                 back_to_menu = input(f"\nWould you like to continue back to main menu? (Y/N): ")
                 if back_to_menu.lower() == "y" or back_to_menu.lower() == "yes":
+                    commands.clear_and_exit_check(0)
                     game_over = False
                     break
                 elif back_to_menu.lower() == "n" or back_to_menu.lower() == "no":
+                    commands.clear_and_exit_check(0)
                     print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
                     game_over = True
                     break
                 else:
+                    commands.clear_and_exit_check(0)
                     print("Invalid input, please enter 'Y' or 'N'!")
 
 
