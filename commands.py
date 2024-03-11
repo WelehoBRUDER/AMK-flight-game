@@ -1,5 +1,6 @@
 from colorama import Fore
 import flights
+import time
 
 
 # Function that checks whether the given command is found in the list of commands, and then returns the
@@ -50,7 +51,11 @@ def print_instructions():
 
 # Prints the players' status
 def print_status():
-    print(status)
+    print(f"{Fore.CYAN}|Name|{Fore.RESET} {status[1]} "
+          f"{Fore.CYAN}|Location|{Fore.RESET} {status[2]} "
+          f"{Fore.CYAN}|Money|{Fore.RESET} {status[3]}€ "
+          f"{Fore.CYAN}|CO2 emissions|{Fore.RESET} {status[4]} "
+          f"{Fore.CYAN}|Day|{Fore.RESET} {status[5]}")
 
 
 # Uses function imported from flights.py that prints the flights' timetable
@@ -64,9 +69,13 @@ def fly():
         if 0 < selection < 17:
             chosen_flight = (flights.timed_flights[selection - 1])
             port = chosen_flight["airport"]
-            print(port["name"])
-            print(port["latitude_deg"], port["longitude_deg"])
+            new_coordinates = (port["latitude_deg"], port["longitude_deg"])
             status[2] = port["name"]
+            print("Flying", end="")
+            for i in range(3):
+                time.sleep(0.6)
+                print(".", end="")
+            print(f"\nWelcome to {port["name"]}!")
         else:
             print("Invalid selection!")
     except ValueError:
@@ -95,12 +104,12 @@ help_list = {"help": f"{Fore.GREEN}Help{Fore.RESET} - Shows this list. Typing a 
              "instructions": f"{Fore.GREEN}Instructions{Fore.RESET} - Shows the instructions for playing the game",
              "status": f"{Fore.GREEN}Status{Fore.RESET} - "
                        f"Shows your name, location, money, consumed CO2, days and time.",
-             "fly": f"{Fore.GREEN}Fly{Fore.RESET} - Fly to specified airport.",
+             "fly": f"{Fore.GREEN}Fly{Fore.RESET} - Displays all available flights, and lets you pick one of them.",
              "exit": f"{Fore.GREEN}Exit{Fore.RESET} - Quits the game."}
 
 # Player stats placeholder
-status = {1: "Player", 2: "Location", 3: 0,
-          4: 0, 5: 0, 6: 0, 7: 0}
+status = {1: "Ronald McDonald", 2: "Starting airport", 3: 20000,
+          4: 0, 5: 1}
 
 # Contains all the commands that use functions (except "exit")
 command_functions = {"help": print_helplist, "instructions": print_instructions, "status": print_status, "fly": fly}
