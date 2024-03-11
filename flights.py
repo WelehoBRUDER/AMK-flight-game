@@ -1,4 +1,4 @@
-from db import draw_airports_from_origin, get_airport
+from db import get_country, get_airport
 import random
 from colorama import Fore
 from game import game_controller
@@ -18,10 +18,24 @@ def times_of_the_flights(flights):
     for i in range(16):
         random_hours = random.randint(00, 23)
         random_minutes = random.randint(00, 59)
-        flight_options = {"options": i + 1}  # Generates player options starting from 1
-        flight_options.update(flights[i])
-        flight_options["time"] = {"hours": random_hours, "minutes": random_minutes}
-        flights[i] = flight_options
+
+        # Checks every individual iso_country code from the list of flights dictionaries.
+        # It then uses the get_country() function from db to match the ISO codes to every name of the countries.
+        # If it doesn't find a matching country, it is then listed as Unknown. (shouldn't happen)
+        iso_country = flights[i]["airport"]["iso_country"]
+        country_by_code = get_country(iso_country)
+        if country_by_code:
+            country_name = country_by_code["name"]
+        else:
+            country_name = "Unknown"
+
+        add_to_flight_info = {
+            "options": i + 1,  # Generates player options starting from 1
+            "time": {"hours": random_hours, "minutes": random_minutes},
+            "country": country_name  # Adds country information to the dictionary
+        }
+        add_to_flight_info.update(flights[i])
+        flights[i] = add_to_flight_info
 
     # Sorts the list by hours and minutes in ascending order
     flights.sort(key=sort_by_time)
@@ -69,6 +83,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         options = timed_flights[i]["options"]
         hours, minutes = timed_flights[i]["time"]["hours"], timed_flights[i]["time"]["minutes"]
         municipality = timed_flights[i]["airport"]["municipality"]
+        country = timed_flights[i]["country"]
         direction = timed_flights[i]["flight_direction"]
         distance = timed_flights[i]["distance"]
         cost = timed_flights[i]["cost"]
@@ -76,7 +91,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         types = simplified_types[0]
 
         print(
-            f"{options:02d}         {hours:02d}:{minutes:02d}     {municipality:<20s}     {types:<17s}"
+            f"{options:02d}         {hours:02d}:{minutes:02d}     {municipality:<20s}, {country:}     {types:<17s}"
             f"{direction:<15s}     {distance:04d}km           {cost:.02f}€")
 
 
