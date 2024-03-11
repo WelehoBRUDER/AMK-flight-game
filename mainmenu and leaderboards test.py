@@ -1,12 +1,16 @@
-import prettytable
-import commands
 from colorama import Fore
-import game
+import commands
 import intro
+from rich.console import Console
+from rich.table import Table
 
 
-def leaderboard_table(table_headers):
-    leaderboards = prettytable.PrettyTable(table_headers)
+def leaderboard_table():
+    console = Console()
+    leaderboards = Table(title="Leaderboards", title_style="gold3", show_header=True, header_style="red1")
+    leaderboards.add_column("Player", justify="center")
+    leaderboards.add_column("Score", justify="center")
+    console.print(leaderboards)
     return leaderboards
 
 
@@ -35,14 +39,22 @@ def menu_choice():
                 return menu_options
 
             else:
-                print("Option doesn't exist")
-                print()
+                print(f"Option doesn't exist")
+
     else:
         print("Empty input is not a valid option, please try again!")
     return menu_options
 
 
-# def display_end_screen():
+def display_win_screen():
+    print(f"\n{Fore.LIGHTBLUE_EX}CONGRATULATIONS! YOU'VE COMPLETED YOUR JOURNEY!{Fore.RESET}\n")
+    commands.print_status()
+    print()
+    leaderboards = leaderboard_table()
+
+def display_loss_screen():
+    print(f"\n{Fore.LIGHTRED_EX}Unfortunately you've ran out of money and your journey has ended.{Fore.RESET}\n")
+    commands.print_status()
 
 
 game_over = False
@@ -56,8 +68,7 @@ while not game_over:
         fly = commands.fly()
 
     elif options == 2:
-        show_leaderboards = leaderboard_table(["Player", "Time", "Score"])
-        print(show_leaderboards)
+        show_leaderboards = leaderboard_table()
         next_screen = str(input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}"))
 
     elif options == 3:
@@ -65,6 +76,21 @@ while not game_over:
 
     elif options == 4:
         print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
-        break
+        game_over = True
 
-    # while game_over:
+        if game_over:
+            #display_win_screen()
+            display_loss_screen()
+            while True:
+                back_to_menu = input(f"\nWould you like to continue back to main menu? (Y/N): ")
+                if back_to_menu.lower() == "y" or back_to_menu.lower() == "yes":
+                    game_over = False
+                    break
+                elif back_to_menu.lower() == "n" or back_to_menu.lower() == "no":
+                    print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
+                    game_over = True
+                    break
+                else:
+                    print("Invalid input, please enter 'Y' or 'N'!")
+
+
