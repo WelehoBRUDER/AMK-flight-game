@@ -1,6 +1,9 @@
 from colorama import Fore
 import flights
 import time
+import sys
+from rich.console import Console
+from rich.table import Table
 
 
 # Function that checks whether the given command is found in the list of commands, and then returns the
@@ -16,7 +19,11 @@ def command(text):
 # Checks if the player has typed "exit" and if so, exits the program
 def exit_check(text):
     if text.lower() == "exit":
-        print(f"\n{Fore.RED}Quitting the game...")
+        exit_msg = f"{Fore.RED}Quitting the game...{Fore.RESET}"
+        for letter in exit_msg:
+            print(letter, end="")
+            time.sleep(0.05)
+            sys.stdout.flush()
         exit()
 
 
@@ -51,11 +58,15 @@ def print_instructions():
 
 # Prints the players' status
 def print_status():
-    print(f"{Fore.CYAN}|Name|{Fore.RESET} {status[1]} "
-          f"{Fore.CYAN}|Location|{Fore.RESET} {status[2]} "
-          f"{Fore.CYAN}|Money|{Fore.RESET} {status[3]}€ "
-          f"{Fore.CYAN}|CO2 emissions|{Fore.RESET} {status[4]} "
-          f"{Fore.CYAN}|Day|{Fore.RESET} {status[5]}")
+    console = Console()
+    table = Table(show_header=True, header_style="cyan")
+    table.add_column("Name", style="white")
+    table.add_column("Location", style="white")
+    table.add_column("Money", style="white")
+    table.add_column("CO2 emissions", style="white")
+    table.add_column("Day", style="white")
+    table.add_row(f"{status[1]}", f"{status[2]}", f"{status[3]}", f"{status[4]}", f"{status[5]}")
+    console.print(table)
 
 
 # Uses function imported from flights.py that prints the flights' timetable
@@ -71,10 +82,11 @@ def fly():
             port = chosen_flight["airport"]
             new_coordinates = (port["latitude_deg"], port["longitude_deg"])
             status[2] = port["name"]
-            print("Flying", end="")
-            for i in range(3):
-                time.sleep(0.6)
-                print(".", end="")
+            flying_msg = "Flying to airport..."
+            for letter in flying_msg:
+                print(letter, end="")
+                time.sleep(0.1)
+                sys.stdout.flush()
             print(f"\nWelcome to {port["name"]}!")
         else:
             print("Invalid selection!")
