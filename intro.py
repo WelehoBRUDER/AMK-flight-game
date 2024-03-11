@@ -1,4 +1,4 @@
-from colorama import Fore, Style
+from colorama import Fore
 import time
 import commands
 import sys
@@ -62,7 +62,7 @@ def game_title():
 def story_skip():
     while True:
         skip_story = input("\nDo you want to read the story? (yes/no): ").lower()
-        commands.exit_check(skip_story)
+        commands.clear_and_exit_check(skip_story)
         if skip_story == "yes":
             game_story()
             break
@@ -78,7 +78,7 @@ def player_amount():
     while True:
         try:
             number_of_players = input("\nEnter the amount of players: ")
-            commands.exit_check(number_of_players)
+            commands.clear_and_exit_check(number_of_players)
             number_of_players = int(number_of_players)
             player_names(number_of_players)
             break
@@ -94,7 +94,7 @@ def player_names(number_of_players):
     while True:
         while player_number <= number_of_players:
             name_input = input(f"\nPlayer {player_number}: Please enter your name: ")
-            commands.exit_check(name_input)
+            commands.clear_and_exit_check(name_input)
             if name_input not in player_name_list:
                 player_name_list.append(name_input)
                 player_number += 1
@@ -110,7 +110,7 @@ def difficulty_select():
           f"\n{Fore.RED}Hard{Fore.RESET}: You have 10 days, and your starting money is 10000€")
     while True:
         difficulty_input = input("Please choose your difficulty (easy/hard): ").lower()
-        commands.exit_check(difficulty_input)
+        commands.clear_and_exit_check(difficulty_input)
         if difficulty_input == "easy":
             difficulty = "Easy"
             break
