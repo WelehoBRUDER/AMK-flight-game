@@ -1,11 +1,9 @@
 from colorama import Fore
-import flights
-import time
-import sys
 from rich.console import Console
 from rich.table import Table
-import os
+import db
 import game
+import flights
 
 
 # Function that checks whether the given command is found in the list of commands, and then returns the
@@ -52,26 +50,29 @@ def print_instructions():
 
 # Prints the players' status in a table
 def print_status():
-    global current_player
-    current_player = current_player
+    current_player = game.game_controller.get_current_player()
+    current_airport = db.get_airport(current_player.location)
+    airport_name = current_airport["name"]
+    airport_size = flights.airport_type([current_airport])[0]
     console = Console()
     table = Table(show_header=True, header_style="cyan")
     table.add_column("Name", style="white")
     table.add_column("Location", style="white")
+    table.add_column("Airport size", style="white")
     table.add_column("Money", style="white")
     table.add_column("CO2 emissions", style="white")
+    table.add_column("Distance traveled", style="white")
     table.add_column("Date", style="white")
-    # table.add_row(f"{status[1]}", f"{status[2]}", f"{status[3]:.2f}", f"{status[4]}", f"{status[5]}")
-    table.add_row(f"{current_player.screen_name}", f"{current_player.location}", f"{current_player.money:.2f}€",
-                  f"{current_player.co2_consumed:.2f}kg", f"{current_player.get_time()}")
+    table.add_row(f"{current_player.screen_name}", f"{airport_name}", f"{airport_size}",
+                  f"{current_player.money:.2f}€", f"{current_player.co2_consumed:.2f}kg",
+                  f"{current_player.distance_traveled}km", f"{current_player.get_time()}")
     console.print(table)
 
 
 # Uses function imported from flights.py that prints the flights' timetable
 # Lets the player choose a flight, changing their current location to a new one)
 def fly():
-    global current_player
-    current_player = current_player
+    current_player = game.game_controller.get_current_player()
     flights.flight_timetable()
     try:
         selection = input(Fore.RESET + "\nSelect where you want to fly (1-16): ")
@@ -93,11 +94,9 @@ def invalid_command():
     print("Invalid command!")
 
 
-# Keeps asking the player for a command until they exit
+# Keeps asking the player for a command until they end the turn or quit the game
 # Calls the 'command_description' function if the input has 2 words (for command-specific 'help' descriptions)
-def run_commands(player):
-    global current_player
-    current_player = player
+def run_commands():
     while True:
         command_input = input("\nEnter a command: ").lower()
         inputsplit = command_input.split()
@@ -105,12 +104,11 @@ def run_commands(player):
             command_description(inputsplit)
         else:
             answer = command(command_input)()
+            # Ends the current player's turn after using the 'fly' command
             if answer == "break":
                 break
     return True
 
-
-current_player = None
 
 # A dictionary of all commands and a short explanation for each one
 help_list = {"help": f"{Fore.GREEN}Help{Fore.RESET} - Shows this list. Typing a command after "
