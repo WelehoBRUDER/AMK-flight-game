@@ -24,7 +24,6 @@ class Game:
         player_name = input(f"Player {i} name: ")
         player_location = start["ident"]
         player_money = self.difficulty["money"]
-        print(player_name)
         self.players.append(
             Player(i, player_name, 0, player_location, player_money, 0, 0, start["latitude_deg"],
                    start["longitude_deg"]))
@@ -111,7 +110,6 @@ class Player:
     def __init__(self, id, screen_name, co2_consumed, location, money, time, distance_traveled, origin_latitude,
                  origin_longitude,
                  halfway_latitude=None, halfway_longitude=None, last_location=None, finished=False):
-        print(screen_name)
         self.id = id
         self.screen_name = screen_name
         self.co2_consumed = int(co2_consumed)
@@ -175,13 +173,12 @@ class Player:
 
     def has_lost(self):
         difficulty = game_controller.difficulty
-        if not self.finished and (self.money <= 0 or self.time > difficulty["days"] * 24 * 60):
+        if not self.finished and (self.money <= 0 or self.time > difficulty["time_limit"] * 24 * 60):
             return True
         return False
 
     def check_flight_progress(self):
         answer = track_progress(**self.get_player())
-        print(answer)
         if answer["halfway"]:
             self.halfway_latitude = answer["point"][0]
             self.halfway_longitude = answer["point"][1]
