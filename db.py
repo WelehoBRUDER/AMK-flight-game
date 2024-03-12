@@ -40,7 +40,7 @@ def draw_airports_from_origin(lat, lon, port_type):
     bearings_text = ("North", "North-East", "East", "South-East", "South", "South-West", "West", "North-West")
     flights = []
     # Minimum and maximum distance from current airport in miles
-    min_max_dists = {"small_airport": (200, 500), "medium_airport": (300, 800), "large_airport": (400, 1000)}
+    min_max_dists = {"small_airport": (1000, 1500), "medium_airport": (1000, 2250), "large_airport": (1700, 3000)}
     min_dist, max_dist = min_max_dists[port_type]
     for i in range(len(flight_bearings)):
         bearing = flight_bearings[i]
