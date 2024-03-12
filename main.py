@@ -29,7 +29,7 @@ def main():
 
     while True:
         current_player = game_controller.players[game_controller.turn]
-        run_commands(current_player)
+        commands.run_commands(current_player)
 
 
 if __name__ == "__main__":
