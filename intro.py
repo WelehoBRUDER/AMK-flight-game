@@ -32,9 +32,9 @@ def game_story():
     for line in story:
         for letter in line:
             print(letter, end="")
-            time.sleep(0.015)
+            time.sleep(0.003)
             sys.stdout.flush()
-        time.sleep(1.4)
+        time.sleep(1.2)
     game_title()
 
 
@@ -121,7 +121,7 @@ def difficulty_select():
             print("Invalid selection!")
 
 
-# Runs the intro and prints out the player names and chosen difficulty
+# Runs the intro, and prints out the player names and chosen difficulty
 def game_intro():
     commands.print_instructions()
     story_skip()

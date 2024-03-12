@@ -18,6 +18,7 @@ def command(text):
 
 
 # Checks if the player has typed "exit" and if so, exits the program
+# Also clears the console
 def clear_and_exit_check(text):
     os.system('cls' if os.name == 'nt' else 'clear')
     text = str(text)
@@ -42,6 +43,8 @@ def command_description(text):
 
 # Prints the description for every command
 def print_helplist():
+    print(f"\n{Fore.GREEN}Available commands:{Fore.RESET}"
+          f"\n------------------------------")
     for line in help_list.values():
         print(line)
 
@@ -60,7 +63,7 @@ def print_instructions():
         print(line)
 
 
-# Prints the players' status
+# Prints the players' status in a table
 def print_status():
     console = Console()
     table = Table(show_header=True, header_style="cyan")
@@ -74,7 +77,7 @@ def print_status():
 
 
 # Uses function imported from flights.py that prints the flights' timetable
-# Lets the player choose a flight (WIP: and change their current location to a new one)
+# Lets the player choose a flight, changing their current location to a new one)
 def fly():
     flights.flight_timetable()
     try:

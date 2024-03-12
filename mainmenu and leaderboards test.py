@@ -26,6 +26,7 @@ def display_menu():
 def menu_choice():
     print()
     menu_options = input("Option: ")
+    commands.clear_and_exit_check(menu_options)
 
     if len(menu_options) > 0:
         try:
@@ -52,6 +53,7 @@ def display_win_screen():
     print()
     leaderboards = leaderboard_table()
 
+
 def display_loss_screen():
     print(f"\n{Fore.LIGHTRED_EX}Unfortunately you've ran out of money and your journey has ended.{Fore.RESET}\n")
     commands.print_status()
@@ -65,21 +67,22 @@ while not game_over:
 
     if options == 1:
         intro = intro.game_intro()
-        fly = commands.fly()
+        commands.run_commands()
 
     elif options == 2:
         show_leaderboards = leaderboard_table()
         next_screen = str(input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}"))
 
     elif options == 3:
-        menu_help = commands.run_commands()
+        commands.print_instructions()
+        commands.print_helplist()
 
     elif options == 4:
         print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
         game_over = True
 
         if game_over:
-            #display_win_screen()
+            # display_win_screen()
             display_loss_screen()
 
             while True:
