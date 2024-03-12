@@ -2,7 +2,7 @@ import time
 import db
 from colorama import Fore
 from game import *
-import commands
+from commands import *
 import game
 
 
@@ -24,23 +24,11 @@ class Colors:
 
 
 def main():
-    # Just something to use colorama with as a test
-    print(Fore.RED + "Ready to fly?" + Colors.RESET)
-
     init_game()
 
-
-# Asks the player how many players there will be
-def player_amount():
     while True:
-        try:
-            number_of_players = input("\nEnter the amount of players: ")
-            commands.clear_and_exit_check(number_of_players)
-            number_of_players = int(number_of_players)
-            player_names(number_of_players)
-            break
-        except ValueError:
-            print("Amount must be a number!")
+        current_player = game_controller.players[game_controller.turn]
+        run_commands()
 
 
 if __name__ == "__main__":

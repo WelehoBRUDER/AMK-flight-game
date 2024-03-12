@@ -16,11 +16,11 @@ class Game:
         self.difficulty = difficulty
 
     # Creates player using Player class and adds to the list
-    def add_player(self, i):
+    def add_player(self, i, start):
         player_name = input(f"Player {i} name: ")
         player_location = "EFHK"
         player_money = self.difficulty["money"]
-        self.players.append(Player(i, player_name, 0, player_location, player_money, 0))
+        self.players.append(Player(i, player_name, 0, player_location, player_money, 0, start[0], start[1]))
 
     def get_player(self, index):
         return self.players[index]
@@ -151,7 +151,7 @@ class Player:
 
         for i in track(range(20), description=f"Flying to {flight["airport"]["name"]}..."):
             py_time.sleep(0.15)  # Simulate work being done
-            
+
         port = flight["airport"]
         self.last_location = self.location
         self.location = port["ident"]
@@ -173,13 +173,16 @@ def init_game():
 
     game_controller.set_difficulty(difficulty)
 
-    starting_airport = get_r
+    starting_airport = get_random_airport()
+    start_cords = (starting_airport["latitude_deg"], starting_airport["longitude_deg"])
+
+    print(f"Starting airport is {starting_airport["name"]}")
 
     players_amount = int(input("How many players will be in this session?: "))
     for i in range(1, players_amount + 1):
-        game_controller.add_player(i)
+        game_controller.add_player(i, start_cords)
 
-        print(f"Player {i} is now known as {game_controller.players[i]}")
+        print(f"Player {i} is now known as {game_controller.players[i].get_name()}")
 
 
 def calc_cost(distance_amount):
