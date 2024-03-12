@@ -1,6 +1,8 @@
 from db import get_multiple_airports, draw_airports_from_origin, update_player_in_db, \
     track_progress, get_airport, get_random_airport
 import random
+from rich.progress import track
+import time as py_time
 
 
 class Game:
@@ -146,6 +148,10 @@ class Player:
             self.halfway_longitude = answer["point"][1]
 
     def fly(self, flight):
+
+        for i in track(range(20), description=f"Flying to {flight["airport"]["name"]}..."):
+            py_time.sleep(0.15)  # Simulate work being done
+            
         port = flight["airport"]
         self.last_location = self.location
         self.location = port["ident"]
