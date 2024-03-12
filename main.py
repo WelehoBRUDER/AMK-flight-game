@@ -11,7 +11,7 @@ def main():
 
     while True:
         if players_done >= game_controller.players_amount():
-            print(f"\nTHE GAME IS FINISHED!")
+            print(f"\nTHE GAME HAS FINISHED!")
             break
         if game_controller.get_turn() >= game_controller.players_amount():
             game_controller.reset_turns()
