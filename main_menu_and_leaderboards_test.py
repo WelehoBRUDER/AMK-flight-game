@@ -1,4 +1,5 @@
 from colorama import Fore
+import game
 import commands
 import intro
 from rich.console import Console
@@ -24,9 +25,8 @@ def display_menu():
 
 
 def menu_choice():
-    print()
-    menu_options = input("Option: ")
-    commands.clear_and_exit_check(menu_options)
+    menu_options = input("\nOption: ")
+    game.clear_and_exit_check(menu_options)
 
     if len(menu_options) > 0:
         try:
@@ -50,7 +50,6 @@ def menu_choice():
 def display_win_screen():
     print(f"\n{Fore.LIGHTBLUE_EX}CONGRATULATIONS! YOU'VE COMPLETED YOUR JOURNEY!{Fore.RESET}\n")
     commands.print_status()
-    print()
     leaderboards = leaderboard_table()
 
 
@@ -59,45 +58,45 @@ def display_loss_screen():
     commands.print_status()
 
 
-game_over = False
+def main_menu():
+    game_over = False
 
-while not game_over:
-    display_menu()
-    options = menu_choice()
+    while not game_over:
+        display_menu()
+        options = menu_choice()
 
-    if options == 1:
-        intro = intro.game_intro()
-        commands.run_commands()
+        if options == 1:
+            break
 
-    elif options == 2:
-        show_leaderboards = leaderboard_table()
-        next_screen = str(input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}"))
+        elif options == 2:
+            leaderboard_table()
+            str(input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}"))
 
-    elif options == 3:
-        commands.print_instructions()
-        commands.print_helplist()
+        elif options == 3:
+            commands.print_instructions()
+            commands.print_helplist()
 
-    elif options == 4:
-        print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
-        game_over = True
+        elif options == 4:
+            print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
+            game_over = True
 
-        if game_over:
-            # display_win_screen()
-            display_loss_screen()
+            if game_over:
+                # display_win_screen()
+                display_loss_screen()
 
-            while True:
-                back_to_menu = input(f"\nWould you like to continue back to main menu? (Y/N): ")
-                if back_to_menu.lower() == "y" or back_to_menu.lower() == "yes":
-                    commands.clear_and_exit_check(0)
-                    game_over = False
-                    break
-                elif back_to_menu.lower() == "n" or back_to_menu.lower() == "no":
-                    commands.clear_and_exit_check(0)
-                    print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
-                    game_over = True
-                    break
-                else:
-                    commands.clear_and_exit_check(0)
-                    print("Invalid input, please enter 'Y' or 'N'!")
+                while True:
+                    back_to_menu = input(f"\nWould you like to continue back to main menu? (Y/N): ")
+                    if back_to_menu.lower() == "y" or back_to_menu.lower() == "yes":
+                        game.clear_and_exit_check(0)
+                        game_over = False
+                        break
+                    elif back_to_menu.lower() == "n" or back_to_menu.lower() == "no":
+                        game.clear_and_exit_check(0)
+                        print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
+                        game_over = True
+                        break
+                    else:
+                        game.clear_and_exit_check(0)
+                        print("Invalid input, please enter 'Y' or 'N'!")
 
 

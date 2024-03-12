@@ -4,6 +4,7 @@ from colorama import Fore
 from game import *
 import commands
 import game
+import main_menu_and_leaderboards_test
 
 
 class Colors:
@@ -24,7 +25,7 @@ class Colors:
 
 
 def main():
-    commands.print_instructions()
+    main_menu_and_leaderboards_test.main_menu()
     init_game()
     players_done = 0
 
