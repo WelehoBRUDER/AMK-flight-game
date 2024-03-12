@@ -93,10 +93,6 @@ def fly():
             chosen_flight = (flights.timed_flights[selection - 1])
             port = chosen_flight["airport"]
             test_player.fly(chosen_flight)
-            for letter in "Flying to airport...":
-                print(letter, end="")
-                time.sleep(0.05)
-                sys.stdout.flush()
             print(f"\nWelcome to {Fore.CYAN}{port["name"]}{Fore.RESET}!")
             print()
         else:
