@@ -103,7 +103,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
 
         # Adds flight data from the list of dictionaries to the earlier generated Rich Library table.
         table.add_row(f"{options:02d}", f"{hours:02d}:{minutes:02d}", f"{municipality}, {country}"
-                      , f"{types}", f"{direction}", f"{distance:04d}km", f"{cost:.02f}€", f"{co2:.02f} g/km")
+                      , f"{types}", f"{direction}", f"{distance:04d}km", f"{cost:.02f}€", f"{co2:.02f} kg")
     # Prints the timetable for flights
     console.print(table)
 
