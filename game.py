@@ -259,6 +259,30 @@ def clear_and_exit_check(text):
             sys.stdout.flush()
         exit()
 
+
+def calc_score():
+    total_score = 0
+    current_player = game_controller.get_current_player()
+    money = current_player.money
+    co2_consumed = current_player.co2_consumed
+    time = current_player.get_time()
+    distance = current_player.distance_traveled
+    goal_reached = current_player.finished
+
+    score_per_km = 0
+    if distance < 40075:
+        score_per_km += current_player.distance_traveled
+    score_per_km = current_player.distance_traveled - (current_player.distance_traveled - 40075)
+    score_per_leftover_time = time * 3
+    score_per_co2_consumed = co2_consumed * 10
+    score_per_leftover_money = money * 2
+    score_when_goal_reached = 0
+    if goal_reached:
+        score_when_goal_reached = 75000
+    total_score += (score_per_leftover_time + score_per_leftover_money + score_per_km +
+                    score_when_goal_reached) - score_per_co2_consumed
+    return total_score
+
 # game_controller.test_data()
 # game_controller.generate_flights()
 # test_player = game_controller.get_player(0)
