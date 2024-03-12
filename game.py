@@ -20,6 +20,7 @@ class Game:
         player_name = input(f"Player {i} name: ")
         player_location = "EFHK"
         player_money = self.difficulty["money"]
+        print(player_name)
         self.players.append(Player(i, player_name, 0, player_location, player_money, 0, start[0], start[1]))
 
     def get_player(self, index):
@@ -52,6 +53,9 @@ class Game:
             # Adds the flights and the origin.
             self.flights.append({"flights": flights_from_airport, "from": airport})
 
+    def get_player(self, player_id):
+        return self.players[player_id]
+
     def update_all_players(self):
         for player in self.players:
             player.update()
@@ -83,6 +87,7 @@ game_controller = Game()
 class Player:
     def __init__(self, id, screen_name, co2_consumed, location, money, time, origin_latitude, origin_longitude,
                  halfway_latitude=None, halfway_longitude=None, last_location=None):
+        print(screen_name)
         self.id = id
         self.screen_name = screen_name
         self.co2_consumed = int(co2_consumed)
@@ -208,11 +213,10 @@ def calc_flight_time(distance_amount):
     total_flight_time += flight_time
     return total_flight_time
 
-
-game_controller.test_data()
-game_controller.generate_flights()
-test_player = game_controller.get_player(0)
-print(test_player.get_time(False))
-test_port = get_airport(test_player.get_location())
-test_player.check_flight_progress()
+# game_controller.test_data()
+# game_controller.generate_flights()
+# test_player = game_controller.get_player(0)
+# print(test_player.get_time(False))
+# test_port = get_airport(test_player.get_location())
+# test_player.check_flight_progress()
 # print(game_controller.get_flights(0))

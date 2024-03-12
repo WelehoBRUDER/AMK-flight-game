@@ -112,7 +112,6 @@ def difficulty_select():
 def game_intro():
     commands.print_instructions()
     story_skip()
-    player_amount()
     difficulty_select()
     print("\nPlayers:")
     for player in player_name_list:

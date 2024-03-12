@@ -2,7 +2,7 @@ import time
 import db
 from colorama import Fore
 from game import *
-from commands import *
+import commands
 import game
 
 
@@ -24,11 +24,12 @@ class Colors:
 
 
 def main():
+    commands.print_instructions()
     init_game()
 
     while True:
         current_player = game_controller.players[game_controller.turn]
-        run_commands()
+        run_commands(current_player)
 
 
 if __name__ == "__main__":
