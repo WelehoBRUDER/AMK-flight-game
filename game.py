@@ -52,7 +52,7 @@ class Game:
     def test_data(self):
         # Creates test data that has 4 empty players for debugging.
         for i in range(4):
-            self.players.append(Player(i, f"player{i}", 0, "CYYQ", i, 60 * 60 + 13, 60.3172, 24.963301))
+            self.players.append(Player(i, f"player{i}", 0, "CYYQ", i, 65, 60.3172, 24.963301))
 
 
 game_controller = Game()
@@ -119,18 +119,15 @@ class Player:
 
     # This function returns either the raw time (minutes) or a time string.
     # Supported clock styles are 24-hour and 12-hour.
-    def get_time(self, raw=False, style="24"):
+    def get_time(self, raw=False):
         if raw:
             return self.time
 
         days = int(self.time / (60 * 24))
         hours = int((self.time - days * 24 * 60) / 60)
         minutes = self.time - days * 24 * 60 - hours * 60
-
-        if style == "24":
-            return f"day {days}, {hours}.{minutes}"
-        elif style == "12":
-            return f"day {days}, {hours - 11 if hours > 11 else hours}:{minutes} {"PM" if hours > 11 else "AM"}"
+        # +1 so that day "0" is day 1. Easier for the player to read.
+        return f"day {days + 1}, {f'0{hours}' if hours < 10 else hours}:{f'0{minutes}' if minutes < 10 else minutes}"
 
     # Updates the player inside the db.
     def update(self):
@@ -187,7 +184,7 @@ def calc_co2(distance_amount):
 game_controller.test_data()
 game_controller.generate_flights()
 test_player = game_controller.get_player(0)
-print(test_player.get_time(False, "12"))
+print(test_player.get_time(False))
 test_port = get_airport(test_player.get_location())
 test_player.check_flight_progress()
 # print(game_controller.get_flights(0))

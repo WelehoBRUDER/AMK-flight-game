@@ -338,4 +338,4 @@ connect_to_db()
 #     print(flight["distance"], flight["airport"]["iso_country"], flight["airport"]["type"])
 # print(get_country("FI"))
 
-init_tables()
+# init_tables()
