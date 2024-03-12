@@ -41,6 +41,7 @@ class Game:
             flights_from_airport = draw_airports_from_origin(lat, lon, port_type)
             for flight in flights_from_airport:
                 flight["cost"] = calc_cost(flight["distance"])
+                flight["emissions"] = calc_co2(flight["distance"])
             # Adds the flights and the origin.
             self.flights.append({"flights": flights_from_airport, "from": airport})
 
@@ -170,6 +171,13 @@ def calc_cost(distance_amount):
     flight_cost = cost_per_km * distance_amount
     total_cost += flight_cost
     return total_cost
+
+def calc_co2(distance_amount):
+    total_co2_emissions = 0
+    emissions_per_km = random.uniform(0.115, 0.200)
+    flight_emissions = emissions_per_km * distance_amount
+    total_co2_emissions += flight_emissions
+    return total_co2_emissions
 
 
 game_controller.test_data()
