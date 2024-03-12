@@ -264,19 +264,19 @@ def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_
                    **kwargs):
     # This local function is used when the player overshoots their flight.
     # If the player for example flies >500km over the check point, then this would happen:
-    # The flight between the player's last airport and current point is broken into ten steps.
-    # Each step is 10% of the distance and will be checked in order.
+    # The flight between the player's last airport and current point is broken into twenty steps.
+    # Each step is 5% of the distance and will be checked in order.
     # Once the step that crosses the distance is found, it is set as the player's halfway point.
     # From then on, the halfway point will be treated as the origin.
     def check_steps(start_lat, start_lon, finish=False):
         # Break the flight up to ten steps.
-        for i in range(1, 11):
+        for i in range(1, 21):
             # Gets the current step's point in the flight path.
-            # (i / 10) will yield a multiplier that starts at 0.1 (10%) and increments by 10% each step.
+            # (i / 10) will yield a multiplier that starts at 0.05 (5%) and increments by 5% each step.
             # 1.609344 = 1 mile to km.
-            # This part essentially goes through the current flight at 10% intervals.
+            # This part essentially goes through the current flight at 5% intervals.
             point_in_flight = distance.distance(
-                miles=(cur_last_dist * (i / 10)) / 1.609344).destination(
+                miles=(cur_last_dist * (i / 20)) / 1.609344).destination(
                 (last_lat, last_lon), bearing=angle)
             point_lat, point_lon = point_in_flight.latitude, point_in_flight.longitude
             # Check the distance between current flight point and the origin / halfway point.
@@ -312,6 +312,7 @@ def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_
         # Calculate distance between origin and player's location
         distance_between = distance_between_two_points((origin_latitude, origin_longitude), (current_lat, current_lon))
 
+        print("DIST_BETWEEN_CUR_AND_ORIG", distance_between)
         # If the player has passed the halfway point, inform them
         if distance_between >= halfway_distance:
             return {"halfway": True, "point": (current_lat, current_lon)}
@@ -330,7 +331,7 @@ def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_
                                                        (current_lat, current_lon))
         # If the player has returned to their origin, they win!
         if distance_between >= halfway_distance:
-            return "Finished"
+            return {"finished": True}
         # If the player overshot their origin, check more thoroughly.
         if distance_between + cur_last_dist >= halfway_distance:
             check_steps(halfway_latitude, halfway_longitude)
