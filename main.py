@@ -1,6 +1,7 @@
 from game import *
 import commands
 import main_menu_and_leaderboards_test
+import db
 
 
 def main():
@@ -32,5 +33,24 @@ def main():
         game_controller.advance_turn()
 
 
+# This function ensures that the database tables have been modified to suit the game's needs.
+# It looks for a file named "init.txt". If it can't be found, then the tables will be altered.
+# If the file is found, then this function is essentially skipped.
+# The contents of init.txt don't matter, the file just needs to exist. It is in .gitignore.
+def initialize_db():
+    init_found = False
+    try:
+        open("init.txt", "r")
+        init_found = True
+    except FileNotFoundError:
+        print("Initializing game (First launch detected)")
+    if not init_found:
+        db.init_tables()
+        init = open("init.txt", "w")
+        init.write("finished=True")
+        print("Game initialized!")
+
+
 if __name__ == "__main__":
+    initialize_db()
     main()
