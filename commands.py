@@ -100,6 +100,7 @@ def fly():
             print("Invalid selection!")
     except ValueError:
         print("Selection must be a number!")
+    return "break"
 
 
 def invalid_command():
@@ -117,7 +118,10 @@ def run_commands(player):
         if len(inputsplit) == 2:
             command_description(inputsplit)
         else:
-            command(command_input)()
+            answer = command(command_input)()
+            if answer == "break":
+                break
+    return True
 
 
 current_player = None
