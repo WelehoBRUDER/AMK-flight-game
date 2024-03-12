@@ -27,8 +27,20 @@ class Game:
     def get_player(self, index):
         return self.players[index]
 
+    def get_turn(self):
+        return self.turn
+
     def get_current_player(self):
         return self.players[self.turn]
+
+    def advance_turn(self):
+        self.turn += 1
+
+    def reset_turns(self):
+        self.turn = 0
+
+    def players_amount(self):
+        return len(self.players)
 
     # This function gets all flights available to the requested player.
     # The flights are based on the airport,

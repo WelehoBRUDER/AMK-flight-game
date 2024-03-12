@@ -28,10 +28,15 @@ def main():
     init_game()
 
     while True:
+        if game_controller.get_turn() >= game_controller.players_amount():
+            game_controller.reset_turns()
+            game_controller.generate_flights()
+            print("--- FIRST TURN CONCLUDED ---")
         current_player = game_controller.players[game_controller.turn]
         answer = commands.run_commands(current_player)
         if answer != "exit":
             break
+        game_controller.advance_turn()
 
 
 if __name__ == "__main__":
