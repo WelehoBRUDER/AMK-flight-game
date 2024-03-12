@@ -22,7 +22,8 @@ class Game:
         player_money = self.difficulty["money"]
         print(player_name)
         self.players.append(
-            Player(i, player_name, 0, player_location, player_money, 0, start["latitude_deg"], start["longitude_deg"]))
+            Player(i, player_name, 0, player_location, player_money, 0, 0, start["latitude_deg"],
+                   start["longitude_deg"]))
 
     def get_player(self, index):
         return self.players[index]
@@ -79,7 +80,7 @@ class Game:
     def test_data(self):
         # Creates test data that has 4 empty players for debugging.
         for i in range(4):
-            self.players.append(Player(i, f"player{i}", 0, "CYYQ", i, 65, 60.3172, 24.963301))
+            self.players.append(Player(i, f"player{i}", 0, "CYYQ", i, 65, 0, 60.3172, 24.963301))
 
 
 game_controller = Game()
@@ -92,6 +93,7 @@ game_controller = Game()
         location: location of the player (airport)
         money: how broke the player is
         time: how much time the player has used
+        distance_traveled: how many kilometers the player has flown
         last_location: last airport the player was in
         origin_latitude: latitude where the player started
         origin_longitude: longitude where the player started
@@ -101,7 +103,8 @@ game_controller = Game()
 
 
 class Player:
-    def __init__(self, id, screen_name, co2_consumed, location, money, time, origin_latitude, origin_longitude,
+    def __init__(self, id, screen_name, co2_consumed, location, money, time, distance_traveled, origin_latitude,
+                 origin_longitude,
                  halfway_latitude=None, halfway_longitude=None, last_location=None):
         print(screen_name)
         self.id = id
@@ -110,6 +113,7 @@ class Player:
         self.location = location
         self.money = money
         self.time = time
+        self.distance_traveled = distance_traveled
         self.last_location = location if last_location is None else last_location
         self.origin_latitude = origin_latitude
         self.origin_longitude = origin_longitude
@@ -126,6 +130,7 @@ class Player:
             "location": self.location,
             "money": self.money,
             "time": self.time,
+            "distance_traveled": self.distance_traveled,
             "last_location": self.last_location,
             "origin_latitude": self.origin_latitude,
             "origin_longitude": self.origin_longitude,
@@ -174,11 +179,13 @@ class Player:
             py_time.sleep(0.15)  # Simulate work being done
 
         port = flight["airport"]
+        total_time = flight["flight_time"] + flight["time"]["hours"] * 60 + flight["time"]["minutes"]
         self.last_location = self.location
         self.location = port["ident"]
         self.money -= flight["cost"]
         self.co2_consumed += flight["emissions"]
-        self.time += flight["flight_time"]
+        self.time += int(total_time)
+        self.distance_traveled += flight["distance"]
         self.check_flight_progress()
 
 
