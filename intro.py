@@ -1,6 +1,6 @@
 from colorama import Fore
 import time
-import commands
+import game
 import sys
 
 
@@ -59,10 +59,10 @@ def game_title():
 
 
 # Gives the player an option to skip the story
-def story_skip():
+def game_intro():
     while True:
         skip_story = input("\nDo you want to read the story? (yes/no): ").lower()
-        commands.clear_and_exit_check(skip_story)
+        game.clear_and_exit_check(skip_story)
         if skip_story == "yes":
             game_story()
             break
@@ -71,56 +71,3 @@ def story_skip():
             break
         else:
             print("Please choose 'yes' or 'no'.")
-
-
-# Asks the player(s) their name(s), repeating the input until every player has a name
-# If the player name already exists, it will keep asking for a name until a new one is inputted
-# TO DO: Also check if the player name already exists in the database
-def player_names(number_of_players):
-    player_number = 1
-    while True:
-        while player_number <= number_of_players:
-            name_input = input(f"\nPlayer {player_number}: Please enter your name: ")
-            commands.clear_and_exit_check(name_input)
-            if name_input not in player_name_list:
-                player_name_list.append(name_input)
-                player_number += 1
-            else:
-                print(f"\n{Fore.RED}Player name {Fore.RESET}'{name_input}'{Fore.RED} already taken!{Fore.RESET}")
-        break
-
-
-# Asks the player which difficlty they want to choose
-def difficulty_select():
-    global difficulty
-    print(f"\n{Fore.GREEN}Easy{Fore.RESET}: You have 20 days, and your starting money is 20000€"
-          f"\n{Fore.RED}Hard{Fore.RESET}: You have 10 days, and your starting money is 10000€")
-    while True:
-        difficulty_input = input("Please choose your difficulty (easy/hard): ").lower()
-        commands.clear_and_exit_check(difficulty_input)
-        if difficulty_input == "easy":
-            difficulty = "Easy"
-            break
-        elif difficulty_input == "hard":
-            difficulty = "Hard"
-            break
-        else:
-            print("Invalid selection!")
-
-
-# Runs the intro, and prints out the player names and chosen difficulty
-def game_intro():
-    commands.print_instructions()
-    story_skip()
-    difficulty_select()
-    print("\nPlayers:")
-    for player in player_name_list:
-        print(player)
-    print("\nDifficulty: " + difficulty)
-
-
-player_name_list = []
-difficulty = ""
-
-if __name__ == "__main__":
-    game_intro()
