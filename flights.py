@@ -80,9 +80,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
     table.add_column("CO2 Emission", style="yellow")
 
     # Randomly picks 16 flights from given coordinates (latitude and longitude)
-    port = get_airport("EFHK")
-    lat, lon = port["latitude_deg"], port["longitude_deg"]
-    random_flights = game_controller.get_flights(0)
+    random_flights = game_controller.get_flights(game_controller.turn)
     global timed_flights
     # times_of_the_flights function uses the random flights to generate timetables for the flights.
     timed_flights = added_flight_info(random_flights)
