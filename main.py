@@ -26,8 +26,12 @@ class Colors:
 def main():
     commands.print_instructions()
     init_game()
+    players_done = 0
 
     while True:
+        if players_done >= game_controller.players_amount():
+            print("THE GAME IS FINISHED!")
+            break
         if game_controller.get_turn() >= game_controller.players_amount():
             game_controller.reset_turns()
             game_controller.generate_flights()
@@ -37,8 +41,12 @@ def main():
             print(f"--- NEXT PLAYER TURN ---")
         if game_controller.get_current_player().has_lost():
             print(f"PLAYER {game_controller.get_current_player().screen_name} HAST LOST THE GAME!")
+            print(f"SCORE: {game_controller.get_current_player().score()}")
+            players_done += 1
         elif game_controller.get_current_player().finished:
             print(f"PLAYER {game_controller.get_current_player().screen_name} HAS TRAVELED AROUND THE WORLD!")
+            print(f"SCORE: {game_controller.get_current_player().score()}")
+            players_done += 1
         else:
             commands.run_commands()
         game_controller.advance_turn()

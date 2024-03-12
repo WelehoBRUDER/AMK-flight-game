@@ -155,6 +155,9 @@ class Player:
     def get_origin(self):
         return [self.origin_latitude, self.origin_longitude]
 
+    def score(self):
+        return calc_score(self)
+
     # This function returns either the raw time (minutes) or a time string.
     # Supported clock styles are 24-hour and 12-hour.
     def get_time(self, raw=False):
@@ -206,10 +209,11 @@ def init_game():
     difficulties = {
         "easy": {"money": 30000, "time_limit": 30},
         "medium": {"money": 20000, "time_limit": 20},
-        "hard": {"money": 10000, "time_limit": 10}
+        "hard": {"money": 10000, "time_limit": 10},
+        "extreme": {"money": 2000, "time_limit": 1}
     }
 
-    difficulty = difficulties[input("Choose difficulty (easy, medium or hard): ")]
+    difficulty = difficulties[input("Choose difficulty (easy, medium, hard or extreme): ")]
 
     game_controller.set_difficulty(difficulty)
 
@@ -263,19 +267,18 @@ def clear_and_exit_check(text):
         exit()
 
 
-def calc_score():
+def calc_score(player):
     total_score = 0
-    current_player = game_controller.get_current_player()
-    money = current_player.money
-    co2_consumed = current_player.co2_consumed
-    time = current_player.get_time()
-    distance = current_player.distance_traveled
-    goal_reached = current_player.finished
+    money = player.money
+    co2_consumed = player.co2_consumed
+    time = player.time
+    distance = player.distance_traveled
+    goal_reached = player.finished
 
     score_per_km = 0
     if distance < 40075:
-        score_per_km += current_player.distance_traveled
-    score_per_km = current_player.distance_traveled - (current_player.distance_traveled - 40075)
+        score_per_km += player.distance_traveled
+    score_per_km = player.distance_traveled - (player.distance_traveled - 40075)
     score_per_leftover_time = time * 3
     score_per_co2_consumed = co2_consumed * 10
     score_per_leftover_money = money * 2
@@ -284,7 +287,7 @@ def calc_score():
         score_when_goal_reached = 75000
     total_score += (score_per_leftover_time + score_per_leftover_money + score_per_km +
                     score_when_goal_reached) - score_per_co2_consumed
-    return total_score
+    return int(total_score)
 
 # game_controller.test_data()
 # game_controller.generate_flights()
