@@ -14,16 +14,16 @@ def game_story():
              "Ronald: Hello.\n",
              "They sat face to face in his grandfather's personal study.\n",
              "Ronald: You wanted to see me... here I am. How are you?\n",
-             "Grandfather: Lets skip the pleasantries and all the boring stuff, eh? ",
+             "Grandfather: Let's skip the pleasantries and all the boring stuff, eh? ",
              f"{Fore.RED}I'm about to die.{Fore.RESET}\n",
              "Ronald: Oh.\n",
              "Grandfather: So... because you are practically my only family left, I am leaving everything I own-\n",
              "and the money I saved for you, but there is a catch...\n",
              "I am giving it all to you if you take on a dare.\n",
-             "Ronald: What dare?\n",
+             "Ronald: What kind of dare?\n",
              "Grandfather: I am giving you 20000 euros to go around the world in under 20 days.\n",
              "Accomplish this and you can have everything, which is considerable, by the way.\n",
-             "If you dont make it, I'm liquidating everything I own, and giving the money to charity, "
+             "If you don't make it, I'm liquidating everything I own, and giving the money to charity, "
              "my savings included.\n",
              "Ronald: Well, I guess I need to pack my things then!\n",
              f"Grandfather grins: Brave lad! Here's the 20000 euros in cash. {Fore.GREEN}Good luck!{Fore.RESET}\n"]

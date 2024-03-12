@@ -70,6 +70,15 @@ def draw_airports_from_origin(lat, lon, port_type):
     return flights
 
 
+# Just gets a random airport with no criteria.
+# This is used for picking the starting airport.
+def get_random_airport():
+    db["cursor"].execute("SELECT * FROM airport ORDER BY RANDOM() LIMIT 1;")
+    airport_data = db["cursor"].fetchone()
+    if airport_data:
+        return airport_data[0]
+
+
 # This function calculates the distance between two geographical points
 # It takes the latitude and longitude of both places as tuples or lists
 # Example: distance_between_two_points((25, 67), (34, 100))
