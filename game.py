@@ -143,9 +143,12 @@ class Player:
             self.halfway_latitude = answer["point"][0]
             self.halfway_longitude = answer["point"][1]
 
-    def fly(self, target_airport):
+    def fly(self, flight):
+        port = flight["airport"]
         self.last_location = self.location
-        self.location = target_airport["ident"]
+        self.location = port["ident"]
+        self.money -= flight["cost"]
+        self.co2_consumed += flight["co2_cost"]
         self.check_flight_progress()
 
 
@@ -171,6 +174,7 @@ def calc_cost(distance_amount):
     flight_cost = cost_per_km * distance_amount
     total_cost += flight_cost
     return total_cost
+
 
 def calc_co2(distance_amount):
     total_co2_emissions = 0
