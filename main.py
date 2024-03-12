@@ -35,8 +35,7 @@ def main():
             print(f"--- ROUND {game_controller.round} CONCLUDED ---")
         else:
             print(f"--- NEXT PLAYER TURN ---")
-        current_player = game_controller.players[game_controller.turn]
-        commands.run_commands(current_player)
+        commands.run_commands()
         game_controller.advance_turn()
 
 

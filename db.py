@@ -213,7 +213,8 @@ def delete_unnecessary_airports():
 def modify_game_table():
     to_add = (("money", "int"), ("time", "int"), ("distance_traveled", "int"), ("last_location", "varchar(40)"),
               ("origin_latitude", "double"),
-              ("origin_longitude", "double"), ("halfway_latitude", "double"), ("halfway_longitude", "double"))
+              ("origin_longitude", "double"), ("halfway_latitude", "double"), ("halfway_longitude", "double"),
+              ("finished", "boolean"))
     to_remove = ("co2_left", "co2_budget")
     for pair in to_add:
         try:

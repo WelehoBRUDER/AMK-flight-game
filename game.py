@@ -103,13 +103,14 @@ game_controller = Game()
         origin_longitude: longitude where the player started
         halfway_latitude: latitude where the player traveled halfway around the world
         halfway_longitude: longitude where the player traveled halfway around the world
+        finished: has the player finished the game
 """
 
 
 class Player:
     def __init__(self, id, screen_name, co2_consumed, location, money, time, distance_traveled, origin_latitude,
                  origin_longitude,
-                 halfway_latitude=None, halfway_longitude=None, last_location=None):
+                 halfway_latitude=None, halfway_longitude=None, last_location=None, finished=False):
         print(screen_name)
         self.id = id
         self.screen_name = screen_name
@@ -123,6 +124,7 @@ class Player:
         self.origin_longitude = origin_longitude
         self.halfway_latitude = halfway_latitude,
         self.halfway_longitude = halfway_longitude
+        self.finished = finished
 
     # This function returns the player's stats as a dictionary.
     # Useful when more than one stat is needed at the same time.
@@ -140,6 +142,7 @@ class Player:
             "origin_longitude": self.origin_longitude,
             "halfway_latitude": self.halfway_latitude,
             "halfway_longitude": self.halfway_longitude,
+            "finished": self.finished
         }
 
     def get_name(self):
@@ -176,6 +179,8 @@ class Player:
         if answer["halfway"]:
             self.halfway_latitude = answer["point"][0]
             self.halfway_longitude = answer["point"][1]
+        elif answer["finished"]:
+            self.finished = True
 
     def fly(self, flight):
 
