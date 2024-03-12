@@ -77,6 +77,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
     table.add_column("Direction", style="yellow")
     table.add_column("Distance", style="yellow")
     table.add_column("Cost", style="yellow")
+    table.add_column("CO2 Emission", style="yellow")
 
     # Randomly picks 16 flights from given coordinates (latitude and longitude)
     port = get_airport("EFHK")
@@ -98,10 +99,11 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         cost = timed_flights[i]["cost"]
         simplified_types = airport_type([timed_flights[i]["airport"]])
         types = simplified_types[0]
+        co2 = timed_flights[i]["emissions"]
 
         # Adds flight data from the list of dictionaries to the earlier generated Rich Library table.
         table.add_row(f"{options:02d}", f"{hours:02d}:{minutes:02d}", f"{municipality}, {country}"
-                      , f"{types}", f"{direction}", f"{distance:04d}km", f"{cost:.02f}€")
+                      , f"{types}", f"{direction}", f"{distance:04d}km", f"{cost:.02f}€", f"{co2:.02f} g/km")
     # Prints the timetable for flights
     console.print(table)
 
