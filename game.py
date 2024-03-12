@@ -187,7 +187,7 @@ def init_game():
     for i in range(1, players_amount + 1):
         game_controller.add_player(i, start_cords)
 
-        print(f"Player {i} is now known as {game_controller.players[i].get_name()}")
+        print(f"Player {i} is now known as {game_controller.players[i - 1].get_name()}")
 
 
 def calc_cost(distance_amount):
