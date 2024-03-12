@@ -59,6 +59,9 @@ def print_status():
     current_airport = db.get_airport(current_player.location)
     airport_name = current_airport["name"]
     airport_size = flights.airport_type([current_airport])[0]
+    print(current_player.origin_latitude, current_player.origin_longitude)
+    start_airport = db.get_airport_by_cords(current_player.origin_latitude, current_player.origin_longitude)
+    print(start_airport)
     console = Console()
     table = Table(show_header=True, header_style="cyan")
     table.add_column("Name", style="white")
@@ -68,9 +71,14 @@ def print_status():
     table.add_column("CO2 emissions", style="white")
     table.add_column("Distance traveled", style="white")
     table.add_column("Date", style="white")
-    table.add_row(f"{current_player.screen_name}", f"{airport_name}", f"{airport_size}",
-                  f"{current_player.money:.2f}€", f"{current_player.co2_consumed:.2f}kg",
-                  f"{current_player.distance_traveled}km", f"{current_player.get_time()}")
+    table.add_column("Halfway", style="white")
+    table.add_column("Start airport", style="white")
+    (table.add_row(f"{current_player.screen_name}", f"{airport_name}", f"{airport_size}",
+                   f"{current_player.money:.2f}€", f"{current_player.co2_consumed:.2f}kg",
+                   f"{current_player.distance_traveled}km",
+                   f"{current_player.get_time()}",
+                   f"{current_player.halfway_latitude, current_player.halfway_longitude}", f"{start_airport['name']}"))
+
     console.print(table)
 
 

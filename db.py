@@ -110,6 +110,14 @@ def get_airport(code):
     return print("Airport code can't be empty!")
 
 
+def get_airport_by_cords(lat, lon):
+    if lat and lon:
+        db["cursor"].execute(f"SELECT * FROM airport WHERE latitude_deg = {lat} AND longitude_deg = {lon};")
+        airport = db["cursor"].fetchone()
+        if airport:
+            return airport
+
+
 # This function returns data about all requested airports at once
 # Example: get_multiple_airports(["EFHK", "EFET"])
 def get_multiple_airports(codes):
