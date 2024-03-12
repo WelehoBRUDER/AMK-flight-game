@@ -37,12 +37,17 @@ def print_helplist():
 # Prints the instructions for the game
 def print_instructions():
     instructions = [f"{Fore.CYAN}Around The World{Fore.RESET} is a text-based game where you have to fly "
-                    f"around the world in 20 days (or 10, depending on the chosen difficulty),",
-                    f"while trying to keep your expenses and CO2 emissions as low as possible.",
-                    "You will start on a random airport, and you will have to catch flights around the world until "
+                    "around the world in 20 days while trying to keep your expenses and CO2 emissions "
+                    "as low as possible.",
+                    "- The amount of days you have and your starting money is determined by the game difficulty.",
+                    "- The game can be played alone or with friends (turn based)."
+                    "- You will start on a random airport, and you will have to catch flights around the world until "
                     "you have circled around the globe.",
-                    "Typing 'help' (without apostrophes) will display a list of available commands "
-                    "and a short description for each one.", "Typing 'exit' at any point will quit the game.",
+                    f"-Airports can be {Fore.CYAN}small{Fore.RESET}, {Fore.BLUE}medium{Fore.RESET} or "
+                    f"{Fore.MAGENTA}large{Fore.RESET}. How far you can fly will depend on the size of the airport.",
+                    f"-Typing {Fore.GREEN}'help'{Fore.RESET} (without apostrophes) will display a list of "
+                    f"available commands and a short description for each one.",
+                    f"-Typing {Fore.RED}'exit'{Fore.RESET} at any point will quit the game.",
                     "Good luck!"]
     for line in instructions:
         print(line)
