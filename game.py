@@ -42,6 +42,7 @@ class Game:
             for flight in flights_from_airport:
                 flight["cost"] = calc_cost(flight["distance"])
                 flight["emissions"] = calc_co2(flight["distance"])
+                flight["flight_time"] = calc_flight_time(flight["distance"])
             # Adds the flights and the origin.
             self.flights.append({"flights": flights_from_airport, "from": airport})
 
@@ -179,6 +180,13 @@ def calc_co2(distance_amount):
     flight_emissions = emissions_per_km * distance_amount
     total_co2_emissions += flight_emissions
     return total_co2_emissions
+
+def calc_flight_time(distance_amount):
+    total_flight_time = 0
+    flight_speed = 900
+    flight_time = (distance_amount / flight_speed) * 60
+    total_flight_time += flight_time
+    return total_flight_time
 
 
 game_controller.test_data()
