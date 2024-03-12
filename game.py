@@ -1,5 +1,5 @@
 from db import get_multiple_airports, draw_airports_from_origin, update_player_in_db, \
-    track_progress, get_airport, get_random_airport
+    track_progress, get_country, get_random_airport
 import random
 from rich.progress import track
 import time as py_time
@@ -72,9 +72,6 @@ class Game:
                 flight["flight_time"] = calc_flight_time(flight["distance"])
             # Adds the flights and the origin.
             self.flights.append({"flights": flights_from_airport, "from": airport})
-
-    def get_player(self, player_id):
-        return self.players[player_id]
 
     def update_all_players(self):
         for player in self.players:
@@ -182,7 +179,7 @@ class Player:
 
     def check_flight_progress(self):
         answer = track_progress(**self.get_player())
-        if not answer == None:
+        if not answer is None:
             if "halfway" in answer and answer["halfway"]:
                 self.halfway_latitude = answer["point"][0]
                 self.halfway_longitude = answer["point"][1]
@@ -219,8 +216,9 @@ def init_game():
     game_controller.set_difficulty(difficulty)
 
     starting_airport = get_random_airport()
+    starting_country = get_country(starting_airport["iso_country"])
 
-    print(f"Starting airport is {starting_airport["name"]}")
+    print(f"Starting airport is {starting_airport["name"]}, {starting_country["name"]}")
 
     players_amount = int(input("How many players will be in this session?: "))
     for i in range(1, players_amount + 1):

@@ -312,12 +312,14 @@ def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_
         # Calculate distance between origin and player's location
         distance_between = distance_between_two_points((origin_latitude, origin_longitude), (current_lat, current_lon))
 
-        print("DIST_BETWEEN_CUR_AND_ORIG", distance_between)
+        print("DIST_BETWEEN_CUR_AND_ORIG:", distance_between)
+        print("DIST_BETWEEN_CUR_AND_LAST:", cur_last_dist)
+        print("SECONDARY_DISTANCE_CHECK:", distance_between + cur_last_dist)
         # If the player has passed the halfway point, inform them
         if distance_between >= halfway_distance:
             return {"halfway": True, "point": (current_lat, current_lon)}
         # If the player overshot, then find the passing point with a more thorough check.
-        if distance_between + cur_last_dist >= halfway_distance:
+        if (distance_between + cur_last_dist) >= halfway_distance:
             check_steps(origin_latitude, origin_longitude)
         # You didn't get far enough yet!
         else:
@@ -333,7 +335,7 @@ def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_
         if distance_between >= halfway_distance:
             return {"finished": True}
         # If the player overshot their origin, check more thoroughly.
-        if distance_between + cur_last_dist >= halfway_distance:
+        if (distance_between + cur_last_dist) >= halfway_distance:
             check_steps(halfway_latitude, halfway_longitude)
         # You didn't get far enough yet (twice)!
         else:
