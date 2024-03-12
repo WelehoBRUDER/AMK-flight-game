@@ -199,25 +199,26 @@ def delete_unnecessary_airports():
         print("Deleted unnecessary airports (heli, balloon, closed and seaplane).")
 
 
-# This function adds columns "money" and "time" to the game table.
+# This function adds all needed columns and removes unneeded columns in game table.
 # Ideally this should run only once.
 def modify_game_table():
-    db["cursor"].execute("ALTER TABLE game ADD money INT;")
-    db["database"].commit()
-    if debug_mode:
-        print("Added column 'money' to game table.")
-    db["cursor"].execute("ALTER TABLE game ADD time INT;")
-    db["database"].commit()
-    if debug_mode:
-        print("Added column 'time' to game table.")
-    db["cursor"].execute("ALTER TABLE game DROP COLUMN co2_left;")
-    db["database"].commit()
-    if debug_mode:
-        print("Deleted column 'co2_left' from game table")
-    db["cursor"].execute("ALTER TABLE game DROP COLUMN co2_budget;")
-    db["database"].commit()
-    if debug_mode:
-        print("Deleted column 'co2_budget' from game table")
+    to_add = (("money", "int"), ("time", "int"), ("last_location", "varchar(40)"), ("origin_latitude", "double"),
+              ("origin_longitude", "double"), ("halfway_latitude", "double"), ("halfway_longitude", "double"))
+    to_remove = ("co2_left", "co2_budget")
+    for pair in to_add:
+        key = pair[0]
+        key_type = pair[1]
+        print(f"ALTER TABLE game ADD {key} {key_type};")
+        db["cursor"].execute(f"ALTER TABLE game ADD {key} {key_type};")
+        db["database"].commit()
+        if debug_mode:
+            print(f"Added column '{key}' as {key_type} to game table.")
+    for key in to_remove:
+        db["cursor"].execute(f"ALTER TABLE game DROP COLUMN {key};")
+        db["database"].commit()
+        if debug_mode:
+            print(f"Deleted column '{key}' from game table")
+
 
 # This function runs all other functions that change contents / columns of the database.
 # It needs to be run once before playing the game.
@@ -320,4 +321,4 @@ connect_to_db()
 #     print(flight["distance"], flight["airport"]["iso_country"], flight["airport"]["type"])
 # print(get_country("FI"))
 
-# init_tables()
+init_tables()
