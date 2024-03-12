@@ -5,9 +5,7 @@ import sys
 from rich.console import Console
 from rich.table import Table
 import os
-
 import game
-from game import test_player
 
 
 # Function that checks whether the given command is found in the list of commands, and then returns the
@@ -68,6 +66,8 @@ def print_instructions():
 
 # Prints the players' status in a table
 def print_status():
+    global current_player
+    current_player = current_player
     console = Console()
     table = Table(show_header=True, header_style="cyan")
     table.add_column("Name", style="white")
@@ -76,14 +76,16 @@ def print_status():
     table.add_column("CO2 emissions", style="white")
     table.add_column("Date", style="white")
     # table.add_row(f"{status[1]}", f"{status[2]}", f"{status[3]:.2f}", f"{status[4]}", f"{status[5]}")
-    table.add_row(f"{test_player.screen_name}", f"{test_player.location}", f"{test_player.money:.2f}€",
-                  f"{test_player.co2_consumed:.2f}kg", f"{test_player.get_time()}")
+    table.add_row(f"{current_player.screen_name}", f"{current_player.location}", f"{current_player.money:.2f}€",
+                  f"{current_player.co2_consumed:.2f}kg", f"{current_player.get_time()}")
     console.print(table)
 
 
 # Uses function imported from flights.py that prints the flights' timetable
 # Lets the player choose a flight, changing their current location to a new one)
 def fly():
+    global current_player
+    current_player = current_player
     flights.flight_timetable()
     try:
         selection = input(Fore.RESET + "\nSelect where you want to fly (1-16): ")
@@ -92,9 +94,8 @@ def fly():
         if 0 < selection < 17:
             chosen_flight = (flights.timed_flights[selection - 1])
             port = chosen_flight["airport"]
-            test_player.fly(chosen_flight)
+            current_player.fly(chosen_flight)
             print(f"\nWelcome to {Fore.CYAN}{port["name"]}{Fore.RESET}!")
-            print()
         else:
             print("Invalid selection!")
     except ValueError:
@@ -107,7 +108,9 @@ def invalid_command():
 
 # Keeps asking the player for a command until they exit
 # Calls the 'command_description' function if the input has 2 words (for command-specific 'help' descriptions)
-def run_commands():
+def run_commands(player):
+    global current_player
+    current_player = player
     while True:
         command_input = input("\nEnter a command: ").lower()
         inputsplit = command_input.split()
@@ -116,6 +119,8 @@ def run_commands():
         else:
             command(command_input)()
 
+
+current_player = None
 
 # A dictionary of all commands and a short explanation for each one
 help_list = {"help": f"{Fore.GREEN}Help{Fore.RESET} - Shows this list. Typing a command after "
@@ -128,6 +133,3 @@ help_list = {"help": f"{Fore.GREEN}Help{Fore.RESET} - Shows this list. Typing a 
 
 # Contains all the commands that use functions (except "exit")
 command_functions = {"help": print_helplist, "instructions": print_instructions, "status": print_status, "fly": fly}
-
-if __name__ == "__main__":
-    run_commands()
