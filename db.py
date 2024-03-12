@@ -292,9 +292,9 @@ def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_
 
         return {"halfway": False, "finished": False}
 
-    earth_circumference = 40075
-    # This isn't exactly half because we want to give some leeway
-    halfway_distance = earth_circumference / 2.05
+    # Half of the earth's circumference would be ~20000km
+    # But reaching that is nearly impossible, so we're checking for something far less than that.
+    halfway_distance = 15000
     # Get current and last airport
     current_location = get_airport(location)
     last_location = get_airport(last_location)
