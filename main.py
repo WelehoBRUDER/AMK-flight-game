@@ -36,9 +36,9 @@ def main():
         else:
             print(f"--- NEXT PLAYER TURN ---")
         if game_controller.get_current_player().has_lost():
-            print(f"PLAYER {game_controller.get_current_player().name} HAST LOST THE GAME!")
+            print(f"PLAYER {game_controller.get_current_player().screen_name} HAST LOST THE GAME!")
         elif game_controller.get_current_player().finished:
-            print(f"PLAYER {game_controller.get_current_player().name} HAS TRAVELED AROUND THE WORLD!")
+            print(f"PLAYER {game_controller.get_current_player().screen_name} HAS TRAVELED AROUND THE WORLD!")
         else:
             commands.run_commands()
         game_controller.advance_turn()
