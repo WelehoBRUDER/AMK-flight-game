@@ -206,18 +206,26 @@ def modify_game_table():
               ("origin_longitude", "double"), ("halfway_latitude", "double"), ("halfway_longitude", "double"))
     to_remove = ("co2_left", "co2_budget")
     for pair in to_add:
-        key = pair[0]
-        key_type = pair[1]
-        print(f"ALTER TABLE game ADD {key} {key_type};")
-        db["cursor"].execute(f"ALTER TABLE game ADD {key} {key_type};")
-        db["database"].commit()
-        if debug_mode:
-            print(f"Added column '{key}' as {key_type} to game table.")
+        try:
+            key = pair[0]
+            key_type = pair[1]
+            print(f"ALTER TABLE game ADD {key} {key_type};")
+            db["cursor"].execute(f"ALTER TABLE game ADD {key} {key_type};")
+            db["database"].commit()
+            if debug_mode:
+                print(f"Added column '{key}' as {key_type} to game table.")
+        except Exception as e:
+            if debug_mode:
+                print(e)
     for key in to_remove:
-        db["cursor"].execute(f"ALTER TABLE game DROP COLUMN {key};")
-        db["database"].commit()
-        if debug_mode:
-            print(f"Deleted column '{key}' from game table")
+        try:
+            db["cursor"].execute(f"ALTER TABLE game DROP COLUMN {key};")
+            db["database"].commit()
+            if debug_mode:
+                print(f"Deleted column '{key}' from game table")
+        except Exception as e:
+            if debug_mode:
+                print(e)
 
 
 # This function runs all other functions that change contents / columns of the database.
