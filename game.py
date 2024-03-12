@@ -12,6 +12,7 @@ class Game:
     def __init__(self):
         self.players = []
         self.turn = 0
+        self.round = 0
         self.flights = []
         self.difficulty = None
 

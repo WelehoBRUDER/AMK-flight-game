@@ -31,7 +31,8 @@ def main():
         if game_controller.get_turn() >= game_controller.players_amount():
             game_controller.reset_turns()
             game_controller.generate_flights()
-            print("--- FIRST ROUND CONCLUDED ---")
+            game_controller.round += 1
+            print(f"--- ROUND {game_controller.round} CONCLUDED ---")
         else:
             print(f"--- NEXT PLAYER TURN ---")
         current_player = game_controller.players[game_controller.turn]
