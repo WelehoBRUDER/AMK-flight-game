@@ -338,6 +338,7 @@ def track_progress(origin_latitude, origin_longitude, halfway_latitude, halfway_
         # You didn't get far enough yet (twice)!
         else:
             return {"finished": False}
+    return {}
 
 
 connect_to_db()
