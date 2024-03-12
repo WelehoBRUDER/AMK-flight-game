@@ -27,6 +27,9 @@ class Game:
     def get_player(self, index):
         return self.players[index]
 
+    def get_current_player(self):
+        return self.players[self.turn]
+
     # This function gets all flights available to the requested player.
     # The flights are based on the airport,
     # if two players are in the same place, they get the same flights.
@@ -138,7 +141,7 @@ class Player:
 
         days = int(self.time / (60 * 24))
         hours = int((self.time - days * 24 * 60) / 60)
-        minutes = self.time - days * 24 * 60 - hours * 60
+        minutes = int(self.time - days * 24 * 60 - hours * 60)
         # +1 so that day "0" is day 1. Easier for the player to read.
         return f"day {days + 1}, {f'0{hours}' if hours < 10 else hours}:{f'0{minutes}' if minutes < 10 else minutes}"
 

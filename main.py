@@ -29,7 +29,9 @@ def main():
 
     while True:
         current_player = game_controller.players[game_controller.turn]
-        commands.run_commands(current_player)
+        answer = commands.run_commands(current_player)
+        if answer != "exit":
+            break
 
 
 if __name__ == "__main__":
