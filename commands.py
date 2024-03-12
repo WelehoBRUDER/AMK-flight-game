@@ -72,7 +72,7 @@ def print_status():
     table.add_column("Money", style="white")
     table.add_column("CO2 emissions", style="white")
     table.add_column("Day", style="white")
-    table.add_row(f"{status[1]}", f"{status[2]}", f"{status[3]}", f"{status[4]}", f"{status[5]}")
+    table.add_row(f"{status[1]}", f"{status[2]}", f"{status[3]:.2f}", f"{status[4]}", f"{status[5]}")
     console.print(table)
 
 
@@ -89,12 +89,12 @@ def fly():
             port = chosen_flight["airport"]
             new_coordinates = (port["latitude_deg"], port["longitude_deg"])
             status[2] = port["name"]
-            flying_msg = "Flying to airport..."
-            for letter in flying_msg:
+            status[3] = status[3] - chosen_flight["cost"]
+            for letter in "Flying to airport...":
                 print(letter, end="")
-                time.sleep(0.1)
+                time.sleep(0.05)
                 sys.stdout.flush()
-            print(f"\nWelcome to {port["name"]}!")
+            print(f"\nWelcome to {Fore.CYAN}{port["name"]}{Fore.RESET}!")
         else:
             print("Invalid selection!")
     except ValueError:
