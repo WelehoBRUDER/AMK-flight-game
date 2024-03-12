@@ -3,6 +3,9 @@ from db import get_multiple_airports, draw_airports_from_origin, update_player_i
 import random
 from rich.progress import track
 import time as py_time
+import sys
+import os
+from colorama import Fore
 
 
 class Game:
@@ -228,6 +231,20 @@ def calc_flight_time(distance_amount):
     flight_time = (distance_amount / flight_speed) * 60
     total_flight_time += flight_time
     return total_flight_time
+
+
+# Checks if the player has typed "exit" and if so, exits the program
+# Also clears the console
+def clear_and_exit_check(text):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    text = str(text)
+    if text.lower() == "exit":
+        exit_msg = f"{Fore.RED}Quitting the game...{Fore.RESET}"
+        for letter in exit_msg:
+            print(letter, end="")
+            py_time.sleep(0.03)
+            sys.stdout.flush()
+        exit()
 
 # game_controller.test_data()
 # game_controller.generate_flights()
