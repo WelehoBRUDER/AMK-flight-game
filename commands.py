@@ -6,6 +6,9 @@ from rich.console import Console
 from rich.table import Table
 import os
 
+import game
+from game import test_player
+
 
 # Function that checks whether the given command is found in the list of commands, and then returns the
 # corresponding function
@@ -71,8 +74,10 @@ def print_status():
     table.add_column("Location", style="white")
     table.add_column("Money", style="white")
     table.add_column("CO2 emissions", style="white")
-    table.add_column("Day", style="white")
-    table.add_row(f"{status[1]}", f"{status[2]}", f"{status[3]:.2f}", f"{status[4]}", f"{status[5]}")
+    table.add_column("Date", style="white")
+    # table.add_row(f"{status[1]}", f"{status[2]}", f"{status[3]:.2f}", f"{status[4]}", f"{status[5]}")
+    table.add_row(f"{test_player.screen_name}", f"{test_player.location}", f"{test_player.money:.2f}€",
+                  f"{test_player.co2_consumed:.2f}kg", f"{test_player.get_time()}")
     console.print(table)
 
 
@@ -87,14 +92,13 @@ def fly():
         if 0 < selection < 17:
             chosen_flight = (flights.timed_flights[selection - 1])
             port = chosen_flight["airport"]
-            new_coordinates = (port["latitude_deg"], port["longitude_deg"])
-            status[2] = port["name"]
-            status[3] = status[3] - chosen_flight["cost"]
+            test_player.fly(chosen_flight)
             for letter in "Flying to airport...":
                 print(letter, end="")
                 time.sleep(0.05)
                 sys.stdout.flush()
             print(f"\nWelcome to {Fore.CYAN}{port["name"]}{Fore.RESET}!")
+            print()
         else:
             print("Invalid selection!")
     except ValueError:
@@ -125,10 +129,6 @@ help_list = {"help": f"{Fore.GREEN}Help{Fore.RESET} - Shows this list. Typing a 
                        f"Shows your name, location, money, consumed CO2, days and time.",
              "fly": f"{Fore.GREEN}Fly{Fore.RESET} - Displays all available flights, and lets you pick one of them.",
              "exit": f"{Fore.GREEN}Exit{Fore.RESET} - Quits the game."}
-
-# Player stats placeholder
-status = {1: "Ronald McDonald", 2: "Starting airport", 3: 20000,
-          4: 0, 5: 1}
 
 # Contains all the commands that use functions (except "exit")
 command_functions = {"help": print_helplist, "instructions": print_instructions, "status": print_status, "fly": fly}
