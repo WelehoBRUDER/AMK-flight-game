@@ -179,10 +179,10 @@ class Player:
 
     def check_flight_progress(self):
         answer = track_progress(**self.get_player())
-        if answer["halfway"]:
+        if "halfway" in answer and answer["halfway"]:
             self.halfway_latitude = answer["point"][0]
             self.halfway_longitude = answer["point"][1]
-        elif answer["finished"]:
+        elif "finished" in answer and answer["finished"]:
             self.finished = True
 
     def fly(self, flight):
