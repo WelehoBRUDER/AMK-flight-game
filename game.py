@@ -142,6 +142,11 @@ class Player:
             self.halfway_latitude = answer["point"][0]
             self.halfway_longitude = answer["point"][1]
 
+    def fly(self, target_airport):
+        self.last_location = self.location
+        self.location = target_airport["ident"]
+        self.check_flight_progress()
+
 
 def init_game():
     global game_controller
