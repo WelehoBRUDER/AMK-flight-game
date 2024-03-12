@@ -73,19 +73,6 @@ def story_skip():
             print("Please choose 'yes' or 'no'.")
 
 
-# Asks the player how many players there will be
-def player_amount():
-    while True:
-        try:
-            number_of_players = input("\nEnter the amount of players: ")
-            commands.clear_and_exit_check(number_of_players)
-            number_of_players = int(number_of_players)
-            player_names(number_of_players)
-            break
-        except ValueError:
-            print("Amount must be a number!")
-
-
 # Asks the player(s) their name(s), repeating the input until every player has a name
 # If the player name already exists, it will keep asking for a name until a new one is inputted
 # TO DO: Also check if the player name already exists in the database

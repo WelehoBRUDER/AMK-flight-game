@@ -1,5 +1,5 @@
-from db import get_multiple_airports, draw_airports_from_origin, get_all_players_from_db, update_player_in_db, \
-    track_progress, get_airport
+from db import get_multiple_airports, draw_airports_from_origin, update_player_in_db, \
+    track_progress, get_airport, get_random_airport
 import random
 
 
@@ -8,12 +8,16 @@ class Game:
         self.players = []
         self.turn = 0
         self.flights = []
+        self.difficulty = None
+
+    def set_difficulty(self, difficulty):
+        self.difficulty = difficulty
 
     # Creates player using Player class and adds to the list
-    def add_player(self, i, diff):
+    def add_player(self, i):
         player_name = input(f"Player {i} name: ")
         player_location = "EFHK"
-        player_money = diff["money"]
+        player_money = self.difficulty["money"]
         self.players.append(Player(i, player_name, 0, player_location, player_money, 0))
 
     def get_player(self, index):
@@ -147,21 +151,27 @@ class Player:
         self.location = port["ident"]
         self.money -= flight["cost"]
         self.co2_consumed += flight["emissions"]
+        self.time += flight["flight_time"]
         self.check_flight_progress()
 
 
 def init_game():
     global game_controller
     difficulties = {
-        "easy": {"money": 20000},
-        "hard": {"money": 10000}
+        "easy": {"money": 30000, "time_limit": 30},
+        "medium": {"money": 20000, "time_limit": 20},
+        "hard": {"money": 10000, "time_limit": 10}
     }
 
     difficulty = difficulties[input("Choose difficulty (easy or hard): ")]
 
+    game_controller.set_difficulty(difficulty)
+
+    starting_airport = get_r
+
     players_amount = int(input("How many players will be in this session?: "))
     for i in range(1, players_amount + 1):
-        game_controller.add_player(i, difficulty)
+        game_controller.add_player(i)
 
         print(f"Player {i} is now known as {game_controller.players[i]}")
 
@@ -180,6 +190,7 @@ def calc_co2(distance_amount):
     flight_emissions = emissions_per_km * distance_amount
     total_co2_emissions += flight_emissions
     return total_co2_emissions
+
 
 def calc_flight_time(distance_amount):
     total_flight_time = 0
