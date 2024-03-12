@@ -18,10 +18,11 @@ class Game:
     # Creates player using Player class and adds to the list
     def add_player(self, i, start):
         player_name = input(f"Player {i} name: ")
-        player_location = "EFHK"
+        player_location = start["ident"]
         player_money = self.difficulty["money"]
         print(player_name)
-        self.players.append(Player(i, player_name, 0, player_location, player_money, 0, start[0], start[1]))
+        self.players.append(
+            Player(i, player_name, 0, player_location, player_money, 0, start["latitude_deg"], start["longitude_deg"]))
 
     def get_player(self, index):
         return self.players[index]
@@ -174,18 +175,17 @@ def init_game():
         "hard": {"money": 10000, "time_limit": 10}
     }
 
-    difficulty = difficulties[input("Choose difficulty (easy or hard): ")]
+    difficulty = difficulties[input("Choose difficulty (easy, medium or hard): ")]
 
     game_controller.set_difficulty(difficulty)
 
     starting_airport = get_random_airport()
-    start_cords = (starting_airport["latitude_deg"], starting_airport["longitude_deg"])
 
     print(f"Starting airport is {starting_airport["name"]}")
 
     players_amount = int(input("How many players will be in this session?: "))
     for i in range(1, players_amount + 1):
-        game_controller.add_player(i, start_cords)
+        game_controller.add_player(i, starting_airport)
 
         print(f"Player {i} is now known as {game_controller.players[i - 1].get_name()}")
     game_controller.generate_flights()
