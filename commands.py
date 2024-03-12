@@ -11,31 +11,17 @@ import game
 # Function that checks whether the given command is found in the list of commands, and then returns the
 # corresponding function
 def command(text):
-    clear_and_exit_check(text)
+    game.clear_and_exit_check(text)
     if text in command_functions:
         return command_functions[text]
     else:
         return invalid_command
 
 
-# Checks if the player has typed "exit" and if so, exits the program
-# Also clears the console
-def clear_and_exit_check(text):
-    os.system('cls' if os.name == 'nt' else 'clear')
-    text = str(text)
-    if text.lower() == "exit":
-        exit_msg = f"{Fore.RED}Quitting the game...{Fore.RESET}"
-        for letter in exit_msg:
-            print(letter, end="")
-            time.sleep(0.03)
-            sys.stdout.flush()
-        exit()
-
-
 # Checks if the first word is "help" and if the second word is in the list of commands, and prints out the
 # description for that specific command
 def command_description(text):
-    clear_and_exit_check(text)
+    game.clear_and_exit_check(text)
     if text[0] == "help" and text[1] in help_list:
         print(help_list[text[1]])
     else:
@@ -89,7 +75,7 @@ def fly():
     flights.flight_timetable()
     try:
         selection = input(Fore.RESET + "\nSelect where you want to fly (1-16): ")
-        clear_and_exit_check(selection)
+        game.clear_and_exit_check(selection)
         selection = int(selection)
         if 0 < selection < 17:
             chosen_flight = (flights.timed_flights[selection - 1])
