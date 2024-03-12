@@ -148,7 +148,7 @@ class Player:
         self.last_location = self.location
         self.location = port["ident"]
         self.money -= flight["cost"]
-        self.co2_consumed += flight["co2_cost"]
+        self.co2_consumed += flight["emissions"]
         self.check_flight_progress()
 
 
