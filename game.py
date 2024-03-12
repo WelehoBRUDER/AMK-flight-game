@@ -173,6 +173,12 @@ class Player:
     def update(self):
         update_player_in_db(self.get_player())
 
+    def has_lost(self):
+        difficulty = game_controller.difficulty
+        if not self.finished and (self.money <= 0 or self.time > difficulty["days"] * 24 * 60):
+            return True
+        return False
+
     def check_flight_progress(self):
         answer = track_progress(**self.get_player())
         print(answer)
