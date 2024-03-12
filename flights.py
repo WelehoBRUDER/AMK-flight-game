@@ -18,7 +18,7 @@ def sort_by_time(flight):  # Sort function for flight times
 # Time is a dict with ints: (hours, minutes)
 def added_flight_info(flights):
     for i in range(16):
-        random_hours = random.randint(00, 23)
+        random_hours = random.randint(1, 11)
         random_minutes = random.randint(00, 59)
 
         # Checks every individual iso_country code from the list of flights dictionaries.
@@ -71,7 +71,7 @@ def flight_timetable():  # Prints a flight timetable with options for the player
     console = Console()
     table = Table(show_header=True, header_style="yellow", show_lines=False)
     table.add_column("Options", style="yellow")
-    table.add_column("Time", style="yellow")
+    table.add_column("Departing in", style="yellow")
     table.add_column("Destination", width=30, style="yellow")
     table.add_column("Airport(type)", style="yellow")
     table.add_column("Direction", style="yellow")
@@ -102,8 +102,9 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         co2 = timed_flights[i]["emissions"]
 
         # Adds flight data from the list of dictionaries to the earlier generated Rich Library table.
-        table.add_row(f"{options:02d}", f"{hours:02d}:{minutes:02d}", f"{municipality}, {country}"
+        table.add_row(f"{options:02d}", f"{hours}h {minutes}min", f"{municipality}, {country}"
                       , f"{types}", f"{direction}", f"{distance:04d}km", f"{cost:.02f}€", f"{co2:.02f} kg")
+
     # Prints the timetable for flights
     console.print(table)
 
