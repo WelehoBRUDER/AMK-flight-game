@@ -26,14 +26,12 @@ def main():
         current_player = game_controller.get_current_player()
         current_player.reset_time_check()
         if current_player.has_lost():
-            current_player.check_real_time()
             display_loss_screen()
         elif current_player.finished:
-            current_player.check_real_time()
             display_win_screen()
         else:
-            current_player.check_real_time()
             commands.run_commands()
+        current_player.check_real_time()
         game_controller.advance_turn()
 
     if game_over:

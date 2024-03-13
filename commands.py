@@ -59,9 +59,7 @@ def print_status():
     current_airport = db.get_airport(current_player.location)
     airport_name = current_airport["name"]
     airport_size = flights.airport_type([current_airport])[0]
-    print(current_player.origin_latitude, current_player.origin_longitude)
     start_airport = db.get_airport_by_cords(current_player.origin_latitude, current_player.origin_longitude)
-    print(start_airport)
     # Creates a table, defines the column names, and displays player data on the second first row
     console = Console()
     table = Table(show_header=True, header_style="cyan")
@@ -79,7 +77,7 @@ def print_status():
                    f"{current_player.money:.2f}€", f"{current_player.co2_consumed:.2f}kg",
                    f"{current_player.distance_traveled}km",
                    f"{current_player.get_time()}",
-                   f"{current_player.real_time / 1000}",
+                   f"{current_player.get_pretty_time()}",
                    f"{"Reached" if current_player.halfway_longitude is not None else "Not Reached"}",
                    f"{start_airport['name']}"))
     console.print(table)

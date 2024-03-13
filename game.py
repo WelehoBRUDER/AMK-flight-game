@@ -211,7 +211,7 @@ class Player:
         self.time += int(total_time)
         self.distance_traveled += flight["distance"]
         self.check_flight_progress()
-        self.check_real_time()
+        # self.check_real_time()
 
     def reset_time_check(self):
         print("reset")
@@ -220,8 +220,15 @@ class Player:
     def check_real_time(self):
         current_time = int(py_time.time() * 1000)
         print("check", current_time, self.real_time_last_check)
-        self.real_time = current_time - self.real_time_last_check
+        self.real_time += current_time - self.real_time_last_check
         self.real_time_last_check = current_time
+
+    def get_pretty_time(self):
+        milliseconds = self.real_time
+        seconds = int(milliseconds / 1000) % 60
+        minutes = int(milliseconds / (1000 * 60)) % 60
+        hours = int(milliseconds / (1000 * 3600)) % 24
+        return "%02d:%02d:%02d" % (hours, minutes, seconds)
 
 
 def init_game():
