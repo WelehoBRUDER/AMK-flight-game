@@ -20,7 +20,7 @@ def game_story():
              f"{Fore.RED}I'm about to die.{Fore.RESET}\n",
              f"{Fore.YELLOW}Ronald{Fore.RESET}: Ok.\n\n",
              f"{Fore.MAGENTA}Grandfather{Fore.RESET}: So... because you are practically my only family left, I am "
-             f"leaving everything I own, and the money I saved for you, but there is a catch...\n",
+             f"leaving everything I own,\n             and the money I saved for you, but there is a catch...\n",
              f"{Fore.MAGENTA}Grandfather{Fore.RESET}: I am giving it all to you if you take on a dare.\n",
              f"{Fore.YELLOW}Ronald{Fore.RESET}: What kind of dare?\n",
              f"{Fore.MAGENTA}Grandfather{Fore.RESET}: I am giving you 20000€ to fly around the world in under 20 days.\n",
