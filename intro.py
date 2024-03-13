@@ -69,10 +69,12 @@ def game_intro():
     while True:
         read_controls = input("Would you like to view commands before start? (yes/no): ").lower()
         if read_controls == "yes" or read_controls == "y":
+            game.clear_and_exit_check(0)
             commands.print_helplist()
             print()
             break
         elif read_controls == "no" or read_controls == "n":
+            game.clear_and_exit_check(0)
             break
         else:
             print(f"{Fore.RED}Please choose 'yes' or 'no'.{Fore.RESET}")
