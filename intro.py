@@ -31,7 +31,7 @@ def game_story():
              f"{Fore.MAGENTA}Grandfather:{Fore.RESET} *grins* Brave lad! Here's the 20000€ in cash.\n",
              f"{Fore.MAGENTA}Grandfather:{Fore.RESET} Good luck!\n\n"]
     while True:
-        animation = input("Do you want to see the story reading animation? (yes/no)").lower()
+        animation = input("Do you want to see the story reading animation? (yes/no): ").lower()
         game.clear_and_exit_check(animation)
         if animation == "yes" or animation == "y":
             print(f"{Fore.CYAN}The story{Fore.RESET}\n"
