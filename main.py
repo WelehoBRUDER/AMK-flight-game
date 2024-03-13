@@ -10,13 +10,19 @@ def main():
     main_menu_and_leaderboards_test.main_menu()
     init_game()
     game_over = False
-
     while not game_over:
+
         players = game_controller.get_players_stills_playing()
         if len(players) == 0:
             print(f"\nTHE GAME HAS FINISHED!")
             game_over = True
+            last_player = game_controller.players[game_controller.last_player_index]
+            if last_player.has_lost():
+                display_loss_screen()
+            elif last_player.finished:
+                display_win_screen()
             break
+
         if game_controller.get_turn() >= game_controller.players_amount():
             game_controller.reset_turns()
             game_controller.generate_flights()

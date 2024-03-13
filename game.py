@@ -14,6 +14,7 @@ class Game:
         self.players = []
         self.turn = 0
         self.round = 0
+        self.last_player_index = 0
         self.flights = []
         self.difficulty = None
 
@@ -40,7 +41,12 @@ class Game:
         return self.turn
 
     def get_current_player(self):
-        return self.get_players_stills_playing()[self.turn]
+        _players = self.get_players_stills_playing()
+        if len(_players) == 0:
+            return self.players[self.last_player_index]
+        player = _players[self.turn]
+        self.last_player_index = player.id - 1
+        return player
 
     def advance_turn(self):
         self.turn += 1
