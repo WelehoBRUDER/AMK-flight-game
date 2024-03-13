@@ -33,7 +33,7 @@ def added_flight_info(flights):
 
         add_to_flight_info = {
             "options": i + 1,  # Generates player options starting from 1
-            "time": {"hours": random_hours, "minutes": random_minutes},
+            "time": {"hours": random_hours, "minutes": random_minutes},  # Gives time two separate keys (hours, minutes)
             "country": country_name  # Adds country information to the dictionary
         }
         add_to_flight_info.update(flights[i])
@@ -82,11 +82,11 @@ def flight_timetable():  # Prints a flight timetable with options for the player
     # Randomly picks 16 flights from given coordinates (latitude and longitude)
     random_flights = game_controller.get_flights(game_controller.turn)
     global timed_flights
-    # times_of_the_flights function uses the random flights to generate timetables for the flights.
+    # added_flight_info function uses the random flights to generate timetables for the flights.
     timed_flights = added_flight_info(random_flights)
-    # print(type(timed_flights))
-    # Loop searches information about the 16 random flights from a list of dictionaries compiled in above functions
-    # It then prints the selected flight information like a timetable
+    # Loop gets data about the 16 random flights from a list of dictionaries
+    # compiled in db and added_flight_info().
+    # It then generates a timetable using the data we want.
     for i in range(0, len(timed_flights)):
         options = timed_flights[i]["options"]
         hours, minutes = timed_flights[i]["time"]["hours"], timed_flights[i]["time"]["minutes"]
