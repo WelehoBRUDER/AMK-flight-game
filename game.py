@@ -1,4 +1,4 @@
-from db import get_multiple_airports, draw_airports_from_origin, update_player_in_db, \
+from db import get_multiple_airports, draw_airports_from_origin, add_player_to_db, \
     track_progress, get_country, get_random_airport
 import random
 from rich.progress import track
@@ -168,9 +168,9 @@ class Player:
         # +1 so that day "0" is day 1. Easier for the player to read.
         return f"day {days + 1}, {f'0{hours}' if hours < 10 else hours}:{f'0{minutes}' if minutes < 10 else minutes}"
 
-    # Updates the player inside the db.
-    def update(self):
-        update_player_in_db(self.get_player())
+    # Adds this player to the leaderboards after they have won.
+    def add_to_leaderboards(self):
+        add_player_to_db(self)
 
     def has_lost(self):
         difficulty = game_controller.difficulty
@@ -186,6 +186,7 @@ class Player:
                 self.halfway_longitude = answer["point"][1]
             elif "finished" in answer and answer["finished"]:
                 self.finished = True
+                self.add_to_leaderboards()
 
     def fly(self, flight):
 

@@ -147,43 +147,24 @@ def get_country(iso_country):
 
 
 # This function adds a new player to the database.
+# The database holds all winners for the leaderboards screen.
 def add_player_to_db(player):
     db["cursor"].execute(f"""
-    INSERT INTO game (id, screen_name, co2_consumed, location, money, time)
-    VALUES ({player["id"]}, {player["screen_name"]}, {player["co2_consumed"]}, {player["location"]}, {player["money"]}, {player["time"]})
+    INSERT INTO game (id, screen_name, co2_consumed, money, time, score)
+    VALUES ('{player.id}', '{player.screen_name}', {player.co2_consumed}, {player.money}, {player.time}, {player.score()});
     """)
     db["database"].commit()
     if debug_mode:
         print(f"Added {player["screen_name"]} to game table.")
 
 
-# This function modifies a specific player's entry in the database.
-# It updates all stats that change over the game.
-# ID and name can't be altered after the game has started, so they are excluded.
-def update_player_in_db(player):
-    db["cursor"].execute(f"""
-    UPDATE game
-    SET co2_consumed = {player["co2_consumed"]}, location = {player["location"]}, money = {player["money"]}, time = {player["time"]}
-    WHERE id = player["id"]
-    """)
-    db["database"].commit()
-    if debug_mode:
-        print(f"Player {player["id"]} successfully updated.")
-
-
-# This function gets a specific player from the database.
-def get_player_from_db(player_id):
-    db["cursor"].execute(f"SELECT * FROM game WHERE id = {player_id}")
-    player = db["cursor"].fetchone()
-    if debug_mode:
-        print(f"Found player {player_id} from db.")
-
-    return player
-
-
-# This function gets all players from the database.
+# This function gets all players from the database
+# sorted by their score.
 def get_all_players_from_db():
-    db["cursor"].execute(f"SELECT * FROM game")
+    db["cursor"].execute(f"""
+    SELECT * FROM game
+    ORDER BY score DESC;
+    """)
     player = db["cursor"].fetchall()
     if debug_mode:
         print(f"Returned all players from db.")
@@ -219,10 +200,7 @@ def delete_unnecessary_airports():
 # This function adds all needed columns and removes unneeded columns in game table.
 # Ideally this should run only once.
 def modify_game_table():
-    to_add = (("money", "int"), ("time", "int"), ("distance_traveled", "int"), ("last_location", "varchar(40)"),
-              ("origin_latitude", "double"),
-              ("origin_longitude", "double"), ("halfway_latitude", "double"), ("halfway_longitude", "double"),
-              ("finished", "boolean"))
+    to_add = (("money", "int"), ("time", "int"), ("score", "int"))
     to_remove = ("co2_left", "co2_budget")
     for pair in to_add:
         try:
