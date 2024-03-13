@@ -50,11 +50,11 @@ def end_screen_status():
     table.add_column("Money", style="white")
     table.add_column("CO2 emissions", style="white")
     table.add_column("Distance traveled", style="white")
-    table.add_column("Game time", style="white")
+    table.add_column("Date", style="white")
     table.add_column("Real time", style="white")
     table.add_row(f"{current_player.screen_name}", f"{current_player.money:.02f}€",
                   f"{current_player.co2_consumed:.02f}kg", f"{current_player.distance_traveled}km",
-                  f"{current_player.time / 60:.02f}h", f"{current_player.get_pretty_time()}")
+                  f"{current_player.get_time()}", f"{current_player.get_pretty_time()}")
     console.print(table)
 
 
