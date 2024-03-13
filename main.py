@@ -39,8 +39,7 @@ def main():
                 main()
                 break
             elif back_to_menu.lower() == "n" or back_to_menu.lower() == "no":
-                clear_and_exit_check(0)
-                print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
+                clear_and_exit_check("exit")
                 break
             else:
                 clear_and_exit_check(0)
