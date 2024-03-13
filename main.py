@@ -3,16 +3,17 @@ from game import *
 import commands
 from main_menu_and_leaderboards_test import *
 import db
+import time
 
 
 def main():
     main_menu_and_leaderboards_test.main_menu()
     init_game()
-    players_done = 0
     game_over = False
 
     while not game_over:
-        if players_done >= game_controller.players_amount():
+        players = game_controller.get_players_stills_playing()
+        if len(players) == 0:
             print(f"\nTHE GAME HAS FINISHED!")
             game_over = True
         if game_controller.get_turn() >= game_controller.players_amount():
@@ -22,13 +23,16 @@ def main():
             print(f"--- ROUND {game_controller.round} CONCLUDED ---")
         else:
             print(f"--- NEXT PLAYER TURN ---")
-        if game_controller.get_current_player().has_lost():
+        current_player = game_controller.get_current_player()
+        current_player.reset_time_check()
+        if current_player.has_lost():
+            current_player.check_real_time()
             display_loss_screen()
-            players_done += 1
-        elif game_controller.get_current_player().finished:
+        elif current_player.finished:
+            current_player.check_real_time()
             display_win_screen()
-            players_done += 1
         else:
+            current_player.check_real_time()
             commands.run_commands()
         game_controller.advance_turn()
 

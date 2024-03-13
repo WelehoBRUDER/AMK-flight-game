@@ -19,6 +19,9 @@ class Game:
     def set_difficulty(self, difficulty):
         self.difficulty = difficulty
 
+    def get_players_stills_playing(self):
+        return [player for player in self.players if not (player.has_lost() or player.finished)]
+
     # Creates player using Player class and adds to the list
     def add_player(self, i, start):
         player_name = input(f"Player {i} name: ")
@@ -36,7 +39,7 @@ class Game:
         return self.turn
 
     def get_current_player(self):
-        return self.players[self.turn]
+        return self.get_players_stills_playing()[self.turn]
 
     def advance_turn(self):
         self.turn += 1
@@ -45,7 +48,7 @@ class Game:
         self.turn = 0
 
     def players_amount(self):
-        return len(self.players)
+        return len(self.get_players_stills_playing())
 
     # This function gets all flights available to the requested player.
     # The flights are based on the airport,
@@ -60,7 +63,7 @@ class Game:
     def generate_flights(self):
         # Gets all airports based on where the players are currently.
         # If all are at the same port, this list will have a length of 1.
-        airport_codes = [player.location for player in self.players]
+        airport_codes = [player.location for player in self.get_players_stills_playing()]
         # Gets airport data using the codes defined above
         airports = get_multiple_airports(airport_codes)
         for airport in airports:
@@ -94,6 +97,8 @@ game_controller = Game()
         location: location of the player (airport)
         money: how broke the player is
         time: how much time the player has used
+        real_time_last_check: last time the game checked elapsed time (in milliseconds) (full date time)
+        real_time: how many milliseconds the player has used during their turns
         distance_traveled: how many kilometers the player has flown
         last_location: last airport the player was in
         origin_latitude: latitude where the player started
@@ -105,7 +110,8 @@ game_controller = Game()
 
 
 class Player:
-    def __init__(self, id, screen_name, co2_consumed, location, money, time, distance_traveled, origin_latitude,
+    def __init__(self, id, screen_name, co2_consumed, location, money, time, distance_traveled,
+                 origin_latitude,
                  origin_longitude,
                  halfway_latitude=None, halfway_longitude=None, last_location=None, finished=False, **kwargs):
         self.id = id
@@ -114,6 +120,8 @@ class Player:
         self.location = location
         self.money = money
         self.time = time
+        self.real_time_last_check = 0
+        self.real_time = 0
         self.distance_traveled = distance_traveled
         self.last_location = location if last_location is None else last_location
         self.origin_latitude = origin_latitude
@@ -132,6 +140,7 @@ class Player:
             "location": self.location,
             "money": self.money,
             "time": self.time,
+            "real_time": self.real_time,
             "distance_traveled": self.distance_traveled,
             "last_location": self.last_location,
             "origin_latitude": self.origin_latitude,
@@ -180,7 +189,7 @@ class Player:
 
     def check_flight_progress(self):
         answer = track_progress(**self.get_player())
-        if not answer is None:
+        if answer is not None:
             if "halfway" in answer and answer["halfway"]:
                 self.halfway_latitude = answer["point"][0]
                 self.halfway_longitude = answer["point"][1]
@@ -202,6 +211,17 @@ class Player:
         self.time += int(total_time)
         self.distance_traveled += flight["distance"]
         self.check_flight_progress()
+        self.check_real_time()
+
+    def reset_time_check(self):
+        print("reset")
+        self.real_time_last_check = int(py_time.time() * 1000)
+
+    def check_real_time(self):
+        current_time = int(py_time.time() * 1000)
+        print("check", current_time, self.real_time_last_check)
+        self.real_time = current_time - self.real_time_last_check
+        self.real_time_last_check = current_time
 
 
 def init_game():

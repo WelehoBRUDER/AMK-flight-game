@@ -72,13 +72,16 @@ def print_status():
     table.add_column("CO2 emissions", style="white")
     table.add_column("Distance traveled", style="white")
     table.add_column("Date", style="white")
+    table.add_column("Realtime", style="white")
     table.add_column("Halfway", style="white")
     table.add_column("Start airport", style="white")
     (table.add_row(f"{current_player.screen_name}", f"{airport_name}", f"{airport_size}",
                    f"{current_player.money:.2f}€", f"{current_player.co2_consumed:.2f}kg",
                    f"{current_player.distance_traveled}km",
                    f"{current_player.get_time()}",
-                   f"{current_player.halfway_latitude, current_player.halfway_longitude}", f"{start_airport['name']}"))
+                   f"{current_player.real_time / 1000}",
+                   f"{"Reached" if current_player.halfway_longitude is not None else "Not Reached"}",
+                   f"{start_airport['name']}"))
     console.print(table)
 
 

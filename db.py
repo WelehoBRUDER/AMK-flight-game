@@ -210,7 +210,7 @@ def delete_unnecessary_airports():
 # This function adds all needed columns and removes unneeded columns in game table.
 # Ideally this should run only once.
 def modify_game_table():
-    to_add = (("money", "int"), ("time", "int"), ("score", "int"), ("distance_traveled", "int"))
+    to_add = (("money", "int"), ("time", "int"), ("real_time", "int"), ("score", "int"), ("distance_traveled", "int"))
     to_remove = ("co2_left", "co2_budget")
     for pair in to_add:
         try:
