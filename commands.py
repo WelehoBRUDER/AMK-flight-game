@@ -60,6 +60,8 @@ def print_status():
     current_player = game.game_controller.get_current_player()
     current_airport = db.get_airport(current_player.location)
     airport_name = current_airport["name"]
+    current_country = db.get_country(current_airport["iso_country"])
+    country_name = current_country["name"]
     airport_size = flights.airport_type([current_airport])[0]
     start_airport = db.get_airport_by_cords(current_player.origin_latitude, current_player.origin_longitude)
     # Creates a table, defines the column names, and displays player data on the second first row
@@ -75,7 +77,7 @@ def print_status():
     table.add_column("Realtime", style="white")
     table.add_column("Halfway", style="white")
     table.add_column("Start airport", style="white")
-    (table.add_row(f"{current_player.screen_name}", f"{airport_name}", f"{airport_size}",
+    (table.add_row(f"{current_player.screen_name}", f"{airport_name}, {country_name}", f"{airport_size}",
                    f"{current_player.money:.2f}€", f"{current_player.co2_consumed:.2f}kg",
                    f"{current_player.distance_traveled}km",
                    f"{current_player.get_time()}",
@@ -91,8 +93,10 @@ def fly():
     current_player = game.game_controller.get_current_player()
     current_airport = db.get_airport(current_player.location)
     airport_name = current_airport["name"]
+    current_country = db.get_country(current_airport["iso_country"])
+    country_name = current_country["name"]
     while True:
-        print(f"Current location: {Fore.CYAN}{airport_name}{Fore.RESET}\n")
+        print(f"Current location: {Fore.CYAN}{airport_name}, {country_name}{Fore.RESET}\n")
         flights.flight_timetable()
         try:
             selection = input(Fore.RESET + "\nSelect where you want to fly (1-16) (0 to cancel): ")
@@ -123,8 +127,10 @@ def run_commands():
     current_player = game.game_controller.get_current_player()
     current_airport = db.get_airport(current_player.location)
     airport_name = current_airport["name"]
+    current_country = db.get_country(current_airport["iso_country"])
+    country_name = current_country["name"]
     ascii_art.ascii_city()
-    print(f"Current location: {Fore.CYAN}{airport_name}{Fore.RESET}")
+    print(f"Current location: {Fore.CYAN}{airport_name}, {country_name}{Fore.RESET}")
     while True:
         command_input = input("\nEnter a command: ").lower()
         inputsplit = command_input.split()
