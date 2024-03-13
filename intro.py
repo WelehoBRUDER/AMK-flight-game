@@ -3,6 +3,7 @@ import time
 import game
 import sys
 import commands
+import ascii_art
 
 
 # Prints the story
@@ -57,37 +58,6 @@ def game_story():
             print(f"{Fore.RED}Please choose 'yes' or 'no'.{Fore.RESET}")
 
 
-# Prints the game title
-def game_title(check):
-    ascii_art = [Fore.MAGENTA + "\n       █     ████     ███    █   █   █   █   ███        █████   █   █   █████ \n",
-                 "      █ █    █   █   █   █   █   █   ██  █   █  █         █     █   █   █     \n",
-                 "     █████   █████   █   █   █   █   █ █ █   █   █        █     █████   █████ \n",
-                 "     █   █   █  █    █   █   █   █   █  ██   █  █         █     █   █   █     \n",
-                 "     █   █   █   █    ███     ███    █   █   ███          █     █   █   █████ \n\n",
-                 "                  █   █   █    ███    ████    █       ███                     \n",
-                 "                  █   █   █   █   █   █   █   █       █  █                    \n",
-                 "                   █ █ █ █    █   █   █████   █       █   █                   \n",
-                 "                   █ █ █ █    █   █   █  █    █       █  █                    \n",
-                 "                    █   █      ███    █   █   █████   ███      \n" + Fore.RESET]
-
-    # Prints the title for the main menu
-    if check == 1:
-        for line in ascii_art:
-            for letter in line:
-                print(letter, end="")
-                sys.stdout.flush()
-        print("\n-----------------------------------------------------------------------------------\n")
-    # Prints the title for the intro
-    else:
-        for line in ascii_art:
-            for letter in line:
-                print(letter, end="")
-                time.sleep(0.002)
-                sys.stdout.flush()
-        input(f"{Fore.BLUE}\nInput anything to continue: {Fore.RESET}")
-        game.clear_and_exit_check(0)
-
-
 # Gives the player an option to view the game commands and skip the story
 def game_intro():
     while True:
@@ -106,10 +76,10 @@ def game_intro():
         game.clear_and_exit_check(read_story)
         if read_story == "yes" or read_story == "y":
             game_story()
-            game_title(0)
+            ascii_art.game_title(0)
             break
         elif read_story == "no" or read_story == "n":
-            game_title(0)
+            ascii_art.game_title(0)
             break
         else:
             print(f"{Fore.RED}Please choose 'yes' or 'no'.{Fore.RESET}")

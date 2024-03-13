@@ -5,6 +5,7 @@ from rich.progress import track
 import time as py_time
 import sys
 import os
+import ascii_art
 from colorama import Fore
 
 
@@ -189,7 +190,7 @@ class Player:
                 self.add_to_leaderboards()
 
     def fly(self, flight):
-
+        ascii_art.ascii_plane()
         for i in track(range(20), description=f"Flying to {flight["airport"]["name"]}..."):
             py_time.sleep(0.045)  # Simulate work being done
 

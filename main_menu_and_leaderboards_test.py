@@ -2,6 +2,7 @@ from colorama import Fore
 from game import *
 import commands
 import intro
+import ascii_art
 from db import get_all_players_from_db
 from rich.console import Console
 from rich.table import Table
@@ -32,7 +33,7 @@ def leaderboard_table():
 
 def display_menu():
     clear_and_exit_check(0)
-    intro.game_title(1)
+    ascii_art.game_title(1)
 
     print(f"1. Start your journey!")
     print(f"{Fore.CYAN}2. Leaderboards{Fore.RESET}")
