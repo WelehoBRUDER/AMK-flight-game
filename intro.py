@@ -2,6 +2,7 @@ from colorama import Fore
 import time
 import game
 import sys
+import commands
 
 
 # Prints the story
@@ -66,13 +67,22 @@ def game_title():
 # Gives the player an option to skip the story
 def game_intro():
     while True:
+        read_controls = input("Would you like to view commands before start? (yes/no): ").lower()
+        if read_controls == "yes" or read_controls == "y":
+            commands.print_helplist()
+            break
+        elif read_controls == "no" or read_controls == "n":
+            break
+        else:
+            print(f"{Fore.RED}Please choose 'yes' or 'no'.{Fore.RESET}")
+    while True:
         skip_story = input("Do you want to read the story? (yes/no): ").lower()
         game.clear_and_exit_check(skip_story)
-        if skip_story == "yes":
+        if skip_story == "yes" or skip_story == "y":
             game_story()
             game_title()
             break
-        elif skip_story == "no":
+        elif skip_story == "no" or skip_story == "n":
             game_title()
             break
         else:
