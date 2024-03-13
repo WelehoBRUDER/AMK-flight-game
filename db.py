@@ -7,7 +7,7 @@ from geographiclib.geodesic import Geodesic
 
 db = {}
 # If enabled, prints debug lines when database is altered.
-debug_mode = True
+debug_mode = False
 
 
 def connect_to_db():

@@ -212,12 +212,10 @@ class Player:
         # self.check_real_time()
 
     def reset_time_check(self):
-        print("reset")
         self.real_time_last_check = int(py_time.time() * 1000)
 
     def check_real_time(self):
         current_time = int(py_time.time() * 1000)
-        print("check", current_time, self.real_time_last_check)
         self.real_time += current_time - self.real_time_last_check
         self.real_time_last_check = current_time
 
