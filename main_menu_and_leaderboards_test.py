@@ -32,36 +32,13 @@ def leaderboard_table():
 
 def display_menu():
     clear_and_exit_check(0)
-    print(f"{Fore.CYAN}Welcome to your journey AROUND THE WORLD!{Fore.RESET}\n")
+    intro.game_title(1)
 
     print(f"1. Start your journey!")
     print(f"{Fore.CYAN}2. Leaderboards{Fore.RESET}")
     print(f"{Fore.BLUE}3. Instructions / Help{Fore.RESET}")
     print(f"{Fore.GREEN}4. Story{Fore.RESET}")
     print(f"{Fore.RED}5. Exit{Fore.RESET}")
-
-
-def menu_choice():
-    menu_options = input("\nOption: ")
-    clear_and_exit_check(menu_options)
-
-    if len(menu_options) > 0:
-        try:
-            menu_options = int(menu_options)
-
-        except ValueError:
-            print(f"{menu_options} is not a valid option, please try again")
-
-        else:
-            if 1 <= menu_options <= 4:
-                return menu_options
-
-            else:
-                print(f"Option doesn't exist")
-
-    else:
-        print("Empty input is not a valid option, please try again!")
-    return menu_options
 
 
 def end_screen_status():
@@ -101,27 +78,31 @@ def display_loss_screen():
 def main_menu():
     while True:
         display_menu()
-        options = menu_choice()
-
-        if options == 1:
-            intro.game_intro()
-            break
-
-        elif options == 2:
-            leaderboard_table()
-            input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
-
-        elif options == 3:
-            commands.print_instructions()
-            commands.print_helplist()
-            input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
-
-        elif options == 4:
-            intro.game_intro()
-
-        elif options == 5:
-            clear_and_exit_check("exit")
+        menu_options = input("\nOption: ")
+        clear_and_exit_check(menu_options)
+        if menu_options:
+            try:
+                menu_options = int(menu_options)
+                if menu_options == 1:
+                    intro.game_intro()
+                    break
+                elif menu_options == 2:
+                    leaderboard_table()
+                    input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
+                elif menu_options == 3:
+                    commands.print_instructions()
+                    commands.print_helplist()
+                    input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
+                elif menu_options == 4:
+                    intro.game_story()
+                elif menu_options == 5:
+                    clear_and_exit_check("exit")
+                else:
+                    print(f"{Fore.RED}Option '{menu_options}' doesn't exist, please try again!{Fore.RESET}")
+                    input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
+            except ValueError:
+                print(f"{Fore.RED}'{menu_options}' is not a valid option, please try again!{Fore.RESET}")
+                input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
         else:
-            clear_and_exit_check(0)
-            print(f"{Fore.RED}Invalid input, please input a number between 1 and 4.\nOr type 'exit'.{Fore.RESET}")
+            print(f"{Fore.RED}Please input at least something...{Fore.RESET}")
             input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
