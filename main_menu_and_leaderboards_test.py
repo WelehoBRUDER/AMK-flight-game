@@ -61,7 +61,7 @@ def end_screen_status():
     table.add_column("Game time", style="white")
     table.add_row(f"{current_player.screen_name}", f"{current_player.money:.02f}€",
                   f"{current_player.co2_consumed:.02f}kg", f"{current_player.distance_traveled}km",
-                  f"{current_player.time}")
+                  f"{current_player.time / 60:.02f}h")
     console.print(table)
 
 
@@ -76,6 +76,7 @@ def display_win_screen():
 
 
 def display_loss_screen():
+    clear_and_exit_check(0)
     print(f"\n{Fore.LIGHTRED_EX}Unfortunately you've ran out of resources and your journey has ended.{Fore.RESET}\n")
     print(f"\nWITH A SCORE OF: {game_controller.get_current_player().score()}\n")
     end_screen_status()
