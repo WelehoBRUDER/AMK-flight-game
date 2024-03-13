@@ -146,16 +146,26 @@ def get_country(iso_country):
     return print("No ISO-code in parameters!")
 
 
+# Generates a random string of numbers with a length of 17 characters.
+def generate_random_id():
+    _id = ""
+    for i in range(17):
+        _id += str(random.randint(0, 9))
+    return _id
+
+
 # This function adds a new player to the database.
 # The database holds all winners for the leaderboards screen.
 def add_player_to_db(player):
+    # ID must be generated so that the chance of duplicates is effectively 0%
+    player_id = generate_random_id()
     db["cursor"].execute(f"""
-    INSERT INTO game (id, screen_name, co2_consumed, money, time, score)
-    VALUES ('{player.id}', '{player.screen_name}', {player.co2_consumed}, {player.money}, {player.time}, {player.score()});
+    INSERT INTO game (id, screen_name, co2_consumed, money, time, distance_traveled, score)
+    VALUES ('{player_id}', '{player.screen_name}', {player.co2_consumed}, {player.money}, {player.time}, {player.distance_traveled}, {player.score()});
     """)
     db["database"].commit()
     if debug_mode:
-        print(f"Added {player["screen_name"]} to game table.")
+        print(f"Added {player.screen_name} to game table.")
 
 
 # This function gets all players from the database
@@ -200,7 +210,7 @@ def delete_unnecessary_airports():
 # This function adds all needed columns and removes unneeded columns in game table.
 # Ideally this should run only once.
 def modify_game_table():
-    to_add = (("money", "int"), ("time", "int"), ("score", "int"))
+    to_add = (("money", "int"), ("time", "int"), ("score", "int"), ("distance_traveled", "int"))
     to_remove = ("co2_left", "co2_budget")
     for pair in to_add:
         try:
