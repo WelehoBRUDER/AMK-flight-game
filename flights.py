@@ -99,6 +99,9 @@ def flight_timetable():  # Prints a flight timetable with options for the player
         types = simplified_types[0]
         co2 = timed_flights[i]["emissions"]
 
+        if distance < 100:
+            continue
+
         # Adds flight data from the list of dictionaries to the earlier generated Rich Library table.
         table.add_row(f"{options:02d}", f"{hours}h {minutes}min", f"{municipality}, {country}"
                       , f"{types}", f"{direction}", f"{distance:04d}km", f"{cost:.02f}€", f"{co2:.02f} kg")
