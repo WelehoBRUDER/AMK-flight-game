@@ -239,6 +239,10 @@ def init_game():
     }
 
     while True:
+        print(f"{Fore.GREEN}Easy{Fore.RESET}: You have 30 days and 30000€. Approriate for a casual gamer.\n"
+              f"{Fore.YELLOW}Medium{Fore.RESET}: You have 20 days and 20000€. Not too hard, not too easy.\n"
+              f"{Fore.MAGENTA}Hard{Fore.RESET}: You have 10 days and 10000€. For those who want a challenge.\n"
+              f"{Fore.RED}Extreme{Fore.RESET}: You have 1 day and 2000€. You can't win.\n")
         difficulty = input("Choose difficulty (easy, medium, hard or extreme): ").lower()
         clear_and_exit_check(difficulty)
         if difficulty in difficulties:
@@ -246,7 +250,7 @@ def init_game():
             game_controller.set_difficulty(difficulty)
             break
         else:
-            print(f"{Fore.RED}No such difficulty as {difficulty}... Please choose a correct one!{Fore.RESET}")
+            print(f"{Fore.RED}No such difficulty as {difficulty}... Please choose a correct one!{Fore.RESET}\n")
 
     starting_airport = get_random_airport()
     starting_country = get_country(starting_airport["iso_country"])
@@ -255,12 +259,12 @@ def init_game():
 
     while True:
         try:
-            players_amount = input("How many players will be in this session?: ")
+            players_amount = input("\nHow many players will be in this session?: ")
             clear_and_exit_check(players_amount)
             players_amount = int(players_amount)
             for i in range(1, players_amount + 1):
                 game_controller.add_player(i, starting_airport)
-                print(f"Player {i} is now known as {Fore.CYAN}{game_controller.players[i - 1].get_name()}{Fore.RESET}")
+                print(f"Player {i} is now known as {Fore.CYAN}{game_controller.players[i - 1].get_name()}{Fore.RESET}\n")
             game_controller.generate_flights()
             return
         except ValueError:
