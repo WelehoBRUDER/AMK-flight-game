@@ -16,6 +16,7 @@ def main():
         if len(players) == 0:
             print(f"\nTHE GAME HAS FINISHED!")
             game_over = True
+            break
         if game_controller.get_turn() >= game_controller.players_amount():
             game_controller.reset_turns()
             game_controller.generate_flights()
