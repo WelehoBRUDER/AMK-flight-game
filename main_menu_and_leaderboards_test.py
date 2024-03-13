@@ -122,20 +122,3 @@ def main_menu():
             clear_and_exit_check(0)
             print(f"{Fore.RED}Invalid input, please input a number between 1 and 4.\nOr type 'exit'.{Fore.RESET}")
             input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
-
-
-"""
-            if game_over:
-                while True:
-                    back_to_menu = input(f"\nWould you like to continue back to main menu? (Y/N): ")
-                    if back_to_menu.lower() == "y" or back_to_menu.lower() == "yes":
-                        clear_and_exit_check(0)
-                        break
-                    elif back_to_menu.lower() == "n" or back_to_menu.lower() == "no":
-                        clear_and_exit_check(0)
-                        print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
-                        break
-                    else:
-                        clear_and_exit_check(0)
-                        print("Invalid input, please enter 'Y' or 'N'!")
-"""

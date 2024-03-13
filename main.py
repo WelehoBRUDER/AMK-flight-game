@@ -9,11 +9,12 @@ def main():
     main_menu_and_leaderboards_test.main_menu()
     init_game()
     players_done = 0
+    game_over = False
 
-    while True:
+    while not game_over:
         if players_done >= game_controller.players_amount():
             print(f"\nTHE GAME HAS FINISHED!")
-            break
+            game_over = True
         if game_controller.get_turn() >= game_controller.players_amount():
             game_controller.reset_turns()
             game_controller.generate_flights()
@@ -30,6 +31,20 @@ def main():
         else:
             commands.run_commands()
         game_controller.advance_turn()
+
+    if game_over:
+        while True:
+            back_to_menu = input(f"\nWould you like to continue back to main menu? (Y/N): ")
+            if back_to_menu.lower() == "y" or back_to_menu.lower() == "yes":
+                main()
+                break
+            elif back_to_menu.lower() == "n" or back_to_menu.lower() == "no":
+                clear_and_exit_check(0)
+                print(f"\n{Fore.RED}Quitting the game...{Fore.RESET}")
+                break
+            else:
+                clear_and_exit_check(0)
+                print("Invalid input, please enter 'Y' or 'N'!")
 
 
 # This function ensures that the database tables have been modified to suit the game's needs.
