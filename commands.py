@@ -83,7 +83,7 @@ def print_status():
                    f"{current_player.get_time()}",
                    f"{current_player.get_pretty_time()}",
                    f"{"Reached" if current_player.halfway_longitude is not None else "Not Reached"}",
-                   f"{start_airport['name']}"))
+                   f"{start_airport['name']}, {country_name}"))
     console.print(table)
 
 
