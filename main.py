@@ -3,6 +3,7 @@ from game import *
 import commands
 from main_menu_and_leaderboards_test import *
 import db
+import game
 import time
 
 
@@ -27,9 +28,13 @@ def main():
             game_controller.reset_turns()
             game_controller.generate_flights()
             game_controller.round += 1
-            print(f"--- ROUND {game_controller.round} CONCLUDED ---")
+            print(f"\n--- ROUND {game_controller.round} CONCLUDED ---")
+            input(f"{Fore.BLUE}\nInput anything to continue: {Fore.RESET}")
+            game.clear_and_exit_check(0)
         else:
-            print(f"--- NEXT PLAYER TURN ---")
+            print(f"\n--- NEXT PLAYER TURN ---")
+            input(f"{Fore.BLUE}\nInput anything to continue: {Fore.RESET}")
+            game.clear_and_exit_check(0)
         current_player = game_controller.get_current_player()
         current_player.reset_time_check()
         if current_player.has_lost():

@@ -1,6 +1,8 @@
 from colorama import Fore
 from rich.console import Console
 from rich.table import Table
+
+import ascii_art
 import db
 import game
 import flights
@@ -118,6 +120,11 @@ def invalid_command():
 # Keeps asking the player for a command until they end the turn or quit the game
 # Calls the 'command_description' function if the input has 2 words (for command-specific 'help' descriptions)
 def run_commands():
+    current_player = game.game_controller.get_current_player()
+    current_airport = db.get_airport(current_player.location)
+    airport_name = current_airport["name"]
+    ascii_art.ascii_city()
+    print(f"Current location: {Fore.CYAN}{airport_name}{Fore.RESET}")
     while True:
         command_input = input("\nEnter a command: ").lower()
         inputsplit = command_input.split()
