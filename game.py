@@ -29,7 +29,7 @@ class Game:
         player_location = start["ident"]
         player_money = self.difficulty["money"]
         self.players.append(
-            Player(i, player_name, 0, player_location, player_money, 0, 0, start["latitude_deg"],
+            Player(i, player_name, 0, player_location, player_money, 0, 0, 0, start["latitude_deg"],
                    start["longitude_deg"]))
 
     def get_player(self, index):
@@ -77,15 +77,6 @@ class Game:
             # Adds the flights and the origin.
             self.flights.append({"flights": flights_from_airport, "from": airport})
 
-    def update_all_players(self):
-        for player in self.players:
-            player.update()
-
-    def test_data(self):
-        # Creates test data that has 4 empty players for debugging.
-        for i in range(4):
-            self.players.append(Player(i, f"player{i}", 0, "CYYQ", i, 65, 0, 60.3172, 24.963301))
-
 
 game_controller = Game()
 
@@ -110,7 +101,7 @@ game_controller = Game()
 
 
 class Player:
-    def __init__(self, id, screen_name, co2_consumed, location, money, time, distance_traveled,
+    def __init__(self, id, screen_name, co2_consumed, location, money, time, real_time, distance_traveled,
                  origin_latitude,
                  origin_longitude,
                  halfway_latitude=None, halfway_longitude=None, last_location=None, finished=False, **kwargs):
@@ -121,7 +112,7 @@ class Player:
         self.money = money
         self.time = time
         self.real_time_last_check = 0
-        self.real_time = 0
+        self.real_time = real_time
         self.distance_traveled = distance_traveled
         self.last_location = location if last_location is None else last_location
         self.origin_latitude = origin_latitude
@@ -224,6 +215,8 @@ class Player:
         self.real_time_last_check = current_time
 
     def get_pretty_time(self):
+        if not self.real_time:
+            return "N/A"
         milliseconds = self.real_time
         seconds = int(milliseconds / 1000) % 60
         minutes = int(milliseconds / (1000 * 60)) % 60
