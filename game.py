@@ -22,6 +22,7 @@ class Game:
     # Creates player using Player class and adds to the list
     def add_player(self, i, start):
         player_name = input(f"Player {i} name: ")
+        clear_and_exit_check(player_name)
         player_location = start["ident"]
         player_money = self.difficulty["money"]
         self.players.append(
@@ -189,7 +190,7 @@ class Player:
     def fly(self, flight):
 
         for i in track(range(20), description=f"Flying to {flight["airport"]["name"]}..."):
-            py_time.sleep(0.15)  # Simulate work being done
+            py_time.sleep(0.045)  # Simulate work being done
 
         port = flight["airport"]
         total_time = flight["flight_time"] + flight["time"]["hours"] * 60 + flight["time"]["minutes"]
@@ -211,21 +212,33 @@ def init_game():
         "extreme": {"money": 2000, "time_limit": 1}
     }
 
-    difficulty = difficulties[input("Choose difficulty (easy, medium, hard or extreme): ")]
-
-    game_controller.set_difficulty(difficulty)
+    while True:
+        difficulty = input("Choose difficulty (easy, medium, hard or extreme): ").lower()
+        clear_and_exit_check(difficulty)
+        if difficulty in difficulties:
+            difficulty = difficulties[difficulty]
+            game_controller.set_difficulty(difficulty)
+            break
+        else:
+            print(f"{Fore.RED}No such difficulty as {difficulty}... Please choose a correct one!{Fore.RESET}")
 
     starting_airport = get_random_airport()
     starting_country = get_country(starting_airport["iso_country"])
 
-    print(f"Starting airport is {starting_airport["name"]}, {starting_country["name"]}")
+    print(f"Starting airport is {Fore.CYAN}{starting_airport["name"]}, {starting_country["name"]}{Fore.RESET}")
 
-    players_amount = int(input("How many players will be in this session?: "))
-    for i in range(1, players_amount + 1):
-        game_controller.add_player(i, starting_airport)
-
-        print(f"Player {i} is now known as {game_controller.players[i - 1].get_name()}")
-    game_controller.generate_flights()
+    while True:
+        try:
+            players_amount = input("How many players will be in this session?: ")
+            clear_and_exit_check(players_amount)
+            players_amount = int(players_amount)
+            for i in range(1, players_amount + 1):
+                game_controller.add_player(i, starting_airport)
+                print(f"Player {i} is now known as {Fore.CYAN}{game_controller.players[i - 1].get_name()}{Fore.RESET}")
+            game_controller.generate_flights()
+            return
+        except ValueError:
+            print(f"{Fore.RED}Player amount must be a number!{Fore.RESET} (For example: {Fore.YELLOW}2{Fore.RESET})")
 
 
 def calc_cost(distance_amount):
