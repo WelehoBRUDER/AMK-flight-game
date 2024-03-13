@@ -60,18 +60,20 @@ def end_screen_status():
 
 def display_win_screen():
     clear_and_exit_check(0)
-    print(
-        f"\n{Fore.LIGHTBLUE_EX}CONGRATULATIONS {game_controller.get_current_player().screen_name}! "
-        f"YOU'VE COMPLETED YOUR JOURNEY AROUND THE WORLD!{Fore.RESET}\n")
-    print(f"\nWITH A SCORE OF: {game_controller.get_current_player().score()}\n")
+    ascii_art.ascii_fireworks()
+    print(f"\n{Fore.LIGHTBLUE_EX}CONGRATULATIONS {game_controller.get_current_player().screen_name}! "
+          f"\nYOU'VE COMPLETED YOUR JOURNEY AROUND THE WORLD!{Fore.RESET}\n"
+          f"\nWITH A SCORE OF: {game_controller.get_current_player().score()}\n")
     end_screen_status()
     leaderboard_table()
 
 
 def display_loss_screen():
     clear_and_exit_check(0)
-    print(f"\n{Fore.LIGHTRED_EX}Unfortunately you've ran out of resources and your journey has ended.{Fore.RESET}\n")
-    print(f"\nWITH A SCORE OF: {game_controller.get_current_player().score()}\n")
+    ascii_art.ascii_grave()
+    print(f"\n{Fore.LIGHTRED_EX}Unfortunately you've run out of resources and your journey has ended.\n"
+          f"Your grandfather died out of shame.{Fore.RESET}\n"
+          f"\nWITH A SCORE OF: {game_controller.get_current_player().score()}\n")
     end_screen_status()
 
 
