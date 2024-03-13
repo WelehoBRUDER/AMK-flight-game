@@ -1,5 +1,3 @@
-import time
-
 from colorama import Fore
 from game import *
 import commands
@@ -18,12 +16,14 @@ def leaderboard_table():
 
 
 def display_menu():
-    print(f"\n{Fore.CYAN}Welcome to your journey AROUND THE WORLD!{Fore.RESET}\n")
+    clear_and_exit_check(0)
+    print(f"{Fore.CYAN}Welcome to your journey AROUND THE WORLD!{Fore.RESET}\n")
 
     print(f"1. Start your journey!")
-    print(f"2. Leaderboards")
-    print(f"{Fore.GREEN}3. Instructions / Help{Fore.RESET}")
-    print(f"{Fore.RED}4. Exit{Fore.RESET}")
+    print(f"{Fore.CYAN}2. Leaderboards{Fore.RESET}")
+    print(f"{Fore.BLUE}3. Instructions / Help{Fore.RESET}")
+    print(f"{Fore.GREEN}4. Story{Fore.RESET}")
+    print(f"{Fore.RED}5. Exit{Fore.RESET}")
 
 
 def menu_choice():
@@ -72,7 +72,6 @@ def display_win_screen():
         f"YOU'VE COMPLETED YOUR JOURNEY AROUND THE WORLD!{Fore.RESET}\n")
     print(f"\nWITH A SCORE OF: {game_controller.get_current_player().score()}\n")
     end_screen_status()
-    print()
     leaderboard_table()
 
 
@@ -88,26 +87,27 @@ def main_menu():
         options = menu_choice()
 
         if options == 1:
+            intro.game_intro()
             break
 
         elif options == 2:
             leaderboard_table()
-            str(input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}"))
-            clear_and_exit_check(0)
+            input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
 
         elif options == 3:
             commands.print_instructions()
             commands.print_helplist()
-            str(input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}"))
-            clear_and_exit_check(0)
+            input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
 
         elif options == 4:
-            clear_and_exit_check(0)
-            break
+            intro.game_intro()
+
+        elif options == 5:
+            clear_and_exit_check("exit")
         else:
             clear_and_exit_check(0)
-            print(f"{Fore.RED}Invalid input, please input a number between 1 and 4.\nOr type exit.{Fore.RESET}")
-            time.sleep(2)
+            print(f"{Fore.RED}Invalid input, please input a number between 1 and 4.\nOr type 'exit'.{Fore.RESET}")
+            input(f"{Fore.BLUE}\nInput anything to continue back to main menu: {Fore.RESET}")
 
 
 """
