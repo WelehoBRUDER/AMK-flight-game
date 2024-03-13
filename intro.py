@@ -70,6 +70,7 @@ def game_intro():
         read_controls = input("Would you like to view commands before start? (yes/no): ").lower()
         if read_controls == "yes" or read_controls == "y":
             commands.print_helplist()
+            print()
             break
         elif read_controls == "no" or read_controls == "n":
             break
