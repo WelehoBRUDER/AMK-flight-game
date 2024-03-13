@@ -22,10 +22,9 @@ def leaderboard_table():
     for player in players:
         _player = Player(**player)
         leaderboards.add_row(
-            f"{_player.screen_name}", f"{player["score"]}", f"{_player.get_time()}", f"{_player.get_pretty_time()}",
-            f"{_player.money}",
-            f"{_player.co2_consumed}",
-            f"{_player.distance_traveled}"
+            f"{_player.screen_name}", f"{player["score"]}", f"{_player.get_time()}",
+            f"{_player.get_pretty_time()}", f"{_player.money}€",
+            f"{_player.co2_consumed}kg", f"{_player.distance_traveled}km"
         )
     console.print(leaderboards)
     return leaderboards
