@@ -2,6 +2,7 @@ from colorama import Fore
 from game import *
 import commands
 import intro
+from db import get_all_players_from_db
 from rich.console import Console
 from rich.table import Table
 
@@ -11,6 +12,18 @@ def leaderboard_table():
     leaderboards = Table(title="Leaderboards", title_style="gold3", show_header=True, header_style="red1")
     leaderboards.add_column("Player", justify="center")
     leaderboards.add_column("Score", justify="center")
+    leaderboards.add_column("Date", justify="center")
+    leaderboards.add_column("Money", justify="center")
+    leaderboards.add_column("CO2 Emissions", justify="center")
+    leaderboards.add_column("Distance", justify="center")
+    players = get_all_players_from_db()
+    for player in players:
+        _player = Player(**player)
+        leaderboards.add_row(
+            f"{_player.screen_name}", f"{player["score"]}", f"{_player.get_time()}", f"{_player.money}",
+            f"{_player.co2_consumed}",
+            f"{_player.distance_traveled}"
+        )
     console.print(leaderboards)
     return leaderboards
 

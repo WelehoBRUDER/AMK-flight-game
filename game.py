@@ -107,7 +107,7 @@ game_controller = Game()
 class Player:
     def __init__(self, id, screen_name, co2_consumed, location, money, time, distance_traveled, origin_latitude,
                  origin_longitude,
-                 halfway_latitude=None, halfway_longitude=None, last_location=None, finished=False):
+                 halfway_latitude=None, halfway_longitude=None, last_location=None, finished=False, **kwargs):
         self.id = id
         self.screen_name = screen_name
         self.co2_consumed = int(co2_consumed)
